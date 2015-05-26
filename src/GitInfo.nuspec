@@ -2,7 +2,7 @@
 <package>
 	<metadata>
 		<id>GitInfo</id>
-		<version>0.9.0</version>
+		<version>0.1.0</version>
 		<title>Git Info from MSBuild, C# and VB</title>
 		<authors>Daniel Cazzulino</authors>
 		<iconUrl>https://raw.github.com/kzu/GitInfo/master/img/git.png</iconUrl>
