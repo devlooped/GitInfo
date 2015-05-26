@@ -8,7 +8,7 @@ deploy:
   - provider: NuGet
     api_key:
       secure: 7MS5+XWaFchMXFqzgneQCqo9U0DlxiPXe/KWWUnbCBDEizVn06EjdQZkWu1gbNOJ
-    artifact: /.*\.nupkg/
+    artifact: Package
     on:
       branch: master
       
@@ -16,5 +16,5 @@ nuget:
   project_feed: true
   
 artifacts:
-  - path: '*.nupkg'
-    name: Packages
+  - path: out\*.nupkg
+    name: Package
