@@ -300,6 +300,7 @@
       <GitVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitVersionMajor>
       <GitVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionExpr)).Groups['MINOR'].Value)</GitVersionMinor>
       <GitVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionExpr)).Groups['PATCH'].Value)</GitVersionPatch>
+			<GitVersionPatch>$([MSBuild]::Add($(GitVersionPatch), $(GitCommits)))</GitVersionPatch>
       <GitVersionLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionExpr)).Groups['LABEL'].Value)</GitVersionLabel>
       <GitVersionDashLabel Condition="'$(GitVersionLabel)' != ''" >-$(GitVersionLabel)</GitVersionDashLabel>
     </PropertyGroup>
