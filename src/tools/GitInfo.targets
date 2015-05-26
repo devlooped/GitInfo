@@ -11,43 +11,49 @@
   <PropertyGroup>
 		<!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
     <GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
-    <GitDefaultBranch Condition="'$(GitDefaultBranch)' == ''">master</GitDefaultBranch>
+		<!-- Look it upwards and grab the first one we find. -->
+		<GitVersionFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), $(GitVersionFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), $(GitVersionFile)))\$(GitVersionFile)</GitVersionFile>
+		
+		<GitDefaultBranch Condition="'$(GitDefaultBranch)' == ''">master</GitDefaultBranch>
     <GitDefaultCommit Condition="'$(GitDefaultCommit)' == ''">0000000</GitDefaultCommit>
     <GitDefaultVersion Condition="'$(GitDefaultVersion)' == ''">0.1.0</GitDefaultVersion>
     <GitBaseVersionExpr Condition="'$(GitBaseVersionExpr)' == ''">^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</GitBaseVersionExpr>
     <GitInfoFile Condition="$(GitInfoFile) == '' And '$(DefaultLanguageSourceExtension)' != ''">$(IntermediateOutputPath)ThisAssembly.GitInfo.g$(DefaultLanguageSourceExtension)</GitInfoFile>
 		<GitThisAssembly Condition="'$(GitThisAssembly)' == '' And '$(GitInfoFile)' != ''">true</GitThisAssembly>
-  </PropertyGroup>
+		<GitInfoReportImportance Condition="'$(GitInfoReportImportance)' == ''">low</GitInfoReportImportance>
+	</PropertyGroup>
 
   <PropertyGroup>
     <GitInfoDependsOn>
-      GitRoot;
-      GitBranch;
-      GitCommit;
-      GitBaseVersionFile;
-      GitBaseVersionBranch;
-      GitBaseVersionTag;
-      GitVersion;
-      GitThisAssembly;
-    </GitInfoDependsOn>
+			GitRoot;
+			GitBranch;
+			GitCommit;
+			GitBaseVersionFile;
+			GitBaseVersionBranch;
+			GitBaseVersionTagExists;
+			GitBaseVersionTag;
+			GitBaseVersionFallback;
+			GitVersion;
+			GitThisAssembly;
+		</GitInfoDependsOn>
   </PropertyGroup>
 
   <Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)">
 
-    <Message Importance="low" Text="Git Info:
-          GitRoot:              $(GitRoot)
-          GitBranch:            $(GitBranch)
-          GitCommit:            $(GitCommit)
-          GitBaseVersion:       $(GitBaseVersion)
-          GitBaseVersionSource: $(GitBaseVersionSource)
-          GitCommits:           $(GitCommits)
-          GitTag:               $(GitTag)
-          GitBaseTag:           $(GitBaseTag)
-          GitVersionMajor:      $(GitVersionMajor)
-          GitVersionMinor:      $(GitVersionMinor)
-          GitVersionPatch:      $(GitVersionPatch)
-          GitVersionLabel:      $(GitVersionLabel)
-          GitVersionDashLabel:  $(GitVersionDashLabel)
+    <Message Importance="$(GitInfoReportImportance)" Text="Git Info:
+  GitRoot:              $(GitRoot)
+  GitBranch:            $(GitBranch)
+  GitCommit:            $(GitCommit)
+  GitBaseVersion:       $(GitBaseVersion)
+  GitBaseVersionSource: $(GitBaseVersionSource)
+  GitCommits:           $(GitCommits)
+  GitTag:               $(GitTag)
+  GitBaseTag:           $(GitBaseTag)
+  GitVersionMajor:      $(GitVersionMajor)
+  GitVersionMinor:      $(GitVersionMinor)
+  GitVersionPatch:      $(GitVersionPatch)
+  GitVersionLabel:      $(GitVersionLabel)
+  GitVersionDashLabel:  $(GitVersionDashLabel)
 "/>
 
   </Target>
@@ -63,8 +69,14 @@
       <Output TaskParameter="ConsoleOutput" ItemName="_GitOutput"/>
     </Exec>
 
-    <PropertyGroup Condition="'$(MSBuildLastTaskResult)' == 'true'">
-      <GitRoot>@(_GitOutput->'%(Identity)', '%0a%0d')</GitRoot>
+		<!-- Account for cygwin separately -->
+		<Exec Command='"$(CygPathExe)" -w $(_GitOutput)" WorkingDir="$(MSBuildProjectDirectory)"'
+					Condition="'$(MSBuildLastTaskResult)' == 'true' And '$(CygPathExe)' != ''">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput" />
+		</Exec>
+
+		<PropertyGroup Condition="'$(MSBuildLastTaskResult)' == 'true'">
+      <GitRoot>@(_GitOutput -> '%(Identity)', '%0a%0d')</GitRoot>
       <GitRoot>$(GitRoot.Trim())</GitRoot>
     </PropertyGroup>
 
@@ -181,7 +193,10 @@
       <IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
+		<Message Text="Git branch '$(GitBranch)' cannot be used as a version specifier. Skipping branch-based version processing."
+						 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
+
+		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
       <GitBaseVersion>$(GitBranch)</GitBaseVersion>
       <GitBaseVersionSource>%24(GitBranch)</GitBaseVersionSource>
     </PropertyGroup>
@@ -205,7 +220,7 @@
 
     <!-- Get the commit count from the fork point to the current branch head -->
     <Exec Command='"$(GitExe)" rev-list --count "$(_GitForkPoint)"..HEAD'
-					Condition="'$(IsValidGitBaseVersion)' == 'true'"
+					Condition="'$(IsValidGitBaseVersion)' == 'true' and '$(MSBuildLastTaskResult)' == 'true'"
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
@@ -215,7 +230,7 @@
 
   </Target>
 
-  <Target Name="GitBaseVersionTag" Returns="$(GitBaseVersion)"
+  <Target Name="GitBaseVersionTagExists" Returns="$(GitBaseTag)"
 					DependsOnTargets="GitBranch;GitCommit"
 					Condition="'$(GitBaseVersion)' == ''">
 
@@ -228,73 +243,93 @@
     </Exec>
 
     <PropertyGroup Condition="'$(MSBuildLastTaskResult)' == 'false'">
-      <NoGitTag>true</NoGitTag>
-			<GitBaseVersion>$(GitDefaultVersion)</GitBaseVersion>
 			<GitCommits>0</GitCommits>
 			<GitBaseTag></GitBaseTag>
-			<GitBaseVersionSource>%24(GitDefaultVersion)</GitBaseVersionSource>
 		</PropertyGroup>
 
-    <Warning Text="Failed to get a base version from a tag. Using default version '$(GitDefaultVersion)'."
-						 Condition="'$(NoGitTag)' == 'true'" />
-
-    <Exec Command='"$(GitExe)" describe --tags'
-					Condition="'$(NoGitTag)' != 'true'"
-					StandardErrorImportance="low"
-					StandardOutputImportance="low"
-					ConsoleToMSBuild="true"
-					ContinueOnError="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="GitTag"/>
-    </Exec>
-
-    <PropertyGroup Condition="'$(NoGitTag)' != 'true'">
-      <IsValidGitBaseVersion>
-        $([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseTag), $(GitBaseVersionExpr)))
-      </IsValidGitBaseVersion>
-      <IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
-
-      <GitBaseVersion Condition="'$(IsValidGitBaseVersion)' == 'true'">$(GitBaseTag)</GitBaseVersion>
-    </PropertyGroup>
-
-    <Warning Text="Current base tag '$(GitBaseTag)' is not a valid base version. Using default version '$(GitDefaultVersion)'."
-						 Condition="'$(NoGitTag)' != 'true' And '$(IsValidGitBaseVersion)' == 'false'" />
-
-    <PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'" >
-      <GitBaseVersionSource>%24(GitBaseTag)</GitBaseVersionSource>
-    </PropertyGroup>
-
-		<Exec Command='"$(GitExe)" rev-list "$(GitBaseTag)" -n 1'
-					Condition="'$(NoGitTag)' != 'true'"
-					StandardErrorImportance="low"
-					StandardOutputImportance="low"
-					ConsoleToMSBuild="true"
-					ContinueOnError="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="_GitBaseTagCommit"/>
-    </Exec>
-
-    <Exec Command='"$(GitExe)" rev-list --count "$(_GitBaseTagCommit)".."$(GitCommit)"'
-					Condition="'$(NoGitTag)' != 'true' And '$(_GitBaseTagCommit)' != '' And '$(GitCommit)' != '' And '$(GitCommit)' != '$(GitDefaultCommit)'"
-					StandardErrorImportance="low"
-					StandardOutputImportance="low"
-					ConsoleToMSBuild="true"
-					ContinueOnError="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
-    </Exec>
-
-    <Warning Text="Failed to retrieve commit count from tag '$(GitBaseTag)' to tip ${GitCommit). Defaulting to zero commits."
-						 Condition="'$(NoGitTag)' != 'true' And '$(MSBuildLastTaskResult)' == 'false'" />
-
-    <PropertyGroup>
-      <GitCommits Condition="'$(MSBuildLastTaskResult)' == 'false'">0</GitCommits>
-    </PropertyGroup>
+    <Message Text="No git tags exist. Skipping tag processing." 
+						 Importance="low" Condition="'$(GitBaseTag)' == ''" />
 
   </Target>
 
-  <Target Name="GitVersion" DependsOnTargets="GitValidateBaseVersion;GitValidateDefaultVersion">
+	<Target Name="GitBaseVersionTag" Returns="$(GitBaseVersion)"
+					Condition="'$(GitBaseVersion)' == '' And '$(GitBaseTag)' != ''">
 
-    <!-- If $(GitBaseVersion) == '', it means we couldn't determine a base version by any probing mechanism -->
-    <Error Text="Failed to find a valid base version to use. Please make sure you have a %24(GitVersionFile) file (defaults to '$(GitVersionFile)'), branch, tag or %24(GitDefaultVersion) property with a valid SemVer 2.0 string."
-					 Condition="'$(GitBaseVersion)' == ''" />
+		<!-- At this point, we now there is a base tag already we can leverage -->
+		<Exec Command='"$(GitExe)" describe --tags'
+					StandardErrorImportance="low"
+					StandardOutputImportance="low"
+					ConsoleToMSBuild="true"
+					ContinueOnError="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="GitTag"/>
+		</Exec>
+
+		<PropertyGroup>
+			<IsValidGitBaseVersion>
+				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseTag), $(GitBaseVersionExpr)))
+			</IsValidGitBaseVersion>
+			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
+
+			<GitBaseVersion Condition="'$(IsValidGitBaseVersion)' == 'true'">$(GitBaseTag)</GitBaseVersion>
+		</PropertyGroup>
+
+		<Message Text="Current tag '$(GitBaseTag)' cannot be used as a version specifier. Skipping tag-based version processing."
+						 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
+
+		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'" >
+			<GitBaseVersionSource>%24(GitBaseTag)</GitBaseVersionSource>
+			<GitCommits>0</GitCommits>
+		</PropertyGroup>
+
+		<Exec Command='"$(GitExe)" rev-list "$(GitBaseTag)" -n 1'
+					Condition="'$(IsValidGitBaseVersion)' == 'true'"
+					StandardErrorImportance="low"
+					StandardOutputImportance="low"
+					ConsoleToMSBuild="true"
+					ContinueOnError="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_GitBaseTagCommit"/>
+		</Exec>
+
+		<Exec Command='"$(GitExe)" rev-list --count "$(_GitBaseTagCommit)".."$(GitCommit)"'
+					Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(_GitBaseTagCommit)' != '' And '$(GitCommit)' != '' And '$(GitCommit)' != '$(GitDefaultCommit)'"
+					StandardErrorImportance="low"
+					StandardOutputImportance="low"
+					ConsoleToMSBuild="true"
+					ContinueOnError="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
+		</Exec>
+
+		<Warning Text="Failed to retrieve commit count from tag '$(GitBaseTag)' to tip ${GitCommit). Defaulting to zero commits."
+						 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastTaskResult)' == 'false'" />
+
+		<PropertyGroup>
+			<GitCommits Condition="'$(MSBuildLastTaskResult)' == 'false'">0</GitCommits>
+		</PropertyGroup>
+
+	</Target>
+
+	<Target Name="GitBaseVersionFallback" Condition="'$(GitBaseVersion)' == '' And '$(GitDefaultVersion)' != ''">
+
+		<PropertyGroup>
+			<IsValidGitDefaultVersion>
+				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitDefaultVersion), $(GitBaseVersionExpr)))
+			</IsValidGitDefaultVersion>
+			<IsValidGitDefaultVersion>$(IsValidGitDefaultVersion.Trim())</IsValidGitDefaultVersion>
+		</PropertyGroup>
+
+		<!-- If $(GitBaseVersion) == '' And $(IsValidGitBaseVersion) == ''  -->
+		<Error Text="Fallback version %24(GitDefaultVersion) value of '$(GitDefaultVersion)' is not a valid SemVer 2.0 string."
+					 Condition="'$(IsValidGitDefaultVersion)' == 'false'" />
+
+		<PropertyGroup>
+			<GitBaseVersion>$(GitDefaultVersion)</GitBaseVersion>
+			<GitBaseVersionSource>%24(GitDefaultVersion)</GitBaseVersionSource>
+			<GitCommits>0</GitCommits>
+		</PropertyGroup>
+
+	</Target>
+
+	<Target Name="GitVersion" DependsOnTargets="GitValidateBaseVersion">
 
     <PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
       <GitVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitVersionMajor>
@@ -307,37 +342,21 @@
 
   </Target>
 
-  <Target Name="GitValidateBaseVersion" Condition="'$(GitBaseVersion)' != ''">
+  <Target Name="GitValidateBaseVersion">
 
-    <PropertyGroup>
+		<!-- If $(GitBaseVersion) == '', it means we couldn't determine a base version by any probing mechanism -->
+		<Error Text="Failed to find a valid base version to use. Please make sure you have a %24(GitVersionFile) file (defaults to '$(GitVersionFile)'), branch, tag or %24(GitDefaultVersion) property with a valid SemVer 2.0 string."
+					 Condition="'$(GitBaseVersion)' == ''" />
+
+		<PropertyGroup>
       <IsValidGitBaseVersion>
         $([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseVersion), $(GitBaseVersionExpr)))
       </IsValidGitBaseVersion>
       <IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
     </PropertyGroup>
 
-    <!-- If $(GitBaseVersion) == '', $(IsValidGitBaseVersion) == '' and this error won't trigger -->
     <Error Text="Current %24(GitBaseVersion) value of '$(GitBaseVersion)' is not a valid SemVer 2.0 string."
 					 Condition="'$(IsValidGitBaseVersion)' == 'false'" />
-
-  </Target>
-
-  <Target Name="GitValidateDefaultVersion" Condition="'$(GitBaseVersion)' == '' And '$(GitDefaultVersion)' != ''">
-
-    <PropertyGroup Condition="'$(GitBaseVersion)' == ''">
-      <IsValidGitDefaultVersion>
-        $([System.Text.RegularExpressions.Regex]::IsMatch($(GitDefaultVersion), $(GitBaseVersionExpr)))
-      </IsValidGitDefaultVersion>
-      <IsValidGitDefaultVersion>$(IsValidGitDefaultVersion.Trim())</IsValidGitDefaultVersion>
-    </PropertyGroup>
-
-    <!-- If $(GitBaseVersion) == '' And $(IsValidGitBaseVersion) == ''  -->
-    <Error Text="Current %24(GitDefaultVersion) value of '$(GitDefaultVersion)' is not a valid SemVer 2.0 string."
-					 Condition="'$(GitBaseVersion)' == '' And '$(IsValidGitDefaultVersion)' == 'false'" />
-
-    <PropertyGroup>
-      <GitBaseVersion>$(GitDefaultVersion)</GitBaseVersion>
-    </PropertyGroup>
 
   </Target>
 
