@@ -21,6 +21,8 @@
 			<Version>$(GitVersionMajor).$(GitVersionMinor).$(GitVersionPatch)$(GitVersionDashLabel)</Version>
 			<Args>-Version $(Version) -NoPackageAnalysis -NonInteractive -OutputDirectory out</Args>
 		</PropertyGroup>
+
+		<MakeDir Directories="out" Condition="!Exists('out')" />
 		
 		<Exec Command='"$(NuGetExe)" Pack "src\GitInfo.nuspec"  $(Args)' />
 	</Target>
