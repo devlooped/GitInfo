@@ -19,4 +19,8 @@ After installing via *NuGet*:
 
 By default, if the containing project is a C# or VB project, a compile-time generated source file will contain all the git information as metadata that can be accessed from anywhere within the assembly, as constants in a `ThisAssembly` (partial) class and its nested `Git` static class:
 
-	Console.WriteLine(
+	Console.WriteLine(ThisAssembly.Git.Commit);
+
+All generated constants also have a Summary documentation tag that shows the current value in the intellisense tooltip, making it easier to see what the different values contain:
+
+![](https://raw.github.com/kzu/GitInfo/master/img/tooltip.png)
