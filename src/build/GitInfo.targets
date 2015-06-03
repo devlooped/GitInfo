@@ -375,6 +375,9 @@
 	<Target Name="GitVersion" DependsOnTargets="GitValidateBaseVersion">
 
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
+			<!-- Remove the initial optional 'v' or 'V' from the base version. -->
+			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('v'))">$(GitBaseVersion.TrimStart('v'))</GitBaseVersion>
+			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('V'))">$(GitBaseVersion.TrimStart('V'))</GitBaseVersion>
 			<GitVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitVersionMajor>
 			<GitVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MINOR'].Value)</GitVersionMinor>
 			<GitVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['PATCH'].Value)</GitVersionPatch>
