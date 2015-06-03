@@ -95,6 +95,7 @@
   GitVersionPatch:      $(GitVersionPatch)
   GitVersionLabel:      $(GitVersionLabel)
   GitVersionDashLabel:  $(GitVersionDashLabel)
+  GitVersionSource:     $(GitVersionSource)
 "/>
 
 	</Target>
@@ -191,7 +192,7 @@
 					 Condition="'$(IsValidGitBaseVersion)' == 'False'" />
 
 		<PropertyGroup>
-			<GitBaseVersionSource>%24(GitVersionFile)</GitBaseVersionSource>
+			<GitBaseVersionSource>%24(GitVersionFile)=$(GitVersionFile)</GitBaseVersionSource>
 			<GitVersionSource>File</GitVersionSource>
 		</PropertyGroup>
 
@@ -240,6 +241,7 @@
 
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
 			<GitBaseVersion>$(GitBranch)</GitBaseVersion>
+			<GitBaseVersionSource>%24(GitBranch)=$(GitBranch)</GitBaseVersionSource>
 			<GitVersionSource>Branch</GitVersionSource>
 		</PropertyGroup>
 
@@ -319,7 +321,7 @@
 						 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
 
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'" >
-			<GitBaseVersionSource>%24(GitBaseTag)</GitBaseVersionSource>
+			<GitBaseVersionSource>%24(GitBaseTag)=$(GitBaseTag)</GitBaseVersionSource>
 			<GitVersionSource>Tag</GitVersionSource>
 			<GitCommits>0</GitCommits>
 		</PropertyGroup>
