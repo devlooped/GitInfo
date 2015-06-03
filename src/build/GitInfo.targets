@@ -13,7 +13,7 @@
 	
 	Customization:
 	
-	$(GetThisAssembly): set to 'false' to prevent assembly 
+	$(GitThisAssembly): set to 'false' to prevent assembly 
 											metadata and constants generation.
 	
 	$(ThisAssemblyNamespace): allows overriding the namespace
@@ -79,7 +79,7 @@
 		</GitInfoDependsOn>
 	</PropertyGroup>
 
-	<Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)">
+	<Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" BeforeTargets="BuildOnlySettings">
 
 		<Message Importance="$(GitInfoReportImportance)" Text="Git Info:
   GitRoot:              $(GitRoot)
