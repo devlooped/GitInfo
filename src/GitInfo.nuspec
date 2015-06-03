@@ -3,13 +3,13 @@
 	<metadata>
 		<id>GitInfo</id>
 		<version>0.1.0</version>
-		<title>Git Info from MSBuild, C# and VB</title>
+		<title>Git and SemVer Info from MSBuild, C# and VB</title>
 		<authors>Daniel Cazzulino</authors>
 		<iconUrl>https://raw.github.com/kzu/GitInfo/master/img/git.png</iconUrl>
 		<licenseUrl>https://github.com/kzu/GitInfo/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/kzu/GitInfo</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<summary>Access commit information from MSBuild and C#/VB code</summary>
+		<summary>Access commit information from MSBuild and C#/VB code, and infer SemVer from branch, tag or version file in git repo.</summary>
 		<description>Exposes the following information for use directly from MSBuild, C# and VB:
   $(GitBranch), ThisAssembly.Git.Branch
   $(GitCommit), ThisAssembly.Git.Commit
@@ -17,20 +17,21 @@
   $(GitCommits), ThisAssembly.Git.Commits
   $(GitTag), ThisAssembly.Git.Tag
   $(GitBaseTag), ThisAssembly.Git.BaseTag
-  $(GitVersionMajor), ThisAssembly.Git.Version.Major
-  $(GitVersionMinor), ThisAssembly.Git.Version.Minor
-  $(GitVersionPatch), ThisAssembly.Git.Version.Patch
-  $(GitVersionLabel), ThisAssembly.Git.Version.Label
-  $(GitVersionDashLabel), ThisAssembly.Git.Version.DashLabel
+  $(GitSemVerMajor), ThisAssembly.Git.SemVer.Major
+  $(GitSemVerMinor), ThisAssembly.Git.SemVer.Minor
+  $(GitSemVerPatch), ThisAssembly.Git.SemVer.Patch
+  $(GitSemVerLabel), ThisAssembly.Git.SemVer.Label
+  $(GitSemVerDashLabel), ThisAssembly.Git.SemVer.DashLabel
+  $(GitSemVerSource), ThisAssembly.Git.SemVer.Source
 
 The generated code contains only constants, so it can be used to construct your own assembly/file version attributes:
 
-[assembly: AssemblyVersion(ThisAssembly.Git.Version.Major, ThisAssembly.Git.Version.Minor, 0)] 
-[assembly: AssemblyInformationalVersion(ThisAssembly.Git.Version.Major + "." + 
-	ThisAssembly.Git.Version.Minor + "." + ThisAssembly.Git.Version.Patch + "-" + 
+[assembly: AssemblyVersion(ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + ".0")] 
+[assembly: AssemblyInformationalVersion(ThisAssembly.Git.SemVer.Major + "." + 
+	ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch + "-" + 
 	ThisAssembly.Git.Branch + "+" + ThisAssembly.Git.Commit)]
 		</description>
 		<copyright>Copyright 2015</copyright>
-		<tags>msbuild git scc</tags>
+		<tags>msbuild git semver scc</tags>
 	</metadata>
 </package>
