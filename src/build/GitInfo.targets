@@ -426,9 +426,9 @@
 			<_ThisAssemblyContent Condition="'$(GitThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('RootNamespace.', ''))</_ThisAssemblyContent>
 
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitBranch', '$(GitBranch)'))</_ThisAssemblyContent>
-      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitCommit', '$(GitCommit)'))</_ThisAssemblyContent>
-      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitCommits', '$(GitCommits)'))</_ThisAssemblyContent>
-      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitBaseVersion', '$(GitBaseVersion)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitCommits', '$(GitCommits)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitCommit', '$(GitCommit)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitBaseVersion', '$(GitBaseVersion)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitTag', '$(GitTag)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitBaseTag', '$(GitBaseTag)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitVersionMajor', '$(GitVersionMajor)'))</_ThisAssemblyContent>
