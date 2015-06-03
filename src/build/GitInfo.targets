@@ -444,6 +444,12 @@
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitVersionSource', '$(GitVersionSource)'))</_ThisAssemblyContent>
 		</PropertyGroup>
 
+		<PropertyGroup>
+			<GitInfoFileDir>$([System.IO.Path]::GetDirectoryName('$(GitInfoFile)'))</GitInfoFileDir>
+		</PropertyGroup>
+
+		<MakeDir Directories="$(GitInfoFileDir)" Condition="!Exists('$(GitInfoFileDir)')" />
+		
 		<WriteLinesToFile File='$(GitInfoFile)' Lines='$(_ThisAssemblyContent)' Overwrite='true' />
 
 		<!-- Denotes xbuild, which doesn't properly handle escaped semicolon %3B -->
