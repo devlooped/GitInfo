@@ -15,7 +15,7 @@
 			<Output TaskParameter="Result" PropertyName="GitDefaultVersion" />
 		</XmlPeek>
 	</Target>
-	
+
 	<Target Name="Build" DependsOnTargets="ReadVersion;GitInfo">
 		<PropertyGroup>
 			<Version>$(GitVersionMajor).$(GitVersionMinor).$(GitVersionPatch)$(GitVersionDashLabel)</Version>
@@ -27,6 +27,6 @@
 		<Exec Command='"$(NuGetExe)" Pack "src\GitInfo.nuspec"  $(Args)' />
 	</Target>
 
-	<Import Project="src\tools\GitInfo.targets" />
+	<Import Project="src\build\GitInfo.targets" />
 	
 </Project>
