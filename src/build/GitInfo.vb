@@ -1,15 +1,15 @@
-<Assembly: System.Reflection.AssemblyMetadata("Git.Branch", RootNamespace.ThisAssembly.Git.Branch)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.Commit", RootNamespace.ThisAssembly.Git.Commit)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.BaseVersion", RootNamespace.ThisAssembly.Git.BaseVersion)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.Commits", RootNamespace.ThisAssembly.Git.Commits)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.Tag", RootNamespace.ThisAssembly.Git.Tag)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.BaseTag", RootNamespace.ThisAssembly.Git.BaseTag)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.Version.Major", RootNamespace.ThisAssembly.Git.SemVer.Major)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.Version.Minor", RootNamespace.ThisAssembly.Git.SemVer.Minor)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.Version.Patch", RootNamespace.ThisAssembly.Git.SemVer.Patch)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.Version.Label", RootNamespace.ThisAssembly.Git.SemVer.Label)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.Version.DashLabel", RootNamespace.ThisAssembly.Git.SemVer.DashLabel)>
-<Assembly: System.Reflection.AssemblyMetadata("Git.Version.Source", RootNamespace.ThisAssembly.Git.SemVer.Source)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", RootNamespace.ThisAssembly.Git.Commit)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion", RootNamespace.ThisAssembly.Git.BaseVersion)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commits", RootNamespace.ThisAssembly.Git.Commits)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.Tag", RootNamespace.ThisAssembly.Git.Tag)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseTag", RootNamespace.ThisAssembly.Git.BaseTag)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Major", RootNamespace.ThisAssembly.Git.SemVer.Major)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Minor", RootNamespace.ThisAssembly.Git.SemVer.Minor)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Patch", RootNamespace.ThisAssembly.Git.SemVer.Patch)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Label", RootNamespace.ThisAssembly.Git.SemVer.Label)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.DashLabel", RootNamespace.ThisAssembly.Git.SemVer.DashLabel)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Source", RootNamespace.ThisAssembly.Git.SemVer.Source)>
 
 Namespace Global.RootNamespace
     ''' <summary>Provides access to the git information for the current assembly.</summary>
