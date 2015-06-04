@@ -10,13 +10,7 @@
 		<NuGetExe>nuget</NuGetExe>
 	</PropertyGroup>
 
-	<Target Name="ReadVersion">
-		<XmlPeek XmlInputPath="src\GitInfo.nuspec" Query="/package/metadata/version/text()">
-			<Output TaskParameter="Result" PropertyName="GitDefaultVersion" />
-		</XmlPeek>
-	</Target>
-
-	<Target Name="Build" DependsOnTargets="ReadVersion;GitInfo">
+	<Target Name="Build" DependsOnTargets="GitVersion">
 		<PropertyGroup>
 			<Version>$(GitVersionMajor).$(GitVersionMinor).$(GitVersionPatch)$(GitVersionDashLabel)</Version>
 			<Args>-Version $(Version) -NoPackageAnalysis -NonInteractive -OutputDirectory out</Args>
