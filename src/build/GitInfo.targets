@@ -39,13 +39,6 @@
 	-->
 
 	<PropertyGroup>
-		<CompileDependsOn>
-			GitInfo;
-			$(CompileDependsOn);
-		</CompileDependsOn>
-	</PropertyGroup>
-
-	<PropertyGroup>
 		<!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
 		<GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
 		<!-- Look it upwards and grab the first one we find. -->
@@ -60,26 +53,21 @@
 		<GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'VB'">false</GitThisAssembly>
 		<GitThisAssembly Condition="'$(GitThisAssembly)' == '' And '$(GitInfoFile)' != ''">true</GitThisAssembly>
 		<GitInfoReportImportance Condition="'$(GitInfoReportImportance)' == ''">low</GitInfoReportImportance>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<CompileDependsOn>
+			GitInfo;
+			GitVersion;
+			GitThisAssembly;
+			GitInfoReport;
+			$(CompileDependsOn)
+		</CompileDependsOn>
 
 		<_GitBaseVersionExpr Condition="'$(_GitBaseVersionExpr)' == ''">^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</_GitBaseVersionExpr>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<GitInfoDependsOn>
-			GitRoot;
-			GitBranch;
-			GitCommit;
-			GitBaseVersionFile;
-			GitBaseVersionBranch;
-			GitBaseVersionTagExists;
-			GitBaseVersionTag;
-			GitBaseVersionFallback;
-			GitVersion;
-			GitThisAssembly;
-		</GitInfoDependsOn>
-	</PropertyGroup>
-
-	<Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" BeforeTargets="BuildOnlySettings">
+	<Target Name="GitInfoReport" DependsOnTargets="GitVersion">
 
 		<Message Importance="$(GitInfoReportImportance)" Text="Git Info:
   GitRoot:              $(GitRoot)
@@ -100,7 +88,17 @@
 
 	</Target>
 
-	<Target Name="GitRoot" Returns="$(GitRoot)" Condition="'$(GitRoot)' == ''">
+	<PropertyGroup>
+		<GitInfoDependsOn>
+			_GitRoot;
+			_GitBranch;
+			_GitCommit
+		</GitInfoDependsOn>
+	</PropertyGroup>
+
+	<Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" />
+
+	<Target Name="_GitRoot" Returns="$(GitRoot)" Condition="'$(GitRoot)' == ''">
 
 		<Exec Command='"$(GitExe)" rev-parse --show-toplevel'
 					StandardErrorImportance='high'
@@ -127,8 +125,8 @@
 
 	</Target>
 
-	<Target Name="GitBranch" Returns="$(GitBranch)"
-					DependsOnTargets="GitRoot"
+	<Target Name="_GitBranch" Returns="$(GitBranch)"
+					DependsOnTargets="_GitRoot"
 					Condition="'$(GitBranch)' == ''">
 
 		<PropertyGroup Condition="'$(GitRoot)' != ''">
@@ -146,8 +144,8 @@
 
 	</Target>
 
-	<Target Name="GitCommit" Returns="$(GitCommit)"
-					DependsOnTargets="GitRoot"
+	<Target Name="_GitCommit" Returns="$(GitCommit)"
+					DependsOnTargets="_GitRoot"
 					Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
 
 		<Exec Command='"$(GitExe)" log --format=format:%%h -n 1'
@@ -176,7 +174,35 @@
 
 	</Target>
 
-	<Target Name="GitBaseVersionFile" Returns="$(GitBaseVersion)"
+	<PropertyGroup>
+		<GitVersionDependsOn>
+			GitInfo;
+			_GitBaseVersionFile;
+			_GitBaseVersionBranch;
+			_GitBaseVersionTagExists;
+			_GitBaseVersionTag;
+			_GitBaseVersionFallback;
+			_GitValidateBaseVersion
+		</GitVersionDependsOn>
+	</PropertyGroup>
+
+	<Target Name="GitVersion" DependsOnTargets="$(GitVersionDependsOn)">
+
+		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
+			<!-- Remove the initial optional 'v' or 'V' from the base version. -->
+			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('v'))">$(GitBaseVersion.TrimStart('v'))</GitBaseVersion>
+			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('V'))">$(GitBaseVersion.TrimStart('V'))</GitBaseVersion>
+			<GitVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitVersionMajor>
+			<GitVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MINOR'].Value)</GitVersionMinor>
+			<GitVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['PATCH'].Value)</GitVersionPatch>
+			<GitVersionPatch>$([MSBuild]::Add($(GitVersionPatch), $(GitCommits)))</GitVersionPatch>
+			<GitVersionLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['LABEL'].Value)</GitVersionLabel>
+			<GitVersionDashLabel Condition="'$(GitVersionLabel)' != ''" >-$(GitVersionLabel)</GitVersionDashLabel>
+		</PropertyGroup>
+
+	</Target>
+
+	<Target Name="_GitBaseVersionFile" Returns="$(GitBaseVersion)"
 					Condition="'$(GitBaseVersion)' == '' And Exists('$(GitVersionFile)')">
 
 		<PropertyGroup>
@@ -225,8 +251,8 @@
 
 	</Target>
 
-	<Target Name="GitBaseVersionBranch" Returns="$(GitBaseVersion)"
-					DependsOnTargets="GitBranch"
+	<Target Name="_GitBaseVersionBranch" Returns="$(GitBaseVersion)"
+					DependsOnTargets="_GitBranch"
 					Condition="'$(GitBaseVersion)' == ''">
 
 		<PropertyGroup>
@@ -274,8 +300,8 @@
 
 	</Target>
 
-	<Target Name="GitBaseVersionTagExists" Returns="$(GitBaseTag)"
-					DependsOnTargets="GitBranch;GitCommit"
+	<Target Name="_GitBaseVersionTagExists" Returns="$(GitBaseTag)"
+					DependsOnTargets="_GitBranch;_GitCommit"
 					Condition="'$(GitBaseVersion)' == ''">
 
 		<Exec Command='"$(GitExe)" describe --tags --abbrev=0'
@@ -296,7 +322,8 @@
 
 	</Target>
 
-	<Target Name="GitBaseVersionTag" Returns="$(GitBaseVersion)"
+	<Target Name="_GitBaseVersionTag" Returns="$(GitBaseVersion)"
+					DependsOnTargets="_GitBaseVersionTagExists"
 					Condition="'$(GitBaseVersion)' == '' And '$(GitBaseTag)' != ''">
 
 		<!-- At this point, we now there is a base tag already we can leverage -->
@@ -353,7 +380,7 @@
 
 	</Target>
 
-	<Target Name="GitBaseVersionFallback" Condition="'$(GitBaseVersion)' == '' And '$(GitDefaultVersion)' != ''">
+	<Target Name="_GitBaseVersionFallback" Returns="$(GitBaseVersion)" Condition="'$(GitBaseVersion)' == '' And '$(GitDefaultVersion)' != ''">
 
 		<PropertyGroup>
 			<IsValidGitDefaultVersion>
@@ -374,23 +401,7 @@
 
 	</Target>
 
-	<Target Name="GitVersion" DependsOnTargets="GitValidateBaseVersion">
-
-		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
-			<!-- Remove the initial optional 'v' or 'V' from the base version. -->
-			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('v'))">$(GitBaseVersion.TrimStart('v'))</GitBaseVersion>
-			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('V'))">$(GitBaseVersion.TrimStart('V'))</GitBaseVersion>
-			<GitVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitVersionMajor>
-			<GitVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MINOR'].Value)</GitVersionMinor>
-			<GitVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['PATCH'].Value)</GitVersionPatch>
-			<GitVersionPatch>$([MSBuild]::Add($(GitVersionPatch), $(GitCommits)))</GitVersionPatch>
-			<GitVersionLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['LABEL'].Value)</GitVersionLabel>
-			<GitVersionDashLabel Condition="'$(GitVersionLabel)' != ''" >-$(GitVersionLabel)</GitVersionDashLabel>
-		</PropertyGroup>
-
-	</Target>
-
-	<Target Name="GitValidateBaseVersion">
+	<Target Name="_GitValidateBaseVersion">
 
 		<!-- If $(GitBaseVersion) == '', it means we couldn't determine a base version by any probing mechanism -->
 		<Error Text="Failed to find a valid base version to use. Please make sure you have a %24(GitVersionFile) file (defaults to '$(GitVersionFile)'), branch, tag or %24(GitDefaultVersion) property with a valid SemVer 2.0 string."
@@ -408,9 +419,16 @@
 
 	</Target>
 
-	<Target Name="GitThisAssembly"
-          DependsOnTargets="GitGenerateThisAssembly"
-          Condition="'$(GitThisAssembly)' == 'true'">
+	<PropertyGroup>
+		<GitThisAssemblyDependsOn>
+			GitInfo;
+			GitVersion;
+			_GitGenerateThisAssembly
+		</GitThisAssemblyDependsOn>
+	</PropertyGroup>
+
+	<Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
+					BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssembly)' == 'true'">
 
 		<ItemGroup>
 			<Compile Include="$(GitInfoFile)" Condition="Exists('$(GitInfoFile)')" />
@@ -418,7 +436,7 @@
 
 	</Target>
 
-	<Target Name="GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'"
+	<Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'"
           Inputs="$(GitRoot)\.git\HEAD;$(GitRoot)\.git\refs\heads\*.*;$(GitVersionFile)"
 					Outputs="$(GitInfoFile)">
 
@@ -449,7 +467,7 @@
 		</PropertyGroup>
 
 		<MakeDir Directories="$(GitInfoFileDir)" Condition="!Exists('$(GitInfoFileDir)')" />
-		
+
 		<WriteLinesToFile File='$(GitInfoFile)' Lines='$(_ThisAssemblyContent)' Overwrite='true' />
 
 		<!-- Denotes xbuild, which doesn't properly handle escaped semicolon %3B -->
