@@ -15,49 +15,49 @@
 
 namespace RootNamespace
 {
-  /// &lt;summary&gt;Provides access to the current assembly information.&lt;/summary&gt;
+  /// <summary>Provides access to the current assembly information.</summary>
   partial class ThisAssembly
   {
-    /// &lt;summary&gt;Provides access to the git information for the current assembly.&lt;/summary&gt;
+    /// <summary>Provides access to the git information for the current assembly.</summary>
     public partial class Git
     {
-      /// &lt;summary&gt;Branch: GitBranch&lt;/summary&gt;
+      /// <summary>Branch: GitBranch</summary>
       public const string Branch = "GitBranch";
 
-      /// &lt;summary&gt;Commit: GitCommit&lt;/summary&gt;
+      /// <summary>Commit: GitCommit</summary>
       public const string Commit = "GitCommit";
 
-      /// &lt;summary&gt;Base Version: GitBaseVersion&lt;/summary&gt;
+      /// <summary>Base Version: GitBaseVersion</summary>
       public const string BaseVersion = "GitBaseVersion";
 
-      /// &lt;summary&gt;Commits on top of base version: GitCommits&lt;/summary&gt;
+      /// <summary>Commits on top of base version: GitCommits</summary>
       public const string Commits = "GitCommits";
 
-      /// &lt;summary&gt;Tag: GitTag&lt;/summary&gt;
+      /// <summary>Tag: GitTag</summary>
       public const string Tag = "GitTag";
 
-      /// &lt;summary&gt;Base tag: GitBaseTag&lt;/summary&gt;
+      /// <summary>Base tag: GitBaseTag</summary>
       public const string BaseTag = "GitBaseTag";
 
-      /// &lt;summary&gt;Provides access to SemVer information for the current assembly.&lt;/summary&gt;
+      /// <summary>Provides access to SemVer information for the current assembly.</summary>
       public partial class SemVer
       {
-        /// &lt;summary&gt;Major: GitSemVerMajor&lt;/summary&gt;
+        /// <summary>Major: GitSemVerMajor</summary>
         public const string Major = "GitSemVerMajor";
 
-        /// &lt;summary&gt;Minor: GitSemVerMinor&lt;/summary&gt;
+        /// <summary>Minor: GitSemVerMinor</summary>
         public const string Minor = "GitSemVerMinor";
 
-        /// &lt;summary&gt;Patch: GitSemVerPatch&lt;/summary&gt;
+        /// <summary>Patch: GitSemVerPatch</summary>
         public const string Patch = "GitSemVerPatch";
 
-        /// &lt;summary&gt;Label: GitSemVerLabel&lt;/summary&gt;
+        /// <summary>Label: GitSemVerLabel</summary>
         public const string Label = "GitSemVerLabel";
 
-        /// &lt;summary&gt;Label with dash prefix: GitSemVerDashLabel&lt;/summary&gt;
+        /// <summary>Label with dash prefix: GitSemVerDashLabel</summary>
         public const string DashLabel = "GitSemVerDashLabel";
 
-        /// &lt;summary&gt;Source: GitSemVerSource&lt;/summary&gt;
+        /// <summary>Source: GitSemVerSource</summary>
         public const string Source = "GitSemVerSource";
       }
     }
