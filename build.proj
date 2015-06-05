@@ -12,7 +12,7 @@
 
 	<Target Name="Build" DependsOnTargets="GitVersion">
 		<PropertyGroup>
-			<Version>$(GitVersionMajor).$(GitVersionMinor).$(GitVersionPatch)$(GitVersionDashLabel)</Version>
+			<Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)</Version>
 			<Args>-Version $(Version) -NoPackageAnalysis -NonInteractive -OutputDirectory out</Args>
 		</PropertyGroup>
 

@@ -42,23 +42,23 @@ namespace RootNamespace
       /// &lt;summary&gt;Provides access to SemVer information for the current assembly.&lt;/summary&gt;
       public partial class SemVer
       {
-        /// &lt;summary&gt;Major: GitVersionMajor&lt;/summary&gt;
-        public const string Major = "GitVersionMajor";
+        /// &lt;summary&gt;Major: GitSemVerMajor&lt;/summary&gt;
+        public const string Major = "GitSemVerMajor";
 
-        /// &lt;summary&gt;Minor: GitVersionMinor&lt;/summary&gt;
-        public const string Minor = "GitVersionMinor";
+        /// &lt;summary&gt;Minor: GitSemVerMinor&lt;/summary&gt;
+        public const string Minor = "GitSemVerMinor";
 
-        /// &lt;summary&gt;Patch: GitVersionPatch&lt;/summary&gt;
-        public const string Patch = "GitVersionPatch";
+        /// &lt;summary&gt;Patch: GitSemVerPatch&lt;/summary&gt;
+        public const string Patch = "GitSemVerPatch";
 
-        /// &lt;summary&gt;Label: GitVersionLabel&lt;/summary&gt;
-        public const string Label = "GitVersionLabel";
+        /// &lt;summary&gt;Label: GitSemVerLabel&lt;/summary&gt;
+        public const string Label = "GitSemVerLabel";
 
-        /// &lt;summary&gt;Label with dash prefix: GitVersionDashLabel&lt;/summary&gt;
-        public const string DashLabel = "GitVersionDashLabel";
+        /// &lt;summary&gt;Label with dash prefix: GitSemVerDashLabel&lt;/summary&gt;
+        public const string DashLabel = "GitSemVerDashLabel";
 
-        /// &lt;summary&gt;Source: GitVersionSource&lt;/summary&gt;
-        public const string Source = "GitVersionSource";
+        /// &lt;summary&gt;Source: GitSemVerSource&lt;/summary&gt;
+        public const string Source = "GitSemVerSource";
       }
     }
   }

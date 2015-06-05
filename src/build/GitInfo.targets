@@ -78,12 +78,12 @@
   GitCommits:           $(GitCommits)
   GitTag:               $(GitTag)
   GitBaseTag:           $(GitBaseTag)
-  GitVersionMajor:      $(GitVersionMajor)
-  GitVersionMinor:      $(GitVersionMinor)
-  GitVersionPatch:      $(GitVersionPatch)
-  GitVersionLabel:      $(GitVersionLabel)
-  GitVersionDashLabel:  $(GitVersionDashLabel)
-  GitVersionSource:     $(GitVersionSource)
+  GitSemVerMajor:       $(GitSemVerMajor)
+  GitSemVerMinor:       $(GitSemVerMinor)
+  GitSemVerPatch:       $(GitSemVerPatch)
+  GitSemVerLabel:       $(GitSemVerLabel)
+  GitSemVerDashLabel:   $(GitSemVerDashLabel)
+  GitSemVerSource:      $(GitSemVerSource)
 "/>
 
 	</Target>
@@ -92,7 +92,8 @@
 		<GitInfoDependsOn>
 			_GitRoot;
 			_GitBranch;
-			_GitCommit
+			_GitCommit;
+			_GitInputs
 		</GitInfoDependsOn>
 	</PropertyGroup>
 
@@ -174,6 +175,14 @@
 
 	</Target>
 
+	<Target Name="_GitInputs" Returns="@(_GitInput)">
+		<ItemGroup>
+			<_GitInput Include="$(GitRoot)\.git\HEAD" />
+			<_GitInput Include="$(GitRoot)\.git\refs\heads\*.*" />
+			<_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
+		</ItemGroup>
+	</Target>
+
 	<PropertyGroup>
 		<GitVersionDependsOn>
 			GitInfo;
@@ -192,12 +201,12 @@
 			<!-- Remove the initial optional 'v' or 'V' from the base version. -->
 			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('v'))">$(GitBaseVersion.TrimStart('v'))</GitBaseVersion>
 			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('V'))">$(GitBaseVersion.TrimStart('V'))</GitBaseVersion>
-			<GitVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitVersionMajor>
-			<GitVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MINOR'].Value)</GitVersionMinor>
-			<GitVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['PATCH'].Value)</GitVersionPatch>
-			<GitVersionPatch>$([MSBuild]::Add($(GitVersionPatch), $(GitCommits)))</GitVersionPatch>
-			<GitVersionLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['LABEL'].Value)</GitVersionLabel>
-			<GitVersionDashLabel Condition="'$(GitVersionLabel)' != ''" >-$(GitVersionLabel)</GitVersionDashLabel>
+			<GitSemVerMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitSemVerMajor>
+			<GitSemVerMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MINOR'].Value)</GitSemVerMinor>
+			<GitSemVerPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['PATCH'].Value)</GitSemVerPatch>
+			<GitSemVerPatch>$([MSBuild]::Add($(GitSemVerPatch), $(GitCommits)))</GitSemVerPatch>
+			<GitSemVerLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['LABEL'].Value)</GitSemVerLabel>
+			<GitSemVerDashLabel Condition="'$(GitSemVerLabel)' != ''" >-$(GitSemVerLabel)</GitSemVerDashLabel>
 		</PropertyGroup>
 
 	</Target>
@@ -219,7 +228,7 @@
 
 		<PropertyGroup>
 			<GitBaseVersionSource>%24(GitVersionFile)=$(GitVersionFile)</GitBaseVersionSource>
-			<GitVersionSource>File</GitVersionSource>
+			<GitSemVerSource>File</GitSemVerSource>
 		</PropertyGroup>
 
 		<Message Text="Using base version from version file $(GitVersionFile)'" Importance="normal" />
@@ -268,7 +277,7 @@
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
 			<GitBaseVersion>$(GitBranch)</GitBaseVersion>
 			<GitBaseVersionSource>%24(GitBranch)=$(GitBranch)</GitBaseVersionSource>
-			<GitVersionSource>Branch</GitVersionSource>
+			<GitSemVerSource>Branch</GitSemVerSource>
 		</PropertyGroup>
 
 		<!-- Get the initial commit when the current branch departed from the default branch -->
@@ -349,7 +358,7 @@
 
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'" >
 			<GitBaseVersionSource>%24(GitBaseTag)=$(GitBaseTag)</GitBaseVersionSource>
-			<GitVersionSource>Tag</GitVersionSource>
+			<GitSemVerSource>Tag</GitSemVerSource>
 			<GitCommits>0</GitCommits>
 		</PropertyGroup>
 
@@ -395,7 +404,7 @@
 
 		<PropertyGroup>
 			<GitBaseVersion>$(GitDefaultVersion)</GitBaseVersion>
-			<GitVersionSource>Default</GitVersionSource>
+			<GitSemVerSource>Default</GitSemVerSource>
 			<GitCommits>0</GitCommits>
 		</PropertyGroup>
 
@@ -423,6 +432,7 @@
 		<GitThisAssemblyDependsOn>
 			GitInfo;
 			GitVersion;
+			_GitInputs;
 			_GitGenerateThisAssembly
 		</GitThisAssemblyDependsOn>
 	</PropertyGroup>
@@ -437,8 +447,7 @@
 	</Target>
 
 	<Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'"
-          Inputs="$(GitRoot)\.git\HEAD;$(GitRoot)\.git\refs\heads\*.*;$(GitVersionFile)"
-					Outputs="$(GitInfoFile)">
+          Inputs="@(_GitInput)" Outputs="$(GitInfoFile)">
 
 		<PropertyGroup>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'C#'">$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cs'))</_ThisAssemblyContent>
@@ -454,12 +463,12 @@
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitBaseVersion', '$(GitBaseVersion)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitTag', '$(GitTag)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitBaseTag', '$(GitBaseTag)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitVersionMajor', '$(GitVersionMajor)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitVersionMinor', '$(GitVersionMinor)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitVersionPatch', '$(GitVersionPatch)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitVersionLabel', '$(GitVersionLabel)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitVersionDashLabel', '$(GitVersionDashLabel)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitVersionSource', '$(GitVersionSource)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitSemVerMajor', '$(GitSemVerMajor)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitSemVerMinor', '$(GitSemVerMinor)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitSemVerPatch', '$(GitSemVerPatch)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitSemVerLabel', '$(GitSemVerLabel)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitSemVerDashLabel', '$(GitSemVerDashLabel)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('GitSemVerSource', '$(GitSemVerSource)'))</_ThisAssemblyContent>
 		</PropertyGroup>
 
 		<PropertyGroup>

@@ -36,23 +36,23 @@ Namespace Global.RootNamespace
 
             ''' <summary>Provides access to SemVer information for the current assembly.</summary>
             Partial Public Class SemVer
-                ''' <summary>Major: GitVersionMajor</summary>
-                Public Const Major = "GitVersionMajor"
+                ''' <summary>Major: GitSemVerMajor</summary>
+                Public Const Major = "GitSemVerMajor"
 
-                ''' <summary>Minor: GitVersionMinor</summary>
-                Public Const Minor = "GitVersionMinor"
+                ''' <summary>Minor: GitSemVerMinor</summary>
+                Public Const Minor = "GitSemVerMinor"
 
-                ''' <summary>Patch: GitVersionPatch</summary>
-                Public Const Patch = "GitVersionPatch"
+                ''' <summary>Patch: GitSemVerPatch</summary>
+                Public Const Patch = "GitSemVerPatch"
 
-                ''' <summary>Label: GitVersionLabel</summary>
-                Public Const Label = "GitVersionLabel"
+                ''' <summary>Label: GitSemVerLabel</summary>
+                Public Const Label = "GitSemVerLabel"
 
-                ''' <summary>Label with dash prefix: GitVersionDashLabel</summary>
-                Public Const DashLabel = "GitVersionDashLabel"
+                ''' <summary>Label with dash prefix: GitSemVerDashLabel</summary>
+                Public Const DashLabel = "GitSemVerDashLabel"
 
-                ''' <summary>Label with dash prefix: GitVersionSource</summary>
-                Public Const Source = "GitVersionSource"
+                ''' <summary>Label with dash prefix: GitSemVerSource</summary>
+                Public Const Source = "GitSemVerVerSource"
             End Class
         End Class
     End Class
