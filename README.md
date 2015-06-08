@@ -26,3 +26,32 @@ By default, if the containing project is a C# or VB project, a compile-time gene
 All generated constants also have a Summary documentation tag that shows the current value in the intellisense tooltip, making it easier to see what the different values contain:
 
 ![](https://raw.github.com/kzu/GitInfo/master/img/tooltip.png)
+
+With this information at your fingertips, you can build any versioning attributes you want, with whatever information you want, without resorting to settings, format strings or anything, just plain code:
+
+C#:
+```
+[assembly: AssemblyVersion (ThisAssembly.Git.BaseVersion.Major + "." + ThisAssembly.Git.BaseVersion.Minor + "." + ThisAssembly.Git.BaseVersion.Patch)]
+
+[assembly: AssemblyFileVersion (ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)]
+
+[assembly: AssemblyInformationalVersion (
+	ThisAssembly.Git.SemVer.Major + "." + 
+	ThisAssembly.Git.SemVer.Minor + "." + 
+	ThisAssembly.Git.Commits + "-" + 
+	ThisAssembly.Git.Branch + "+" + 
+	ThisAssembly.Git.Commit)]
+```
+
+VB:
+```
+<Assembly: AssemblyVersion(ThisAssembly.Git.BaseVersion.Major + "." + ThisAssembly.Git.BaseVersion.Minor + "." + ThisAssembly.Git.BaseVersion.Patch)>
+<Assembly: AssemblyFileVersion(ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)>
+<Assembly: AssemblyInformationalVersion(
+    ThisAssembly.Git.SemVer.Major + "." +
+    ThisAssembly.Git.SemVer.Minor + "." +
+    ThisAssembly.Git.Commits + "-" +
+    ThisAssembly.Git.Branch + "+" +
+    ThisAssembly.Git.Commit)>
+```
+
