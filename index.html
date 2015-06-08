@@ -62,6 +62,34 @@
 
 <p><img src="https://raw.github.com/kzu/GitInfo/master/img/tooltip.png" alt=""></p>
 
+<p>With this information at your fingertips, you can build any versioning attributes you want, with whatever information you want, without resorting to settings, format strings or anything, just plain code:</p>
+
+<p>C#:</p>
+
+<pre><code>[assembly: AssemblyVersion (ThisAssembly.Git.BaseVersion.Major + "." + ThisAssembly.Git.BaseVersion.Minor + "." + ThisAssembly.Git.BaseVersion.Patch)]
+
+[assembly: AssemblyFileVersion (ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)]
+
+[assembly: AssemblyInformationalVersion (
+    ThisAssembly.Git.SemVer.Major + "." + 
+    ThisAssembly.Git.SemVer.Minor + "." + 
+    ThisAssembly.Git.Commits + "-" + 
+    ThisAssembly.Git.Branch + "+" + 
+    ThisAssembly.Git.Commit)]
+</code></pre>
+
+<p>VB:</p>
+
+<pre><code>&lt;Assembly: AssemblyVersion(ThisAssembly.Git.BaseVersion.Major + "." + ThisAssembly.Git.BaseVersion.Minor + "." + ThisAssembly.Git.BaseVersion.Patch)&gt;
+&lt;Assembly: AssemblyFileVersion(ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)&gt;
+&lt;Assembly: AssemblyInformationalVersion(
+    ThisAssembly.Git.SemVer.Major + "." +
+    ThisAssembly.Git.SemVer.Minor + "." +
+    ThisAssembly.Git.Commits + "-" +
+    ThisAssembly.Git.Branch + "+" +
+    ThisAssembly.Git.Commit)&gt;
+</code></pre>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/kzu/GitInfo">GitInfo</a> is maintained by <a href="https://github.com/kzu">kzu</a>.</span>
 
