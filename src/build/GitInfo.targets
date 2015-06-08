@@ -67,7 +67,7 @@
 
     <_GitBaseVersionExpr Condition="'$(_GitBaseVersionExpr)' == ''">^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</_GitBaseVersionExpr>
     <!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
-    <_GitInfoFile>$(IntermediateOutputPath).gitinfo</_GitInfoFile>
+    <_GitInfoFile>$(IntermediateOutputPath)GitInfo.cache</_GitInfoFile>
   </PropertyGroup>
 
   <Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
@@ -519,7 +519,7 @@
   <Target Name="_GitWriteCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)">
 
     <PropertyGroup>
-      <_GitInfoContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory).gitinfo'))</_GitInfoContent>
+      <_GitInfoContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cache.pp'))</_GitInfoContent>
 
       <_GitInfoContent>$(_GitInfoContent.Replace('$GitBranch$', '$(GitBranch)'))</_GitInfoContent>
       <_GitInfoContent>$(_GitInfoContent.Replace('$GitCommits$', '$(GitCommits)'))</_GitInfoContent>
@@ -566,7 +566,7 @@
 					BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssembly)' == 'true'">
 
     <ItemGroup>
-      <Compile Include="$(GitInfoThisAssemblyFile)" Condition="Exists('$(GitInfoThisAssemblyFile)')" />
+      <Compile Include="$(GitInfoThisAssemblyFile)" />
     </ItemGroup>
 
   </Target>
@@ -575,8 +575,8 @@
           Inputs="@(_GitInput)" Outputs="$(GitInfoThisAssemblyFile)">
 
     <PropertyGroup>
-      <_ThisAssemblyContent Condition="'$(Language)' == 'C#'">$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cs'))</_ThisAssemblyContent>
-      <_ThisAssemblyContent Condition="'$(Language)' == 'VB'">$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.vb'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'C#'">$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cs.pp'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'VB'">$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.vb.pp'))</_ThisAssemblyContent>
 
       <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('RootNamespace', '$(ThisAssemblyNamespace)'))</_ThisAssemblyContent>
       <!-- If namespace is empty, we actually have to remove the leading dot too. -->

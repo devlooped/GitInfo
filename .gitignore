@@ -1,2 +1,3 @@
 .nuget
 out
+/GitInfo.cache
