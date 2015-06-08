@@ -30,6 +30,10 @@ assembly/file version attributes with whatever format you want:
 	ThisAssembly.Git.Branch + "+" + 
 	ThisAssembly.Git.Commit)]
 	
+** NOTE: you may need to close and reopen the solution in order 
+         for Visual Studio to refresh intellisense and show the 
+         ThisAssembly type.
+	
 All generated constants also have a Summary documentation tag 
 that shows the current value in the intellisense tooltip, making 
 it easier to see what the different values contain.

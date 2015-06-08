@@ -27,6 +27,10 @@ All generated constants also have a Summary documentation tag that shows the cur
 
 ![](https://raw.github.com/kzu/GitInfo/master/img/tooltip.png)
 
+> NOTE: you may need to close and reopen the solution in order 
+> for Visual Studio to refresh intellisense and show the 
+> ThisAssembly type.
+
 With this information at your fingertips, you can build any versioning attributes you want, with whatever information you want, without resorting to settings, format strings or anything, just plain code:
 
 C#:
@@ -54,4 +58,3 @@ VB:
     ThisAssembly.Git.Branch + "+" +
     ThisAssembly.Git.Commit)>
 ```
-
