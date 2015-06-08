@@ -5,10 +5,13 @@ target that depends on the GitInfo target:
 
   $(GitBranch)
   $(GitCommit)
-  $(GitBaseVersion)
   $(GitCommits)
   $(GitTag)
   $(GitBaseTag)
+  $(GitBaseVersion)
+  $(GitBaseVersionMajor)
+  $(GitBaseVersionMinor)
+  $(GitBaseVersionPatch)
   $(GitVersionMajor)
   $(GitVersionMinor)
   $(GitVersionPatch)
@@ -35,10 +38,12 @@ The available constants from code are:
 
   ThisAssembly.Git.Branch
   ThisAssembly.Git.Commit
-  ThisAssembly.Git.BaseVersion
   ThisAssembly.Git.Commits
   ThisAssembly.Git.Tag
   ThisAssembly.Git.BaseTag
+  ThisAssembly.Git.BaseVersion.Major
+  ThisAssembly.Git.BaseVersion.Minor
+  ThisAssembly.Git.BaseVersion.Patch
   ThisAssembly.Git.Version.Major
   ThisAssembly.Git.Version.Minor
   ThisAssembly.Git.Version.Patch
