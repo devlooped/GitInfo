@@ -2,7 +2,9 @@
 
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", RootNamespace.ThisAssembly.Git.Commit)]
-[assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion", RootNamespace.ThisAssembly.Git.BaseVersion)]
+[assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Major", RootNamespace.ThisAssembly.Git.BaseVersion.Major)]
+[assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Minor", RootNamespace.ThisAssembly.Git.BaseVersion.Minor)]
+[assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Patch", RootNamespace.ThisAssembly.Git.BaseVersion.Patch)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Commits", RootNamespace.ThisAssembly.Git.Commits)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Tag", RootNamespace.ThisAssembly.Git.Tag)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseTag", RootNamespace.ThisAssembly.Git.BaseTag)]
@@ -21,44 +23,54 @@ namespace RootNamespace
     /// <summary>Provides access to the git information for the current assembly.</summary>
     public partial class Git
     {
-      /// <summary>Branch: GitBranch</summary>
-      public const string Branch = "GitBranch";
+      /// <summary>Branch: $GitBranch$</summary>
+      public const string Branch = "$GitBranch$";
 
-      /// <summary>Commit: GitCommit</summary>
-      public const string Commit = "GitCommit";
+      /// <summary>Commit: $GitCommit$</summary>
+      public const string Commit = "$GitCommit$";
 
-      /// <summary>Base Version: GitBaseVersion</summary>
-      public const string BaseVersion = "GitBaseVersion";
+      /// <summary>Commits on top of base version: $GitCommits$</summary>
+      public const string Commits = "$GitCommits$";
 
-      /// <summary>Commits on top of base version: GitCommits</summary>
-      public const string Commits = "GitCommits";
+      /// <summary>Tag: $GitTag$</summary>
+      public const string Tag = "$GitTag$";
 
-      /// <summary>Tag: GitTag</summary>
-      public const string Tag = "GitTag";
+      /// <summary>Base tag: $GitBaseTag$</summary>
+      public const string BaseTag = "$GitBaseTag$";
 
-      /// <summary>Base tag: GitBaseTag</summary>
-      public const string BaseTag = "GitBaseTag";
+      /// <summary>Provides access to the base version information used to determine the <see cref="SemVer" />.</summary>      
+      public partial class BaseVersion
+      {
+        /// <summary>Major: $GitBaseVersionMajor$</summary>
+        public const string Major = "$GitBaseVersionMajor$";
+
+        /// <summary>Minor: $GitBaseVersionMinor$</summary>
+        public const string Minor = "$GitBaseVersionMinor$";
+
+        /// <summary>Patch: $GitBaseVersionPatch$</summary>
+        public const string Patch = "$GitBaseVersionPatch$";
+      }
 
       /// <summary>Provides access to SemVer information for the current assembly.</summary>
       public partial class SemVer
       {
-        /// <summary>Major: GitSemVerMajor</summary>
-        public const string Major = "GitSemVerMajor";
+        /// <summary>Major: $GitSemVerMajor$</summary>
+        public const string Major = "$GitSemVerMajor$";
 
-        /// <summary>Minor: GitSemVerMinor</summary>
-        public const string Minor = "GitSemVerMinor";
+        /// <summary>Minor: $GitSemVerMinor$</summary>
+        public const string Minor = "$GitSemVerMinor$";
 
-        /// <summary>Patch: GitSemVerPatch</summary>
-        public const string Patch = "GitSemVerPatch";
+        /// <summary>Patch: $GitSemVerPatch$</summary>
+        public const string Patch = "$GitSemVerPatch$";
 
-        /// <summary>Label: GitSemVerLabel</summary>
-        public const string Label = "GitSemVerLabel";
+        /// <summary>Label: $GitSemVerLabel$</summary>
+        public const string Label = "$GitSemVerLabel$";
 
-        /// <summary>Label with dash prefix: GitSemVerDashLabel</summary>
-        public const string DashLabel = "GitSemVerDashLabel";
+        /// <summary>Label with dash prefix: $GitSemVerDashLabel$</summary>
+        public const string DashLabel = "$GitSemVerDashLabel$";
 
-        /// <summary>Source: GitSemVerSource</summary>
-        public const string Source = "GitSemVerSource";
+        /// <summary>Source: $GitSemVerSource$</summary>
+        public const string Source = "$GitSemVerSource$";
       }
     }
   }

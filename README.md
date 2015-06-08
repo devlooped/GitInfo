@@ -9,6 +9,7 @@
 - Single well-structured `.targets` file with plain MSBuild
 - Optional embedding of Git info in assembly as metadata
 - Optional use of Git info to build arbitrary assembly/file version information
+- Trivially modified/improved generated code by just adjusting a [C#/VB template file](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.cs) 
 - Trivially modified/improved by just adjusting a single `.targets` file 
 
 ## Overview

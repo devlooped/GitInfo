@@ -1,6 +1,8 @@
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", RootNamespace.ThisAssembly.Git.Commit)>
-<Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion", RootNamespace.ThisAssembly.Git.BaseVersion)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Major", RootNamespace.ThisAssembly.Git.BaseVersion.Major)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Minor", RootNamespace.ThisAssembly.Git.BaseVersion.Minor)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Patch", RootNamespace.ThisAssembly.Git.BaseVersion.Patch)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commits", RootNamespace.ThisAssembly.Git.Commits)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Tag", RootNamespace.ThisAssembly.Git.Tag)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseTag", RootNamespace.ThisAssembly.Git.BaseTag)>
@@ -16,43 +18,52 @@ Namespace Global.RootNamespace
     Partial Class ThisAssembly
         ''' <summary>Provides access to the git information for the current assembly.</summary>
         Partial Public Class Git
-            ''' <summary>Branch: GitBranch</summary>
-            Public Const Branch = "GitBranch"
+            ''' <summary>Branch: $GitBranch$</summary>
+            Public Const Branch = "$GitBranch$"
 
-            ''' <summary>Commit: GitCommit</summary>
-            Public Const Commit = "GitCommit"
+            ''' <summary>Commit: $GitCommit$</summary>
+            Public Const Commit = "$GitCommit$"
 
-            ''' <summary>Base Version: GitBaseVersion</summary>
-            Public Const BaseVersion = "GitBaseVersion"
+            ''' <summary>Commits on top of base version: $GitCommits$</summary>
+            Public Const Commits = "$GitCommits$"
 
-            ''' <summary>Commits on top of base version: GitCommits</summary>
-            Public Const Commits = "GitCommits"
+            ''' <summary>Tag: $GitTag$</summary>
+            Public Const Tag = "$GitTag$"
 
-            ''' <summary>Tag: GitTag</summary>
-            Public Const Tag = "GitTag"
+            ''' <summary>Base tag: $GitBaseTag$</summary>
+            Public Const BaseTag = "$GitBaseTag$"
 
-            ''' <summary>Base tag: GitBaseTag</summary>
-            Public Const BaseTag = "GitBaseTag"
+            ''' <summary>Provides access to the base version information used to determine the <see cref="SemVer" />.</summary>
+            Partial Public Class BaseVersion
+                ''' <summary>Major: $GitBaseVersionMajor$</summary>
+                Public Const Major = "$GitBaseVersionMajor$"
+           
+              ''' <summary>Minor $GitBaseVersionMinor$</summary>
+              Public Const Minor = "$GitBaseVersionMinor$"
+           
+              ''' <summary>Patch $GitBaseVersionPatch$</summary>
+              Public Const Patch = "$GitBaseVersionPatch$"
+            End Class
 
             ''' <summary>Provides access to SemVer information for the current assembly.</summary>
             Partial Public Class SemVer
-                ''' <summary>Major: GitSemVerMajor</summary>
-                Public Const Major = "GitSemVerMajor"
+                ''' <summary>Major: $GitSemVerMajor$</summary>
+                Public Const Major = "$GitSemVerMajor$"
 
-                ''' <summary>Minor: GitSemVerMinor</summary>
-                Public Const Minor = "GitSemVerMinor"
+                ''' <summary>Minor: $GitSemVerMinor$</summary>
+                Public Const Minor = "$GitSemVerMinor$"
 
-                ''' <summary>Patch: GitSemVerPatch</summary>
-                Public Const Patch = "GitSemVerPatch"
+                ''' <summary>Patch: $GitSemVerPatch$</summary>
+                Public Const Patch = "$GitSemVerPatch$"
 
-                ''' <summary>Label: GitSemVerLabel</summary>
-                Public Const Label = "GitSemVerLabel"
+                ''' <summary>Label: $GitSemVerLabel$</summary>
+                Public Const Label = "$GitSemVerLabel$"
 
-                ''' <summary>Label with dash prefix: GitSemVerDashLabel</summary>
-                Public Const DashLabel = "GitSemVerDashLabel"
+                ''' <summary>Label with dash prefix: $GitSemVerDashLabel$</summary>
+                Public Const DashLabel = "$GitSemVerDashLabel$"
 
-                ''' <summary>Label with dash prefix: GitSemVerSource</summary>
-                Public Const Source = "GitSemVerVerSource"
+                ''' <summary>Label with dash prefix: $GitSemVerSource$</summary>
+                Public Const Source = "$GitSemVerVerSource$"
             End Class
         End Class
     End Class
