@@ -142,7 +142,14 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)')">
+  <!-- If the inputs/outputs are outdated, don't let the cache to be read -->
+  <Target Name="_GitSetNoCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)">
+    <PropertyGroup>
+      <_GitNoCache>true</_GitNoCache>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') And '$(_GitNoCache)' != ''">
     <PropertyGroup>
       <_GitCachedInfo>$([System.IO.File]::ReadAllText('$(_GitInfoFile)'))</_GitCachedInfo>
     </PropertyGroup>
@@ -173,9 +180,9 @@
 
   <Target Name="_GitBranch" Returns="$(GitBranch)"
 					DependsOnTargets="_GitRoot"
+          Condition="'$(GitBranch)' == ''"
           Inputs="@(_GitInput)"
-          Outputs="$(_GitInfoFile)"
-					Condition="'$(GitBranch)' == ''">
+          Outputs="$(_GitInfoFile)">
 
     <PropertyGroup Condition="'$(GitRoot)' != ''">
       <_GitHead>$([System.IO.Path]::Combine($(GitRoot), '.git', 'HEAD'))</_GitHead>
@@ -544,8 +551,8 @@
     </PropertyGroup>
 
     <MakeDir Directories="$(_GitInfoFileDir)" Condition="!Exists('$(_GitInfoFileDir)')" />
-
-    <WriteLinesToFile File="$(_GitInfoFile)" Lines="$(_GitInfoContent)"/>
+    
+    <WriteLinesToFile File="$(_GitInfoFile)" Lines="$(_GitInfoContent)" Overwrite="true" />
 
     <ItemGroup>
       <FileWrites Include="$(_GitInfoFile)" />
