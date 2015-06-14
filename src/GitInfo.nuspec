@@ -13,7 +13,9 @@
 		<description>Exposes the following information for use directly from MSBuild, C# and VB:
   $(GitBranch), ThisAssembly.Git.Branch
   $(GitCommit), ThisAssembly.Git.Commit
-  $(GitBaseVersion), ThisAssembly.Git.BaseVersion
+  $(GitBaseVersionMajor), ThisAssembly.Git.BaseVersion.Major
+  $(GitBaseVersionMinor), ThisAssembly.Git.BaseVersion.Major
+  $(GitBaseVersionPatch), ThisAssembly.Git.BaseVersion.Major
   $(GitCommits), ThisAssembly.Git.Commits
   $(GitTag), ThisAssembly.Git.Tag
   $(GitBaseTag), ThisAssembly.Git.BaseTag
