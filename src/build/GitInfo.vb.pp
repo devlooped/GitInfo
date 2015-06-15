@@ -1,5 +1,6 @@
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", RootNamespace.ThisAssembly.Git.Commit)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", RootNamespace.ThisAssembly.Git.Sha)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Major", RootNamespace.ThisAssembly.Git.BaseVersion.Major)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Minor", RootNamespace.ThisAssembly.Git.BaseVersion.Minor)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Patch", RootNamespace.ThisAssembly.Git.BaseVersion.Patch)>
@@ -23,6 +24,9 @@ Namespace Global.RootNamespace
 
             ''' <summary>Commit: $GitCommit$</summary>
             Public Const Commit = "$GitCommit$"
+
+            ''' <summary>Commit: $GitSha$</summary>
+            Public Const Sha = "$GitSha$"
 
             ''' <summary>Commits on top of base version: $GitCommits$</summary>
             Public Const Commits = "$GitCommits$"

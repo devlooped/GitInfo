@@ -1,5 +1,6 @@
 GitBranch=$GitBranch$;
 GitCommit=$GitCommit$;
+GitSha=$GitSha$;
 GitBaseVersion=$GitBaseVersion$;
 GitBaseVersionSource=$GitBaseVersionSource$;
 GitBaseVersionMajor=$GitBaseVersionMajor$;

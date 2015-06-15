@@ -13,6 +13,7 @@
 		<description>Exposes the following information for use directly from MSBuild, C# and VB:
   $(GitBranch), ThisAssembly.Git.Branch
   $(GitCommit), ThisAssembly.Git.Commit
+  $(GitSha), ThisAssembly.Git.Sha
   $(GitBaseVersionMajor), ThisAssembly.Git.BaseVersion.Major
   $(GitBaseVersionMinor), ThisAssembly.Git.BaseVersion.Major
   $(GitBaseVersionPatch), ThisAssembly.Git.BaseVersion.Major

@@ -76,6 +76,7 @@
   GitRoot:              $(GitRoot)
   GitBranch:            $(GitBranch)
   GitCommit:            $(GitCommit)
+  GitSha:               $(GitSha)
   GitBaseVersion:       $(GitBaseVersion)
   GitBaseVersionSource: $(GitBaseVersionSource)
   GitBaseVersionMajor:  $(GitBaseVersionMajor)
@@ -531,6 +532,7 @@
       <_GitInfoContent>$(_GitInfoContent.Replace('$GitBranch$', '$(GitBranch)'))</_GitInfoContent>
       <_GitInfoContent>$(_GitInfoContent.Replace('$GitCommits$', '$(GitCommits)'))</_GitInfoContent>
       <_GitInfoContent>$(_GitInfoContent.Replace('$GitCommit$', '$(GitCommit)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitSha$', '$(GitSha)'))</_GitInfoContent>
       <_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_GitInfoContent>
       <_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_GitInfoContent>
       <_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_GitInfoContent>
@@ -592,6 +594,7 @@
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBranch$', '$(GitBranch)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommits$', '$(GitCommits)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommit$', '$(GitCommit)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSha$', '$(GitSha)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_ThisAssemblyContent>
