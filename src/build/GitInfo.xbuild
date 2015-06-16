@@ -24,7 +24,8 @@
 
   <Target Name="MSBuild:GitVersion">
     <!-- Installs MSBuild alongside this package's top directory, which would be the \packages folder. -->
-    <Exec Command='nuget install MSBuild -outputdirectory "$(MSBuildThisFileDirectory)..\..\" -excludeversion' />
+    <Exec Command='nuget install MSBuild -outputdirectory "$(MSBuildThisFileDirectory)..\..\" -excludeversion'
+          Condition="!Exists('$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe')"/>
     <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitVersion /v:normal' />
   </Target>
 
