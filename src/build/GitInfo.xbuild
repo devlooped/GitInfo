@@ -18,11 +18,8 @@
 
   <Target Name="GitVersion" DependsOnTargets="$(GitInfoDependsOn)" />
 
-  <Target Name="GitThisAssembly" DependsOnTargets="$(GitInfoDependsOn)">
+  <Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'">
     <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitThisAssembly /v:normal' />
-    <ItemGroup>
-      <Compile Include="$(GitInfoThisAssemblyFile)" />
-    </ItemGroup>
   </Target>
 
   <Target Name="MSBuild:GitVersion">

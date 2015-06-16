@@ -1,3 +1,4 @@
 .nuget
 out
 /GitInfo.cache
+*.suo
