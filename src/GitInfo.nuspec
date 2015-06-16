@@ -37,4 +37,12 @@ The generated code contains only constants, so it can be used to construct your 
 		<copyright>Copyright 2015</copyright>
 		<tags>msbuild git semver scc</tags>
 	</metadata>
+  <files>
+	<file src="readme.txt" />
+    <file src="build\GitInfo.cache.pp" target="build" />
+    <file src="build\GitInfo.cs.pp" target="build" />
+    <file src="build\GitInfo.vb.pp" target="build" />
+    <file src="build\GitInfo.targets" target="build" />
+    <file src="build\GitInfo.xbuild" target="build" />
+  </files>
 </package>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
   <!--
   ==============================================================
               Retrieves and exposes Git information 
@@ -68,6 +67,8 @@
     <_GitBaseVersionExpr Condition="'$(_GitBaseVersionExpr)' == ''">^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</_GitBaseVersionExpr>
     <!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
     <_GitInfoFile>$(IntermediateOutputPath)GitInfo.cache</_GitInfoFile>
+    <Slash Condition="'$(OS)' == 'Windows_NT'">\</Slash>
+    <Slash Condition="'$(OS)' != 'Windows_NT'">/</Slash>
   </PropertyGroup>
 
   <Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
@@ -99,35 +100,48 @@
     <GitInfoDependsOn>
       _GitRoot;
       _GitInputs;
+      _GitSetNoCache;
       _GitReadCache;
       _GitBranch;
       _GitCommit;
       _GitPopulateInfo;
     </GitInfoDependsOn>
   </PropertyGroup>
+  <!-- Under Unix, we don't double %% the format. That only works on Windows. -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <_ShortShaFormat>%%h</_ShortShaFormat>
+    <_LongShaFormat>%%H</_LongShaFormat>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <_ShortShaFormat>%h</_ShortShaFormat>
+    <_LongShaFormat>%H</_LongShaFormat>
+  </PropertyGroup>
 
   <Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" Returns="@(GitInfo)" />
 
   <Target Name="_GitRoot" Returns="$(GitRoot)" Condition="'$(GitRoot)' == ''">
 
-    <Exec Command='"$(GitExe)" rev-parse --show-toplevel'
+    <Exec Command='$(GitExe) rev-parse --show-toplevel'
 					StandardErrorImportance='high'
 					StandardOutputImportance='low'
 					ConsoleToMSBuild='true'
 					WorkingDirectory='$(MSBuildProjectDirectory)'
 					ContinueOnError='true'>
-      <Output TaskParameter="ConsoleOutput" ItemName="_GitOutput"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
-
+    
     <!-- Account for cygwin separately -->
     <Exec Command='"$(CygPathExe)" -w $(_GitOutput)" WorkingDir="$(MSBuildProjectDirectory)"'
+					StandardErrorImportance='high'
+					StandardOutputImportance='low'
+					ConsoleToMSBuild='true'          
 					Condition="'$(MSBuildLastTaskResult)' == 'true' And '$(CygPathExe)' != ''">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput" />
     </Exec>
-
-    <PropertyGroup Condition="'$(MSBuildLastTaskResult)' == 'true'">
-      <GitRoot>@(_GitOutput -> '%(Identity)', '%0a%0d')</GitRoot>
-      <GitRoot>$(GitRoot.Trim())</GitRoot>
+    
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+      <GitRoot>$(_GitOutput.Trim())</GitRoot>
     </PropertyGroup>
 
     <Message Text="Determined Git repository root as '$(GitRoot)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
@@ -135,10 +149,11 @@
 
   </Target>
 
-  <Target Name="_GitInputs" Returns="@(_GitInput)">
+  <Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
     <ItemGroup>
-      <_GitInput Include="$(GitRoot)\.git\HEAD" />
-      <_GitInput Include="$(GitRoot)\.git\refs\heads\*.*" />
+      <_GitInput Include="$(GitRoot)$(Slash).git$(Slash)HEAD" />
+      <!-- TODO: we really only need to track the HEAD ref, but this simplifies the impl. -->
+      <_GitInput Include="$(GitRoot)$(Slash).git$(Slash)refs$(Slash)heads$(Slash)*.*" />
       <_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
     </ItemGroup>
   </Target>
@@ -150,7 +165,7 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') And '$(_GitNoCache)' != ''">
+  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') And '$(_GitNoCache)' != 'true'">
     <PropertyGroup>
       <_GitCachedInfo>$([System.IO.File]::ReadAllText('$(_GitInfoFile)'))</_GitCachedInfo>
     </PropertyGroup>
@@ -159,9 +174,12 @@
       <Output TaskParameter="Include" ItemName="GitInfo" />
     </CreateItem>
 
+    <Message Importance="high" Text="GitInfo item: %(GitInfo.Branch)" />
+        
     <PropertyGroup>
       <GitBranch Condition="'$(GitBranch)' == ''">%(GitInfo.GitBranch)</GitBranch>
       <GitCommit Condition="'$(GitCommit)' == ''">%(GitInfo.GitCommit)</GitCommit>
+      <GitSha Condition="'$(GitSha)' == ''">%(GitInfo.GitSha)</GitSha>
       <GitBaseVersion Condition="'$(GitBaseVersion)' == ''">%(GitInfo.GitBaseVersion)</GitBaseVersion>
       <GitBaseVersionSource Condition="'$(GitBaseVersionSource)' == ''">%(GitInfo.GitBaseVersionSource)</GitBaseVersionSource>
       <GitBaseVersionMajor Condition="'$(GitBaseVersionMajor)' == ''">%(GitInfo.GitBaseVersionMajor)</GitBaseVersionMajor>
@@ -180,7 +198,7 @@
   </Target>
 
   <Target Name="_GitBranch" Returns="$(GitBranch)"
-					DependsOnTargets="_GitRoot"
+					DependsOnTargets="_GitInputs"
           Condition="'$(GitBranch)' == ''"
           Inputs="@(_GitInput)"
           Outputs="$(_GitInfoFile)">
@@ -188,9 +206,7 @@
     <PropertyGroup Condition="'$(GitRoot)' != ''">
       <_GitHead>$([System.IO.Path]::Combine($(GitRoot), '.git', 'HEAD'))</_GitHead>
       <_GitHead>$([System.IO.File]::ReadAllText('$(_GitHead)'))</_GitHead>
-      <GitBranch>
-        $([System.Text.RegularExpressions.Regex]::Match($(_GitHead), '(?&lt;=/)[^/]+$'))
-      </GitBranch>
+      <GitBranch>$([System.Text.RegularExpressions.Regex]::Match($(_GitHead), '(?&lt;=/)[^/]+$'))</GitBranch>
       <GitBranch>$(GitBranch.Trim())</GitBranch>
     </PropertyGroup>
 
@@ -206,27 +222,29 @@
           Outputs="$(_GitInfoFile)"
 					Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
 
-    <Exec Command='"$(GitExe)" log --format=format:%%h -n 1'
+    <Exec Command='"$(GitExe)" log --format=format:$(_ShortShaFormat) -n 1'
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitCommit"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
-    <PropertyGroup Condition="'$(MSBuildLastTaskResult)' == 'false'">
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
       <GitCommit>$(GitDefaultCommit)</GitCommit>
     </PropertyGroup>
 
-    <Exec Command='"$(GitExe)" log --format=format:%%H -n 1'
+    <Exec Command='"$(GitExe)" log --format=format:$(_LongShaFormat) -n 1'
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitSha"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
-    <PropertyGroup Condition="'$(MSBuildLastTaskResult)' == 'false'">
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
       <GitSha>$(GitDefaultCommit)</GitSha>
     </PropertyGroup>
 
@@ -272,7 +290,7 @@
       <IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
     </PropertyGroup>
 
-    <Error Text="$(GitVersionFile) does not contain a valid base version. IsValidGitBaseVersion=$(IsValidGitBaseVersion)"
+    <Error Text="$(GitVersionFile) does not contain a valid base version (found '$(GitBaseVersion)', regex: $(_GitBaseVersionExpr))."
 					 Condition="'$(IsValidGitBaseVersion)' == 'False'" />
 
     <PropertyGroup>
@@ -282,7 +300,7 @@
 
     <Message Text="Using base version from version file $(GitVersionFile)'" Importance="normal" />
 
-    <Exec Command='"$(GitExe)" log -n 1 --format=format:%%h "$(GitVersionFile)"'
+    <Exec Command='"$(GitExe)" log -n 1 --format=format:$(_ShortShaFormat) "$(GitVersionFile)"'
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
@@ -499,7 +517,7 @@
       <GitBaseVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['PATCH'].Value)</GitBaseVersionPatch>
       <GitSemVerMajor>$(GitBaseVersionMajor)</GitSemVerMajor>
       <GitSemVerMinor>$(GitBaseVersionMinor)</GitSemVerMinor>
-      <GitSemVerPatch>$([MSBuild]::Add($(GitBaseVersionPatch), $(GitCommits)))</GitSemVerPatch>
+      <GitSemVerPatch>$([MSBuild]::Add('$(GitBaseVersionPatch)', '$(GitCommits)'))</GitSemVerPatch>
       <GitSemVerLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['LABEL'].Value)</GitSemVerLabel>
       <GitSemVerDashLabel Condition="'$(GitSemVerLabel)' != ''" >-$(GitSemVerLabel)</GitSemVerDashLabel>
     </PropertyGroup>
@@ -553,7 +571,7 @@
     </PropertyGroup>
 
     <MakeDir Directories="$(_GitInfoFileDir)" Condition="!Exists('$(_GitInfoFileDir)')" />
-    
+
     <WriteLinesToFile File="$(_GitInfoFile)" Lines="$(_GitInfoContent)" Overwrite="true" />
 
     <ItemGroup>
@@ -665,4 +683,14 @@
     <CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin\bin\cygpath.exe')">C:\cygwin\bin\cygpath.exe</CygPathExe>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Language>C#</Language>
+    <GitThisAssembly>true</GitThisAssembly>
+    <IntermediateOutputPath>obj\</IntermediateOutputPath>
+    <GitInfoThisAssemblyFile>$(IntermediateOutputPath)ThisAssembly.GitInfo.cs</GitInfoThisAssemblyFile>
+    <_GitInfoFile>$(IntermediateOutputPath)GitInfo.cache</_GitInfoFile>
+  </PropertyGroup>
+  <Target Name="FakeCompile" DependsOnTargets="$(CompileDependsOn)" />
+  
+  <Import Project="GitInfo.xbuild" Condition="'$(MSBuildRuntimeVersion)' == ''" />
 </Project>
