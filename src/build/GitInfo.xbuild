@@ -19,12 +19,15 @@
   <Target Name="GitVersion" DependsOnTargets="$(GitInfoDependsOn)" />
 
   <Target Name="GitThisAssembly" DependsOnTargets="$(GitInfoDependsOn)">
-    <Exec Command='mono "$(MSBuildThisFileDirectory)obj\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitThisAssembly /v:diag' />
+    <Exec Command='mono "$(MSBuildThisFileDirectory)obj\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitThisAssembly /v:normal' />
+    <ItemGroup>
+      <Compile Include="$(GitInfoThisAssemblyFile)" />
+    </ItemGroup>
   </Target>
 
   <Target Name="MSBuild:GitVersion">
     <Exec Command='nuget install MSBuild -outputdirectory "$(MSBuildThisFileDirectory)obj" -excludeversion' />
-    <Exec Command='mono "$(MSBuildThisFileDirectory)obj\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitVersion /v:diag' />
+    <Exec Command='mono "$(MSBuildThisFileDirectory)obj\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitVersion /v:normal' />
   </Target>
 
   <!-- CreateItem isn't implemented in XBuild -->

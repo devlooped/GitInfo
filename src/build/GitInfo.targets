@@ -682,15 +682,6 @@
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin\bin\cygpath.exe')">C:\cygwin\bin\cygpath.exe</CygPathExe>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <Language>C#</Language>
-    <GitThisAssembly>true</GitThisAssembly>
-    <IntermediateOutputPath>obj\</IntermediateOutputPath>
-    <GitInfoThisAssemblyFile>$(IntermediateOutputPath)ThisAssembly.GitInfo.cs</GitInfoThisAssemblyFile>
-    <_GitInfoFile>$(IntermediateOutputPath)GitInfo.cache</_GitInfoFile>
-  </PropertyGroup>
-  <Target Name="FakeCompile" DependsOnTargets="$(CompileDependsOn)" />
   
   <Import Project="GitInfo.xbuild" Condition="'$(MSBuildRuntimeVersion)' == ''" />
 </Project>
