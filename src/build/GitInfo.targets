@@ -222,7 +222,7 @@
           Outputs="$(_GitInfoFile)"
 					Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
 
-    <Exec Command='"$(GitExe)" log --format=format:$(_ShortShaFormat) -n 1'
+    <Exec Command='$(GitExe) log --format=format:$(_ShortShaFormat) -n 1'
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
@@ -235,7 +235,7 @@
       <GitCommit>$(GitDefaultCommit)</GitCommit>
     </PropertyGroup>
 
-    <Exec Command='"$(GitExe)" log --format=format:$(_LongShaFormat) -n 1'
+    <Exec Command='$(GitExe) log --format=format:$(_LongShaFormat) -n 1'
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
@@ -300,7 +300,7 @@
 
     <Message Text="Using base version from version file $(GitVersionFile)'" Importance="normal" />
 
-    <Exec Command='"$(GitExe)" log -n 1 --format=format:$(_ShortShaFormat) "$(GitVersionFile)"'
+    <Exec Command='$(GitExe) log -n 1 --format=format:$(_ShortShaFormat) "$(GitVersionFile)"'
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
@@ -316,7 +316,7 @@
       <_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
     </PropertyGroup>
 
-    <Exec Command='"$(GitExe)" rev-list --count "$(_GitLastBump)"..HEAD'
+    <Exec Command='$(GitExe) rev-list --count "$(_GitLastBump)"..HEAD'
 					Condition="$(MSBuildLastTaskResult) == 'true' And '$(_GitLastBump)' != ''"
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
@@ -350,7 +350,7 @@
     </PropertyGroup>
 
     <!-- Get the initial commit when the current branch departed from the default branch -->
-    <Exec Command='"$(GitExe)" merge-base --fork-point "$(GitDefaultBranch)"'
+    <Exec Command='$(GitExe) merge-base --fork-point "$(GitDefaultBranch)"'
 					Condition="'$(IsValidGitBaseVersion)' == 'true'"
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
@@ -367,7 +367,7 @@
     </PropertyGroup>
 
     <!-- Get the commit count from the fork point to the current branch head -->
-    <Exec Command='"$(GitExe)" rev-list --count "$(_GitForkPoint)"..HEAD'
+    <Exec Command='$(GitExe) rev-list --count "$(_GitForkPoint)"..HEAD'
 					Condition="'$(IsValidGitBaseVersion)' == 'true' and '$(MSBuildLastTaskResult)' == 'true'"
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
@@ -384,7 +384,7 @@
 					DependsOnTargets="_GitBranch;_GitCommit"
 					Condition="'$(GitBaseVersion)' == ''">
 
-    <Exec Command='"$(GitExe)" describe --tags --abbrev=0'
+    <Exec Command='$(GitExe) describe --tags --abbrev=0'
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
@@ -409,7 +409,7 @@
 					Condition="'$(GitBaseVersion)' == '' And '$(GitBaseTag)' != ''">
 
     <!-- At this point, we now there is a base tag already we can leverage -->
-    <Exec Command='"$(GitExe)" describe --tags'
+    <Exec Command='$(GitExe) describe --tags'
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
@@ -435,7 +435,7 @@
       <GitCommits>0</GitCommits>
     </PropertyGroup>
 
-    <Exec Command='"$(GitExe)" rev-list "$(GitBaseTag)" -n 1'
+    <Exec Command='$(GitExe) rev-list "$(GitBaseTag)" -n 1'
 					Condition="'$(IsValidGitBaseVersion)' == 'true'"
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
@@ -444,7 +444,7 @@
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitBaseTagCommit"/>
     </Exec>
 
-    <Exec Command='"$(GitExe)" rev-list --count "$(_GitBaseTagCommit)".."$(GitCommit)"'
+    <Exec Command='$(GitExe) rev-list --count "$(_GitBaseTagCommit)".."$(GitCommit)"'
 					Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(_GitBaseTagCommit)' != '' And '$(GitCommit)' != '' And '$(GitCommit)' != '$(GitDefaultCommit)'"
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
@@ -659,8 +659,8 @@
 	-->
   <PropertyGroup Condition="'$(GitExe)' == '' And '$(OS)' == 'Windows_NT'">
     <!-- We probe multiple places, with the first matching one winning -->
-    <GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files\Git\bin\git.exe')">C:\Program Files\Git\bin\git.exe</GitExe>
-    <GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files (x86)\Git\bin\git.exe')">C:\Program Files (x86)\Git\bin\git.exe</GitExe>
+    <GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files\Git\bin\git.exe')">"C:\Program Files\Git\bin\git.exe"</GitExe>
+    <GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files (x86)\Git\bin\git.exe')">"C:\Program Files (x86)\Git\bin\git.exe"</GitExe>
     <GitExe Condition="'$(GitExe)' == '' And Exists('C:\msysgit\bin\git.exe')">C:\msysgit\bin\git.exe</GitExe>
     <GitExe Condition="'$(GitExe)' == '' And Exists('C:\cygwin\bin\git.exe')">C:\cygwin\bin\git.exe</GitExe>
     <!-- Ultimately, just try the exe and hope it exists in the PATH already -->
