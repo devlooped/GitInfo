@@ -130,14 +130,19 @@
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
-    
+
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+      <GitRoot>$(_GitOutput.Trim())</GitRoot>
+    </PropertyGroup>
+
     <!-- Account for cygwin separately -->
     <Exec Command='"$(CygPathExe)" -w $(_GitOutput)" WorkingDir="$(MSBuildProjectDirectory)"'
 					StandardErrorImportance='high'
 					StandardOutputImportance='low'
 					ConsoleToMSBuild='true'          
-					Condition="'$(MSBuildLastTaskResult)' == 'true' And '$(CygPathExe)' != ''">
+					Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput" />
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
     
     <PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
@@ -306,23 +311,25 @@
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitLastBump"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
     <Warning Text="Could not retrieve last commit for $(GitVersionFile). Defaulting to its declared version and no additional commits."
-						 Condition="'$(MSBuildLastTaskResult)' == 'false' Or '$(_GitLastBump)' == ''" />
+						 Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''" />
 
     <PropertyGroup>
-      <GitCommits Condition="'$(MSBuildLastTaskResult)' == 'false' Or '$(_GitLastBump)' == ''">0</GitCommits>
+      <GitCommits Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''">0</GitCommits>
       <_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
     </PropertyGroup>
 
     <Exec Command='$(GitExe) rev-list --count "$(_GitLastBump)"..HEAD'
-					Condition="$(MSBuildLastTaskResult) == 'true' And '$(_GitLastBump)' != ''"
+					Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
   </Target>
@@ -357,23 +364,25 @@
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitForkPoint"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
     <Warning Text="Could not retrieve first commit where branch $(GitBranch) forked from $(GitDefaultBranch). Defaulting to zero commits."
-						 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastTaskResult)' == 'false'" />
+						 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
 
-    <PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastTaskResult)' == 'false'">
+    <PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'">
       <GitCommits>0</GitCommits>
     </PropertyGroup>
 
     <!-- Get the commit count from the fork point to the current branch head -->
     <Exec Command='$(GitExe) rev-list --count "$(_GitForkPoint)"..HEAD'
-					Condition="'$(IsValidGitBaseVersion)' == 'true' and '$(MSBuildLastTaskResult)' == 'true'"
+					Condition="'$(IsValidGitBaseVersion)' == 'true' and '$(MSBuildLastExitCode)' != '0'"
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
   </Target>
@@ -390,9 +399,10 @@
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitBaseTag"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
-    <PropertyGroup Condition="'$(MSBuildLastTaskResult)' == 'false'">
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
       <GitCommits>0</GitCommits>
       <GitBaseTag></GitBaseTag>
     </PropertyGroup>
@@ -415,6 +425,7 @@
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitTag"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
     <PropertyGroup>
@@ -442,6 +453,7 @@
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitBaseTagCommit"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
     <Exec Command='$(GitExe) rev-list --count "$(_GitBaseTagCommit)".."$(GitCommit)"'
@@ -451,13 +463,14 @@
 					ConsoleToMSBuild="true"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
 
     <Warning Text="Failed to retrieve commit count from tag '$(GitBaseTag)' to tip ${GitCommit). Defaulting to zero commits."
-						 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastTaskResult)' == 'false'" />
+						 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
 
     <PropertyGroup>
-      <GitCommits Condition="'$(MSBuildLastTaskResult)' == 'false'">0</GitCommits>
+      <GitCommits Condition="'$(MSBuildLastExitCode)' != '0'">0</GitCommits>
     </PropertyGroup>
 
   </Target>
@@ -680,7 +693,7 @@
 	============================================================
 	-->
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-    <CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin\bin\cygpath.exe')">C:\cygwin\bin\cygpath.exe</CygPathExe>
+    <CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin\bin\cygpath.exe') And $(GitExe.Contains('cygwin'))">C:\cygwin\bin\cygpath.exe</CygPathExe>
   </PropertyGroup>
   
   <Import Project="GitInfo.xbuild" Condition="'$(MSBuildRuntimeVersion)' == ''" />
