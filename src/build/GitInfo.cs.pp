@@ -1,4 +1,4 @@
-#pragma warning disable CS0436
+#pragma warning disable 0436
 
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", RootNamespace.ThisAssembly.Git.Commit)]
@@ -80,4 +80,4 @@ namespace RootNamespace
   }
 }
 
-#pragma warning restore CS0436
+#pragma warning restore 0436
