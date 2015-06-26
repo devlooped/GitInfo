@@ -3,7 +3,7 @@
 	<metadata>
 		<id>GitInfo</id>
 		<version>0.1.0</version>
-		<title>Git and SemVer Info from MSBuild, C# and VB</title>
+		<title>Git and SemVer info for MSBuild and C#/VB</title>
 		<authors>Daniel Cazzulino</authors>
 		<iconUrl>https://raw.github.com/kzu/GitInfo/master/img/git.png</iconUrl>
 		<licenseUrl>https://github.com/kzu/GitInfo/blob/master/LICENSE</licenseUrl>
@@ -15,8 +15,8 @@
   $(GitCommit), ThisAssembly.Git.Commit
   $(GitSha), ThisAssembly.Git.Sha
   $(GitBaseVersionMajor), ThisAssembly.Git.BaseVersion.Major
-  $(GitBaseVersionMinor), ThisAssembly.Git.BaseVersion.Major
-  $(GitBaseVersionPatch), ThisAssembly.Git.BaseVersion.Major
+  $(GitBaseVersionMinor), ThisAssembly.Git.BaseVersion.Minor
+  $(GitBaseVersionPatch), ThisAssembly.Git.BaseVersion.Patch
   $(GitCommits), ThisAssembly.Git.Commits
   $(GitTag), ThisAssembly.Git.Tag
   $(GitBaseTag), ThisAssembly.Git.BaseTag
