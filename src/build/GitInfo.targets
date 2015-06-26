@@ -100,7 +100,7 @@
     <GitInfoDependsOn>
       _GitRoot;
       _GitInputs;
-      _GitSetNoCache;
+      _GitClearCache;
       _GitReadCache;
       _GitBranch;
       _GitCommit;
@@ -163,14 +163,12 @@
     </ItemGroup>
   </Target>
 
-  <!-- If the inputs/outputs are outdated, don't let the cache to be read -->
-  <Target Name="_GitSetNoCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)">
-    <PropertyGroup>
-      <_GitNoCache>true</_GitNoCache>
-    </PropertyGroup>
+  <!-- If the inputs/outputs are outdated, clear the cache -->
+  <Target Name="_GitClearCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)">
+    <Delete Files="$(_GitInfoFile)" />
   </Target>
 
-  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') And '$(_GitNoCache)' != 'true'">
+  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)')">
     <PropertyGroup>
       <_GitCachedInfo>$([System.IO.File]::ReadAllText('$(_GitInfoFile)'))</_GitCachedInfo>
     </PropertyGroup>
