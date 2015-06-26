@@ -177,8 +177,6 @@
       <Output TaskParameter="Include" ItemName="GitInfo" />
     </CreateItem>
 
-    <Message Importance="high" Text="GitInfo item: %(GitInfo.Branch)" />
-        
     <PropertyGroup>
       <GitBranch Condition="'$(GitBranch)' == ''">%(GitInfo.GitBranch)</GitBranch>
       <GitCommit Condition="'$(GitCommit)' == ''">%(GitInfo.GitCommit)</GitCommit>
