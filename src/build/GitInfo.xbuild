@@ -19,14 +19,14 @@
   <Target Name="GitVersion" DependsOnTargets="$(GitInfoDependsOn)" />
 
   <Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'">
-    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitThisAssembly /v:normal' />
+    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitThisAssembly /v:normal /p:SkipReadGitCache=true' />
   </Target>
 
   <Target Name="MSBuild:GitVersion">
     <!-- Installs MSBuild alongside this package's top directory, which would be the \packages folder. -->
     <Exec Command='nuget install MSBuild -outputdirectory "$(MSBuildThisFileDirectory)..\..\" -excludeversion'
           Condition="!Exists('$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe')"/>
-    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitVersion /v:normal' />
+    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitVersion /v:normal /p:SkipReadGitCache=true' />
   </Target>
 
   <!-- CreateItem isn't implemented in XBuild -->

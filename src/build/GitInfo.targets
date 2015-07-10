@@ -168,7 +168,7 @@
     <Delete Files="$(_GitInfoFile)" />
   </Target>
 
-  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)')">
+  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') And '$(SkipReadGitCache)' != 'true' ">
     <PropertyGroup>
       <_GitCachedInfo>$([System.IO.File]::ReadAllText('$(_GitInfoFile)'))</_GitCachedInfo>
     </PropertyGroup>
