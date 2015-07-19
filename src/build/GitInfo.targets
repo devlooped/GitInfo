@@ -17,8 +17,7 @@
 	
 	$(ThisAssemblyNamespace): allows overriding the namespace
 														for the ThisAssembly class.
-														Defaults to the project 
-														$(RootNamespace)
+														Defaults to the global namespace.
 											
 	$(GitDefaultBranch): determines the base branch used to 
 											 calculate commits on top of current branch.
@@ -48,7 +47,6 @@
     <GitDefaultVersion Condition="'$(GitDefaultVersion)' == ''">0.1.0</GitDefaultVersion>
 
     <GitInfoThisAssemblyFile Condition="$(GitInfoThisAssemblyFile) == '' And '$(DefaultLanguageSourceExtension)' != ''">$(IntermediateOutputPath)ThisAssembly.GitInfo.g$(DefaultLanguageSourceExtension)</GitInfoThisAssemblyFile>
-    <ThisAssemblyNamespace Condition="'$(ThisAssemblyNamespace)' == ''">$(RootNamespace)</ThisAssemblyNamespace>
     <GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'VB'">false</GitThisAssembly>
     <GitThisAssembly Condition="'$(GitThisAssembly)' == '' And '$(GitInfoThisAssemblyFile)' != ''">true</GitThisAssembly>
     <GitInfoReportImportance Condition="'$(GitInfoReportImportance)' == ''">low</GitInfoReportImportance>
@@ -611,13 +609,16 @@
           Inputs="@(_GitInput)" Outputs="$(GitInfoThisAssemblyFile)">
 
     <PropertyGroup>
-      <_ThisAssemblyContent Condition="'$(Language)' == 'C#'">$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cs.pp'))</_ThisAssemblyContent>
-      <_ThisAssemblyContent Condition="'$(Language)' == 'VB'">$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.vb.pp'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo$(DefaultLanguageSourceExtension).pp'))</_ThisAssemblyContent>
 
-      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('RootNamespace', '$(ThisAssemblyNamespace)'))</_ThisAssemblyContent>
-      <!-- If namespace is empty, we actually have to remove the leading dot too. -->
+      <!-- The $NamespaceDefine$ replacement is turned into the GLOBALNAMESPACE define if the ThisAssemblyNamespace isn't empty.  -->
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'LOCALNAMESPACE'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'GLOBALNAMESPACE'))</_ThisAssemblyContent>
+
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('RootNamespace.', '$(ThisAssemblyNamespace).'))</_ThisAssemblyContent>
       <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('RootNamespace.', ''))</_ThisAssemblyContent>
 
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('_RootNamespace_', '$(ThisAssemblyNamespace)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBranch$', '$(GitBranch)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommits$', '$(GitCommits)'))</_ThisAssemblyContent>
       <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommit$', '$(GitCommit)'))</_ThisAssemblyContent>

@@ -1,3 +1,4 @@
+#define $NamespaceDefine$
 #pragma warning disable 0436
 
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)]
@@ -16,8 +17,10 @@
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.DashLabel", RootNamespace.ThisAssembly.Git.SemVer.DashLabel)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Source", RootNamespace.ThisAssembly.Git.SemVer.Source)]
 
-namespace RootNamespace
+#if LOCALNAMESPACE
+namespace _RootNamespace_
 {
+#endif
   /// <summary>Provides access to the current assembly information.</summary>
   partial class ThisAssembly
   {
@@ -78,6 +81,7 @@ namespace RootNamespace
       }
     }
   }
+#if LOCALNAMESPACE
 }
-
+#endif
 #pragma warning restore 0436
