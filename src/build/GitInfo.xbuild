@@ -3,6 +3,7 @@
 
   <PropertyGroup>
     <GitInfoDependsOn>
+      MSBuild:GitRoot;
       MSBuild:GitVersion;
       XBuild:GitReadCache;
     </GitInfoDependsOn>
@@ -19,7 +20,13 @@
   <Target Name="GitVersion" DependsOnTargets="$(GitInfoDependsOn)" />
 
   <Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'">
-    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitThisAssembly /v:normal /p:SkipReadGitCache=true' />
+    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitThisAssembly /v:normal /p:SkipReadGitCache=true /p:ThisAssemblyNamespace="$(ThisAssemblyNamespace)" /p:GitBranch="$(GitBranch)" /p:GitCommits="$(GitCommits)" /p:GitCommit="$(GitCommit)" /p:GitSha="$(GitSha)" /p:GitBaseVersion="$(GitBaseVersion)" /p:GitBaseVersionSource="$(GitBaseVersionSource)" /p:GitBaseVersionMajor="$(GitBaseVersionMajor)" /p:GitBaseVersionMinor="$(GitBaseVersionMinor)" /p:GitBaseVersionPatch="$(GitBaseVersionPatch)" /p:GitTag="$(GitTag)" /p:GitBaseTag="$(GitBaseTag)" /p:GitSemVerMajor="$(GitSemVerMajor)" /p:GitSemVerMinor="$(GitSemVerMinor)" /p:GitSemVerPatch="$(GitSemVerPatch)" /p:GitSemVerLabel="$(GitSemVerLabel)" /p:GitSemVerDashLabel="$(GitSemVerDashLabel)" /p:GitSemVerSource="$(GitSemVerSource)"' />
+  </Target>
+
+  <Target Name="MSBuild:GitRoot">
+    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:_GitRoot /v:normal /p:SkipReadGitCache=true'>
+      <Output TaskParameter="Outputs" PropertyName="_GitRoot" />
+    </Exec>
   </Target>
 
   <Target Name="MSBuild:GitVersion">
