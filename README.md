@@ -7,9 +7,9 @@
 - Trivially added/installed via [a NuGet package](https://www.nuget.org/packages/GitInfo)
 - No format strings or settings to learn
 - Single well-structured [.targets file](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.targets) with plain MSBuild
-- [Optional embedding](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.targets#L53) of Git info in assembly [as metadata](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.cs#L3)
+- [Optional embedding](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.targets#L51) of Git info in assembly [as metadata](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.cs.pp#L4)
 - Optional use of Git info to build arbitrary assembly/file version information, both [in C#](https://github.com/kzu/GitInfoDemo/blob/master/GitInfoDemo/Properties/AssemblyInfo.cs#L10) as well [as VB](https://github.com/kzu/GitInfoDemo/blob/master/GitInfoDemoVB/My%20Project/AssemblyInfo.vb#L8).
-- Trivially modified/improved generated code by just adjusting a [C#/VB template file](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.cs) included in the [NuGet package](https://www.nuget.org/packages/GitInfo)
+- Trivially modified/improved generated code by just adjusting a [C#](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.cs.pp) or [VB](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.vb.pp) template included in the [NuGet package](https://www.nuget.org/packages/GitInfo)
 - Easily modified/improved by just adjusting a [single .targets file](https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.targets) 
 - 100% incremental build-friendly and high-performing (all proper Inputs/Outputs in place, smart caching of Git info, etc.)
 
