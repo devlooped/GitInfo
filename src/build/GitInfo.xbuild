@@ -25,7 +25,7 @@
 
   <Target Name="MSBuild:GitRoot">
     <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:_GitRoot /v:normal /p:SkipReadGitCache=true'>
-      <Output TaskParameter="Outputs" PropertyName="_GitRoot" />
+      <Output TaskParameter="Outputs" PropertyName="GitRoot" />
     </Exec>
   </Target>
 
