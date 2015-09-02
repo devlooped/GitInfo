@@ -225,6 +225,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitCommit"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -238,6 +239,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitSha"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -303,6 +305,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitLastBump"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -321,6 +324,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -356,6 +360,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitForkPoint"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -374,6 +379,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -391,6 +397,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitBaseTag"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -417,6 +424,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitTag"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -445,6 +453,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitBaseTagCommit"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -455,6 +464,7 @@
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
+					WorkingDirectory="$(GitRoot)"
 					ContinueOnError="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
