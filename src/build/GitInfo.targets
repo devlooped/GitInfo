@@ -704,4 +704,8 @@
   </PropertyGroup>
   
   <Import Project="GitInfo.xbuild" Condition="'$(MSBuildRuntimeVersion)' == ''" />
+
+  <PropertyGroup>
+    <GitInfoImported>true</GitInfoImported>
+  </PropertyGroup>
 </Project>
