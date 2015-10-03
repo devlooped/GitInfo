@@ -65,8 +65,6 @@
     <_GitBaseVersionExpr Condition="'$(_GitBaseVersionExpr)' == ''">^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</_GitBaseVersionExpr>
     <!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
     <_GitInfoFile>$(IntermediateOutputPath)GitInfo.cache</_GitInfoFile>
-    <Slash Condition="'$(OS)' == 'Windows_NT'">\</Slash>
-    <Slash Condition="'$(OS)' != 'Windows_NT'">/</Slash>
   </PropertyGroup>
 
   <Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
@@ -137,26 +135,47 @@
     <Exec Command='"$(CygPathExe)" -w $(_GitOutput)" WorkingDir="$(MSBuildProjectDirectory)"'
 					StandardErrorImportance='high'
 					StandardOutputImportance='low'
-					ConsoleToMSBuild='true'          
+					ConsoleToMSBuild='true'
 					Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput" />
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
-    
+
     <PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
       <GitRoot>$(_GitOutput.Trim())</GitRoot>
     </PropertyGroup>
 
+    <!-- Determine the .git dir. In the simple case, this is just $(GitRoot)\.git.
+         But in the case of submodules, a .git *file* rather than a directory 
+         will be present at that path, with a value like:
+              gitdir: ../../.git/modules/external/toq
+         Which points to the actual folder where the git info exists in the containing 
+         repository. -->
+    <PropertyGroup>
+      <GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '.git'))</GitDir>
+      <_IsGitSubmodule>$([System.IO.File]::Exists('$(GitDir)'))</_IsGitSubmodule>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(_IsGitSubmodule)' == 'true'">
+      <_GitFileContents>$([System.IO.File]::ReadAllText('$(GitDir)'))</_GitFileContents>
+      <GitDir>$([System.String]::new('$(_GitFileContents)').Substring(7).Trim())</GitDir>
+      <GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '$(GitDir)'))</GitDir>
+      <GitDir>$([System.IO.Path]::GetFullPath('$(GitDir)'))</GitDir>
+    </PropertyGroup>
+    <PropertyGroup>
+      <GitDir Condition="!HasTrailingSlash('$(GitDir)')">$(GitDir)$([System.IO.Path]::DirectorySeparatorChar)</GitDir>
+    </PropertyGroup>
+    
     <Message Text="Determined Git repository root as '$(GitRoot)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
+    <Message Text="Determined Git dir as '$(GitDir)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
     <Warning Text="Directory $(MSBuildProjectDirectory) is not in a Git repository. Cannot determine Git repository root." Condition="'$(GitRoot)' == ''" />
 
   </Target>
 
   <Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
     <ItemGroup>
-      <_GitInput Include="$(GitRoot)$(Slash).git$(Slash)HEAD" />
+      <_GitInput Include="$(GitDir)HEAD" />
       <!-- TODO: we really only need to track the HEAD ref, but this simplifies the impl. -->
-      <_GitInput Include="$(GitRoot)$(Slash).git$(Slash)refs$(Slash)heads$(Slash)*.*" />
+      <_GitInput Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '*.*'))" />
       <_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
     </ItemGroup>
   </Target>
@@ -203,7 +222,7 @@
           Outputs="$(_GitInfoFile)">
 
     <PropertyGroup Condition="'$(GitRoot)' != ''">
-      <_GitHead>$([System.IO.Path]::Combine($(GitRoot), '.git', 'HEAD'))</_GitHead>
+      <_GitHead>$([System.IO.Path]::Combine($(GitDir), 'HEAD'))</_GitHead>
       <_GitHead>$([System.IO.File]::ReadAllText('$(_GitHead)'))</_GitHead>
       <GitBranch>$([System.Text.RegularExpressions.Regex]::Match($(_GitHead), '(?&lt;=/)[^/]+$'))</GitBranch>
       <GitBranch>$(GitBranch.Trim())</GitBranch>
@@ -702,7 +721,7 @@
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin\bin\cygpath.exe') And $(GitExe.Contains('cygwin'))">C:\cygwin\bin\cygpath.exe</CygPathExe>
   </PropertyGroup>
-  
+
   <Import Project="GitInfo.xbuild" Condition="'$(MSBuildRuntimeVersion)' == ''" />
 
   <PropertyGroup>
