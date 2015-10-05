@@ -22,12 +22,12 @@ From C# and VB, by default code is generated too so that the same
 information can be accessed from code, to construct your own 
 assembly/file version attributes with whatever format you want:
 
-[assembly: AssemblyVersion(ThisAssembly.Git.Version.Major, ThisAssembly.Git.Version.Minor, 0)] 
-[assembly: AssemblyInformationalVersion(
-	ThisAssembly.Git.Version.Major + "." + 
-	ThisAssembly.Git.Version.Minor + "." + 
-	ThisAssembly.Git.Version.Patch + "-" + 
-	ThisAssembly.Git.Branch + "+" + 
+[assembly: AssemblyVersion (ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)]
+[assembly: AssemblyInformationalVersion (
+	ThisAssembly.Git.SemVer.Major + "." +
+	ThisAssembly.Git.SemVer.Minor + "." +
+	ThisAssembly.Git.SemVer.Patch + "-" +
+	ThisAssembly.Git.Branch + "+" +
 	ThisAssembly.Git.Commit)]
 // i..e ^: 1.0.2-master+c218617
 	
