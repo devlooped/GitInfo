@@ -22,11 +22,11 @@
   <Target Name="GitVersion" DependsOnTargets="$(GitInfoDependsOn)" />
 
   <Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'">
-    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /p:Configuration="$(Configuration)" /t:GitThisAssembly /v:normal /p:SkipReadGitCache=true /p:ThisAssemblyNamespace="$(ThisAssemblyNamespace)" /p:GitBranch="$(GitBranch)" /p:GitCommits="$(GitCommits)" /p:GitCommit="$(GitCommit)" /p:GitSha="$(GitSha)" /p:GitBaseVersion="$(GitBaseVersion)" /p:GitBaseVersionSource="$(GitBaseVersionSource)" /p:GitBaseVersionMajor="$(GitBaseVersionMajor)" /p:GitBaseVersionMinor="$(GitBaseVersionMinor)" /p:GitBaseVersionPatch="$(GitBaseVersionPatch)" /p:GitTag="$(GitTag)" /p:GitBaseTag="$(GitBaseTag)" /p:GitSemVerMajor="$(GitSemVerMajor)" /p:GitSemVerMinor="$(GitSemVerMinor)" /p:GitSemVerPatch="$(GitSemVerPatch)" /p:GitSemVerLabel="$(GitSemVerLabel)" /p:GitSemVerDashLabel="$(GitSemVerDashLabel)" /p:GitSemVerSource="$(GitSemVerSource)"' />
+    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /p:Configuration="$(Configuration)" /t:GitThisAssembly /p:SkipReadGitCache=true /p:ThisAssemblyNamespace="$(ThisAssemblyNamespace)" /p:GitBranch="$(GitBranch)" /p:GitCommits="$(GitCommits)" /p:GitCommit="$(GitCommit)" /p:GitSha="$(GitSha)" /p:GitBaseVersion="$(GitBaseVersion)" /p:GitBaseVersionSource="$(GitBaseVersionSource)" /p:GitBaseVersionMajor="$(GitBaseVersionMajor)" /p:GitBaseVersionMinor="$(GitBaseVersionMinor)" /p:GitBaseVersionPatch="$(GitBaseVersionPatch)" /p:GitTag="$(GitTag)" /p:GitBaseTag="$(GitBaseTag)" /p:GitSemVerMajor="$(GitSemVerMajor)" /p:GitSemVerMinor="$(GitSemVerMinor)" /p:GitSemVerPatch="$(GitSemVerPatch)" /p:GitSemVerLabel="$(GitSemVerLabel)" /p:GitSemVerDashLabel="$(GitSemVerDashLabel)" /p:GitSemVerSource="$(GitSemVerSource)" /p:IntermediateOutputPath="$(IntermediateOutputPath)" /p:Language=$(Language) /p:DefaultLanguageSourceExtension=$(DefaultLanguageSourceExtension) /v:detailed' />
   </Target>
 
   <Target Name="_GitRoot">
-    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:_GitRoot /v:normal /p:SkipReadGitCache=true'>
+    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildThisFileDirectory)GitInfo.targets" /t:_GitRoot /p:SkipReadGitCache=true /v:normal'>
       <Output TaskParameter="Outputs" PropertyName="GitRoot" />
     </Exec>
   </Target>
@@ -37,7 +37,7 @@
   </Target>
 
   <Target Name="MSBuild:GitVersion">
-    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitVersion /v:normal /p:SkipReadGitCache=true' />
+    <Exec Command='mono "$(MSBuildThisFileDirectory)..\..\MSBuild\tools\Unix\MSBuild.exe" "$(MSBuildProjectFullPath)" /t:GitVersion /p:SkipReadGitCache=true /p:IntermediateOutputPath="$(IntermediateOutputPath)" /v:normal' />
   </Target>
 
   <!-- CreateItem isn't implemented in XBuild -->
