@@ -15,6 +15,7 @@
     <!-- Since Exec doesn't work as it should, we can't just fetch git stuff with it. -->
     <_GitInput Include="ALWAYS-OUT-OF-DATE-SORRY" />
   </ItemGroup>
+  <Target Name="_GitInputs" />
   
   <Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" />
 
