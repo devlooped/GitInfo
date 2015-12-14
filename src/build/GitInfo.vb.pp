@@ -1,5 +1,7 @@
 #Const $NamespaceDefine$ = 1
+#Const $MetadataDefine$ = 1
 
+#If ADDMETADATA
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", Global.RootNamespace.ThisAssembly.Git.Branch)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", Global.RootNamespace.ThisAssembly.Git.Commit)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", Global.RootNamespace.ThisAssembly.Git.Sha)>
@@ -15,6 +17,7 @@
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Label", Global.RootNamespace.ThisAssembly.Git.SemVer.Label)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.DashLabel", Global.RootNamespace.ThisAssembly.Git.SemVer.DashLabel)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Source", Global.RootNamespace.ThisAssembly.Git.SemVer.Source)>
+#End If
 
 #If LOCALNAMESPACE
 Namespace Global._RootNamespace_

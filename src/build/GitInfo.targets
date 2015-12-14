@@ -14,6 +14,10 @@
 	
 	$(GitThisAssembly): set to 'false' to prevent assembly 
 											metadata and constants generation.
+
+	$(GitThisAssemblyMetadata): set to 'false' to prevent assembly 
+  											      metadata generation only. Defaults 
+                              to 'false'.
 	
 	$(ThisAssemblyNamespace): allows overriding the namespace
 														for the ThisAssembly class.
@@ -50,6 +54,8 @@
     <GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'VB'">false</GitThisAssembly>
     <GitThisAssembly Condition="'$(GitThisAssembly)' == '' And '$(GitInfoThisAssemblyFile)' != ''">true</GitThisAssembly>
     <GitInfoReportImportance Condition="'$(GitInfoReportImportance)' == ''">low</GitInfoReportImportance>
+    <GitThisAssemblyMetadataDefine Condition="$(GitThisAssemblyMetadata) == 'true'">ADDMETADATA</GitThisAssemblyMetadataDefine>
+    <GitThisAssemblyMetadataDefine Condition="$(GitThisAssemblyMetadata) != 'true'">NOMETADATA</GitThisAssemblyMetadataDefine>
   </PropertyGroup>
 
   <!-- Private properties -->
@@ -643,6 +649,7 @@
       <!-- The $NamespaceDefine$ replacement is turned into the GLOBALNAMESPACE define if the ThisAssemblyNamespace isn't empty.  -->
       <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'LOCALNAMESPACE'))</_ThisAssemblyContent>
       <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'GLOBALNAMESPACE'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$MetadataDefine$', '$(GitThisAssemblyMetadataDefine)'))</_ThisAssemblyContent>
 
       <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('RootNamespace.', '$(ThisAssemblyNamespace).'))</_ThisAssemblyContent>
       <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('RootNamespace.', ''))</_ThisAssemblyContent>

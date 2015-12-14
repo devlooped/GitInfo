@@ -1,6 +1,8 @@
 #define $NamespaceDefine$
+#define $MetadataDefine$
 #pragma warning disable 0436
 
+#if ADDMETADATA
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", RootNamespace.ThisAssembly.Git.Commit)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", RootNamespace.ThisAssembly.Git.Sha)]
@@ -16,6 +18,7 @@
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Label", RootNamespace.ThisAssembly.Git.SemVer.Label)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.DashLabel", RootNamespace.ThisAssembly.Git.SemVer.DashLabel)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.SemVer.Source", RootNamespace.ThisAssembly.Git.SemVer.Source)]
+#endif
 
 #if LOCALNAMESPACE
 namespace _RootNamespace_
