@@ -423,7 +423,8 @@
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
 					WorkingDirectory="$(GitRoot)"
-					ContinueOnError="true">
+					ContinueOnError="true"
+					IgnoreExitCode="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitBaseTag"/>
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
