@@ -289,10 +289,10 @@
   <PropertyGroup>
     <GitVersionDependsOn>
       GitInfo;
-      _GitBaseVersionFile;
       _GitBaseVersionBranch;
       _GitBaseVersionTagExists;
       _GitBaseVersionTag;
+      _GitBaseVersionFile;
       _GitBaseVersionFallback;
       _GitValidateBaseVersion;
       _GitPopulateVersionInfo;
@@ -400,7 +400,7 @@
 
     <!-- Get the commit count from the fork point to the current branch head -->
     <Exec Command='$(GitExe) rev-list --count "$(_GitForkPoint)"..HEAD'
-					Condition="'$(IsValidGitBaseVersion)' == 'true' and '$(MSBuildLastExitCode)' != '0'"
+					Condition="'$(IsValidGitBaseVersion)' == 'true' and '$(MSBuildLastExitCode)' == '0'"
 					StandardErrorImportance="low"
 					StandardOutputImportance="low"
 					ConsoleToMSBuild="true"
