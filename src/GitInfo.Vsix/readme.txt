@@ -27,47 +27,14 @@ it very easy to see what the different values contain.
 
 The available constants from code are:
 
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
-  ThisAssembly.Vsix.
+  ThisAssembly.Vsix.Identifier
+  ThisAssembly.Vsix.Name
+  ThisAssembly.Vsix.Description
+  ThisAssembly.Vsix.Author
+  ThisAssembly.Vsix.Version
 
 Available MSBuild customizations:
 
-	$(GitThisAssembly): set to 'false' to prevent assembly 
-						metadata and constants generation.
-
-	$(GitThisAssemblyMetadata): set to 'false' to prevent assembly 
-  							    metadata generation only. Defaults 
-                                to 'false'.
-	
-	$(ThisAssemblyNamespace): allows overriding the namespace
-							  for the ThisAssembly class.
-							  Defaults to the global namespace.
-											
-	$(GitDefaultBranch): determines the base branch used to 
-						 calculate commits on top of current branch.
-						 Defaults to 'master'.
-	
-	$(GitVersionFile): determines the name of a file in the Git 
-					   repository root used to provide the base 
-					   version info.
-					   Defaults to 'GitInfo.txt'.
-										 
-	$(GitInfoReportImportance): allows rendering all the retrieved
-								git information with the specified
-								message importance ('high', 
-								'normal' or 'low').
-								Defaults to 'low'.
-
-
+	Target Name="GetVsixVersion": redefine this target to modify 
+	the version number to use.	The target should set the $(VsixVersion)
+	property. Default: $(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)

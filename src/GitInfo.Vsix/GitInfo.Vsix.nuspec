@@ -11,31 +11,19 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<summary>Access VSIX information from MSBuild and C#/VB code, and automatically version the resulting extension with GitInfo.</summary>
 		<description>Exposes the following information for use directly from MSBuild, C# and VB:
-  $(GitBranch), ThisAssembly.Git.Branch
-  $(GitCommit), ThisAssembly.Git.Commit
-  $(GitSha), ThisAssembly.Git.Sha
-  $(GitBaseVersionMajor), ThisAssembly.Git.BaseVersion.Major
-  $(GitBaseVersionMinor), ThisAssembly.Git.BaseVersion.Minor
-  $(GitBaseVersionPatch), ThisAssembly.Git.BaseVersion.Patch
-  $(GitCommits), ThisAssembly.Git.Commits
-  $(GitTag), ThisAssembly.Git.Tag
-  $(GitBaseTag), ThisAssembly.Git.BaseTag
-  $(GitSemVerMajor), ThisAssembly.Git.SemVer.Major
-  $(GitSemVerMinor), ThisAssembly.Git.SemVer.Minor
-  $(GitSemVerPatch), ThisAssembly.Git.SemVer.Patch
-  $(GitSemVerLabel), ThisAssembly.Git.SemVer.Label
-  $(GitSemVerDashLabel), ThisAssembly.Git.SemVer.DashLabel
-  $(GitSemVerSource), ThisAssembly.Git.SemVer.Source
+  $(VsixID), ThisAssembly.Vsix.Identifier
+  $(VsixName), ThisAssembly.Vsix.Name
+  $(VsixDescription), ThisAssembly.Vsix.Description
+  $(VsixAuthor), ThisAssembly.Vsix.Author
+  $(VsixVersion), ThisAssembly.Vsix.Version
 
-The generated code contains only constants, so it can be used to construct your own assembly/file version attributes:
+The generated code contains only constants, that can be used as follows:
 
-[assembly: AssemblyVersion(ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + ".0")] 
-[assembly: AssemblyInformationalVersion(ThisAssembly.Git.SemVer.Major + "." + 
-	ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch + "-" + 
-	ThisAssembly.Git.Branch + "+" + ThisAssembly.Git.Commit)]
+[assembly: AssemblyTitle(ThisAssembly.Vsix.Name)] 
+[assembly: AssemblyCompany(ThisAssembly.Vsix.Author)]
 		</description>
 		<copyright>Copyright 2015</copyright>
-		<tags>msbuild git semver scc</tags>
+		<tags>msbuild git semver scc vsx vsix extensibility</tags>
 		<dependencies>
 			<dependency id="GitInfo" version="$version$" />
 		</dependencies>
