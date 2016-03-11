@@ -23,10 +23,15 @@
 		<VsixThisAssemblyFile>$(IntermediateOutputPath)ThisAssembly.VsixInfo.g$(DefaultLanguageSourceExtension)</VsixThisAssemblyFile>
 		<Vsix2011>&lt;Namespace Prefix='vs' Uri='http://schemas.microsoft.com/developer/vsx-schema/2011'/&gt;</Vsix2011>
 		<Vsix2010>&lt;Namespace Prefix='vs' Uri='http://schemas.microsoft.com/developer/vsx-schema/2010'/&gt;</Vsix2010>
+		<UpdateVsixManifestDependsOn>
+			_GitInputs;
+			GitVersion;
+			GetVsixVersion;
+			_ReplaceSourceManifest;
+			_UpdateTempManifest;
+		</UpdateVsixManifestDependsOn>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(CreateVsixContainer)' == 'true' or '$(DeployExtension)' == true">
-		<RealIntermediateVsixManifest>$(IntermediateOutputPath)$(VsixManifestFileName)</RealIntermediateVsixManifest>
-		<IntermediateVsixManifest>$(RealIntermediateVsixManifest).tmp</IntermediateVsixManifest>
 		<VsixInfoDependsOn>
 			_GitInputs;
 			GitVersion;
@@ -35,26 +40,6 @@
 			GetVsixVersion;
 			$(VsixInfoDependsOn)
 		</VsixInfoDependsOn>
-		<CopyVsixManifestFileDependsOn>
-			$(CopyVsixManifestFileDependsOn);
-			_GitInputs;
-			UpdateRealIntermediateVsixManifest;
-			ReplaceIntermediateVsixManifest
-		</CopyVsixManifestFileDependsOn>
-		<GetVsixDeploymentPathDependsOn>
-			$(GetVsixDeploymentPathDependsOn);
-			_GitInputs;
-			GitVersion;
-			UpdateRealIntermediateVsixManifest;
-			ReplaceIntermediateVsixManifest
-		</GetVsixDeploymentPathDependsOn>
-		<CreateVsixContainerDependsOn>
-			$(CreateVsixContainerDependsOn);
-			_GitInputs;
-			GitVersion;
-			UpdateRealIntermediateVsixManifest;
-			ReplaceIntermediateVsixManifest
-		</CreateVsixContainerDependsOn>
 		<CompileDependsOn>
 			VsixThisAssembly;
 			$(CompileDependsOn)
@@ -70,48 +55,44 @@
 
 	<Target Name="VsixInfo" DependsOnTargets="$(VsixInfoDependsOn)" />
 
-	<Target Name="UpdateRealIntermediateVsixManifest"
+	<Target Name="UpdateVsixManifest" AfterTargets="FindSourceVsixManifest" DependsOnTargets="$(UpdateVsixManifestDependsOn)" />
+
+	<Target Name="_UpdateTempManifest"
 			DependsOnTargets="GetVsixVersion"
-			Inputs="@(SourceVsixManifest);@(_GitInput)"
-			Outputs="$(RealIntermediateVsixManifest)">
+			Inputs="$(OriginalVsixManifest);@(_GitInput)"
+			Outputs="$(SourceVsixManifest)">
 
-		<Copy SourceFiles="$(IntermediateVsixManifest)"
-					DestinationFiles="$(RealIntermediateVsixManifest)" />
-
-		<XmlPeek Namespaces="$(Vsix2011)" XmlInputPath="$(RealIntermediateVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Version"
-						 Condition="'$(VsixCurrentVersion)' == ''">
-			<Output TaskParameter="Result" PropertyName="VsixCurrentVersion" />
-		</XmlPeek>
-		<XmlPeek Namespaces="$(Vsix2010)" XmlInputPath="$(RealIntermediateVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Version/text()"
-						 Condition="'$(VsixCurrentVersion)' == ''">
-			<Output TaskParameter="Result" PropertyName="VsixCurrentVersion" />
-		</XmlPeek>
-
-		<Message Text="Updating VSIX version '$(VsixCurrentVersion)' in '$(RealIntermediateVsixManifest)' to '$(VsixVersion)'." Importance="normal" />
-		<XmlPoke Namespaces="$(Vsix2011)" XmlInputPath="$(RealIntermediateVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Version" Value="$(VsixVersion)" />
-		<XmlPoke Namespaces="$(Vsix2010)" XmlInputPath="$(RealIntermediateVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Version" Value="$(VsixVersion)" />
-
+		<Copy SourceFiles="$(OriginalVsixManifest)" DestinationFiles="$(SourceVsixManifest)" OverwriteReadOnlyFiles="true" />
 		<ItemGroup>
-			<FileWrites Include="$(RealIntermediateVsixManifest)" />
+			<FileWrites Include="$(SourceVsixManifest)" />
 		</ItemGroup>
 
+		<XmlPeek Namespaces="$(Vsix2011)" XmlInputPath="$(OriginalVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Version"
+						 Condition="'$(VsixCurrentVersion)' == ''">
+			<Output TaskParameter="Result" PropertyName="VsixCurrentVersion" />
+		</XmlPeek>
+		<XmlPeek Namespaces="$(Vsix2010)" XmlInputPath="$(OriginalVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Version/text()"
+						 Condition="'$(VsixCurrentVersion)' == ''">
+			<Output TaskParameter="Result" PropertyName="VsixCurrentVersion" />
+		</XmlPeek>
+
+		<Message Text="Updating VSIX version '$(VsixCurrentVersion)' in '$(SourceVsixManifest)' to '$(VsixVersion)'." Importance="normal" />
+		<XmlPoke Namespaces="$(Vsix2011)" XmlInputPath="$(SourceVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Version" Value="$(VsixVersion)" />
+		<XmlPoke Namespaces="$(Vsix2010)" XmlInputPath="$(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Version" Value="$(VsixVersion)" />
 	</Target>
 
-	<Target Name="ReplaceIntermediateVsixManifest">
-		<ItemGroup>
-			<!-- Remove the .tmp manifest in the VSIX source items used as input for the create VSIX step -->
-			<VSIXSourceItem Remove="$(IntermediateVsixManifest)" />
-		</ItemGroup>
+	<Target Name="_ReplaceSourceManifest">
 		<PropertyGroup>
-			<IntermediateVsixManifest>$(RealIntermediateVsixManifest)</IntermediateVsixManifest>
+			<OriginalVsixManifest>@(SourceVsixManifest)</OriginalVsixManifest>
+			<SourceVsixManifest>$(IntermediateOutputPath)%(SourceVsixManifest.FileName)%(SourceVsixManifest.Extension)</SourceVsixManifest>
 		</PropertyGroup>
 		<ItemGroup>
-			<!-- Add the actual .vsixmanifest now. -->
-			<VSIXSourceItem Include="$(RealIntermediateVsixManifest)" />
+			<SourceVsixManifest Remove="*" />
+			<SourceVsixManifest Include="$(SourceVsixManifest)" />
 		</ItemGroup>
 	</Target>
 
-	<Target Name="GetVsixMetadata" Condition="Exists('@(SourceVsixManifest)')">
+	<Target Name="GetVsixMetadata" Condition="Exists('@(SourceVsixManifest)')" DependsOnTargets="FindSourceVsixManifest">
 		<XmlPeek Condition="'$(VsixID)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/@Id">
 			<Output TaskParameter="Result" PropertyName="VsixID" />
 		</XmlPeek>
