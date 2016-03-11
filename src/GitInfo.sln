@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5ED9F27-FAE0-45B7-84F9-9D6C35C7E1AC}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+		build.proj = build.proj
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitInfo", "GitInfo", "{66BBEFCD-CF18-4251-BA2A-D4D57D9F75B2}"
+	ProjectSection(SolutionItems) = preProject
+		GitInfo\build\GitInfo.cache.pp = GitInfo\build\GitInfo.cache.pp
+		GitInfo\build\GitInfo.cs.pp = GitInfo\build\GitInfo.cs.pp
+		GitInfo\GitInfo.nuspec = GitInfo\GitInfo.nuspec
+		GitInfo\build\GitInfo.targets = GitInfo\build\GitInfo.targets
+		GitInfo\build\GitInfo.vb.pp = GitInfo\build\GitInfo.vb.pp
+		GitInfo\build\GitInfo.xbuild = GitInfo\build\GitInfo.xbuild
+		GitInfo\readme.txt = GitInfo\readme.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitInfo.Vsix", "GitInfo.Vsix", "{8F357DE9-E666-4CD1-8427-28CE54E8BE29}"
+	ProjectSection(SolutionItems) = preProject
+		GitInfo.Vsix\build\GitInfo.Vsix.cache.pp = GitInfo.Vsix\build\GitInfo.Vsix.cache.pp
+		GitInfo.Vsix\build\GitInfo.Vsix.cs.pp = GitInfo.Vsix\build\GitInfo.Vsix.cs.pp
+		GitInfo.Vsix\GitInfo.Vsix.nuspec = GitInfo.Vsix\GitInfo.Vsix.nuspec
+		GitInfo.Vsix\build\GitInfo.Vsix.targets = GitInfo.Vsix\build\GitInfo.Vsix.targets
+		GitInfo.Vsix\build\GitInfo.Vsix.vb.pp = GitInfo.Vsix\build\GitInfo.Vsix.vb.pp
+		GitInfo.Vsix\readme.txt = GitInfo.Vsix\readme.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

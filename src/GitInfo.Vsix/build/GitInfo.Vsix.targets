@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!--
+	==============================================================
+          Retrieves and exposes VSIX information and version
+		  
+	If the importing project has a C# or VB Language property, 
+	by default a ThisAssembly file/class will be generated 
+	containing assembly-level metadata for the VSIX information
+	(Identifier, Name and Version), as well as a ThisAssembly.Vsix
+	static class with constants for all the available values.
+	
+	Customization: all customizations from GitInfo are applicable, 
+	and the following are specific to this targets:
+	
+	Target Name="GetVsixVersion": redefine this target to modify 
+	the version number to use.	The target should set the $(VsixVersion)
+	property. Default: $(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)
+			  
+	==============================================================
+	-->
+	<PropertyGroup>
+		<VsixThisAssemblyFile>$(IntermediateOutputPath)ThisAssembly.VsixInfo.g$(DefaultLanguageSourceExtension)</VsixThisAssemblyFile>
+		<Vsix2011>&lt;Namespace Prefix='vs' Uri='http://schemas.microsoft.com/developer/vsx-schema/2011'/&gt;</Vsix2011>
+		<Vsix2010>&lt;Namespace Prefix='vs' Uri='http://schemas.microsoft.com/developer/vsx-schema/2010'/&gt;</Vsix2010>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(CreateVsixContainer)' == 'true' or '$(DeployExtension)' == true">
+		<RealIntermediateVsixManifest>$(IntermediateOutputPath)$(VsixManifestFileName)</RealIntermediateVsixManifest>
+		<IntermediateVsixManifest>$(RealIntermediateVsixManifest).tmp</IntermediateVsixManifest>
+		<VsixInfoDependsOn>
+			_GitInputs;
+			GitVersion;
+			FindSourceVsixManifest;
+			GetVsixMetadata;
+			GetVsixVersion;
+			$(VsixInfoDependsOn)
+		</VsixInfoDependsOn>
+		<CopyVsixManifestFileDependsOn>
+			$(CopyVsixManifestFileDependsOn);
+			_GitInputs;
+			UpdateRealIntermediateVsixManifest;
+			ReplaceIntermediateVsixManifest
+		</CopyVsixManifestFileDependsOn>
+		<GetVsixDeploymentPathDependsOn>
+			$(GetVsixDeploymentPathDependsOn);
+			_GitInputs;
+			GitVersion;
+			UpdateRealIntermediateVsixManifest;
+			ReplaceIntermediateVsixManifest
+		</GetVsixDeploymentPathDependsOn>
+		<CreateVsixContainerDependsOn>
+			$(CreateVsixContainerDependsOn);
+			_GitInputs;
+			GitVersion;
+			UpdateRealIntermediateVsixManifest;
+			ReplaceIntermediateVsixManifest
+		</CreateVsixContainerDependsOn>
+		<CompileDependsOn>
+			VsixThisAssembly;
+			$(CompileDependsOn)
+		</CompileDependsOn>
+	</PropertyGroup>
+
+	<!-- Redefine in your project to modify the way the VSIX version is formatted -->
+	<Target Name="GetVsixVersion">
+		<PropertyGroup>
+			<VsixVersion>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)</VsixVersion>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="VsixInfo" DependsOnTargets="$(VsixInfoDependsOn)" />
+
+	<Target Name="UpdateRealIntermediateVsixManifest"
+			DependsOnTargets="GetVsixVersion"
+			Inputs="@(SourceVsixManifest);@(_GitInput)"
+			Outputs="$(RealIntermediateVsixManifest)">
+
+		<Copy SourceFiles="$(IntermediateVsixManifest)"
+					DestinationFiles="$(RealIntermediateVsixManifest)" />
+
+		<XmlPeek Namespaces="$(Vsix2011)" XmlInputPath="$(RealIntermediateVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Version"
+						 Condition="'$(VsixCurrentVersion)' == ''">
+			<Output TaskParameter="Result" PropertyName="VsixCurrentVersion" />
+		</XmlPeek>
+		<XmlPeek Namespaces="$(Vsix2010)" XmlInputPath="$(RealIntermediateVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Version/text()"
+						 Condition="'$(VsixCurrentVersion)' == ''">
+			<Output TaskParameter="Result" PropertyName="VsixCurrentVersion" />
+		</XmlPeek>
+
+		<Message Text="Updating VSIX version '$(VsixCurrentVersion)' in '$(RealIntermediateVsixManifest)' to '$(VsixVersion)'." Importance="normal" />
+		<XmlPoke Namespaces="$(Vsix2011)" XmlInputPath="$(RealIntermediateVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Version" Value="$(VsixVersion)" />
+		<XmlPoke Namespaces="$(Vsix2010)" XmlInputPath="$(RealIntermediateVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Version" Value="$(VsixVersion)" />
+
+		<ItemGroup>
+			<FileWrites Include="$(RealIntermediateVsixManifest)" />
+		</ItemGroup>
+
+	</Target>
+
+	<Target Name="ReplaceIntermediateVsixManifest">
+		<ItemGroup>
+			<!-- Remove the .tmp manifest in the VSIX source items used as input for the create VSIX step -->
+			<VSIXSourceItem Remove="$(IntermediateVsixManifest)" />
+		</ItemGroup>
+		<PropertyGroup>
+			<IntermediateVsixManifest>$(RealIntermediateVsixManifest)</IntermediateVsixManifest>
+		</PropertyGroup>
+		<ItemGroup>
+			<!-- Add the actual .vsixmanifest now. -->
+			<VSIXSourceItem Include="$(RealIntermediateVsixManifest)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="GetVsixMetadata" Condition="Exists('@(SourceVsixManifest)')">
+		<XmlPeek Condition="'$(VsixID)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/@Id">
+			<Output TaskParameter="Result" PropertyName="VsixID" />
+		</XmlPeek>
+		<XmlPeek Condition="'$(VsixID)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Id">
+			<Output TaskParameter="Result" PropertyName="VsixID" />
+		</XmlPeek>
+
+		<XmlPeek Condition="'$(VsixName)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Name/text()">
+			<Output TaskParameter="Result" PropertyName="VsixName" />
+		</XmlPeek>
+		<XmlPeek Condition="'$(VsixName)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:DisplayName/text()">
+			<Output TaskParameter="Result" PropertyName="VsixName" />
+		</XmlPeek>
+
+		<XmlPeek Condition="'$(VsixDescription)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Description/text()">
+			<Output TaskParameter="Result" PropertyName="VsixDescription" />
+		</XmlPeek>
+		<XmlPeek Condition="'$(VsixDescription)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Description/text()">
+			<Output TaskParameter="Result" PropertyName="VsixDescription" />
+		</XmlPeek>
+
+		<XmlPeek Condition="'$(VsixAuthor)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Author/text()">
+			<Output TaskParameter="Result" PropertyName="VsixAuthor" />
+		</XmlPeek>
+		<XmlPeek Condition="'$(VsixAuthor)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Publisher">
+			<Output TaskParameter="Result" PropertyName="VsixAuthor" />
+		</XmlPeek>
+	</Target>
+
+	<PropertyGroup>
+		<VsixThisAssemblyDependsOn>
+			VsixInfo;
+			_VsixGenerateThisAssembly
+		</VsixThisAssemblyDependsOn>
+	</PropertyGroup>
+
+	<Target Name="VsixThisAssembly"
+			DependsOnTargets="$(VsixThisAssemblyDependsOn)"
+			BeforeTargets="BuildOnlySettings"
+			Condition="'$(GitThisAssembly)' == 'true'">
+		<ItemGroup>
+			<Compile Include="$(VsixThisAssemblyFile)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_VsixGenerateThisAssembly"
+			Condition="'$(GitThisAssembly)' == 'true'"
+			Inputs="@(_GitInput)"
+			Outputs="$(VsixThisAssemblyFile)"
+			DependsOnTargets="VsixInfo">
+
+		<PropertyGroup>
+			<_ThisVsixInfoContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.Vsix$(DefaultLanguageSourceExtension).pp'))</_ThisVsixInfoContent>
+
+			<!-- The $NamespaceDefine$ replacement is turned into the GLOBALNAMESPACE define if the ThisAssemblyNamespace isn't empty.  -->
+			<_ThisVsixInfoContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisVsixInfoContent.Replace('$NamespaceDefine$', 'LOCALNAMESPACE'))</_ThisVsixInfoContent>
+			<_ThisVsixInfoContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisVsixInfoContent.Replace('$NamespaceDefine$', 'GLOBALNAMESPACE'))</_ThisVsixInfoContent>
+			<!-- $(GitThisAssemblyMetadataDefine) comes from GitInfo and determines whether [AssemblyMetadata] attributes are emitted too -->
+			<_ThisVsixInfoContent>$(_ThisVsixInfoContent.Replace('$MetadataDefine$', '$(GitThisAssemblyMetadataDefine)'))</_ThisVsixInfoContent>
+
+			<_ThisVsixInfoContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisVsixInfoContent.Replace('RootNamespace.', '$(ThisAssemblyNamespace).'))</_ThisVsixInfoContent>
+			<_ThisVsixInfoContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisVsixInfoContent.Replace('RootNamespace.', ''))</_ThisVsixInfoContent>
+
+			<_ThisVsixInfoContent>$(_ThisVsixInfoContent.Replace('_RootNamespace_', '$(ThisAssemblyNamespace)'))</_ThisVsixInfoContent>
+
+			<!-- Actual exposed values here -->
+			<_ThisVsixInfoContent>$(_ThisVsixInfoContent.Replace('$VsixID$', '$(VsixID)'))</_ThisVsixInfoContent>
+			<_ThisVsixInfoContent>$(_ThisVsixInfoContent.Replace('$VsixName$', '$(VsixName)'))</_ThisVsixInfoContent>
+			<_ThisVsixInfoContent>$(_ThisVsixInfoContent.Replace('$VsixDescription$', '$(VsixDescription)'))</_ThisVsixInfoContent>
+			<_ThisVsixInfoContent>$(_ThisVsixInfoContent.Replace('$VsixAuthor$', '$(VsixAuthor)'))</_ThisVsixInfoContent>
+			<_ThisVsixInfoContent>$(_ThisVsixInfoContent.Replace('$VsixVersion$', '$(VsixVersion)'))</_ThisVsixInfoContent>
+		</PropertyGroup>
+
+		<WriteLinesToFile File="$(VsixThisAssemblyFile)" Lines="$(_ThisVsixInfoContent)" Overwrite="true" />
+		<ItemGroup>
+			<FileWrites Include="$(VsixThisAssemblyFile)" />
+		</ItemGroup>
+	</Target>
+
+</Project>

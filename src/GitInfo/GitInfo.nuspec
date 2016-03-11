@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<package>
+	<metadata>
+		<id>GitInfo</id>
+		<version>$version$</version>
+		<title>Git and SemVer info for MSBuild/C#/VB</title>
+		<authors>Daniel Cazzulino</authors>
+		<iconUrl>https://raw.github.com/kzu/GitInfo/master/img/git.png</iconUrl>
+		<licenseUrl>https://github.com/kzu/GitInfo/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/kzu/GitInfo</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<summary>Access commit information from MSBuild and C#/VB code, and infer SemVer from branch, tag or version file in git repo.</summary>
+		<description>Exposes the following information for use directly from MSBuild, C# and VB:
+  $(GitBranch), ThisAssembly.Git.Branch
+  $(GitCommit), ThisAssembly.Git.Commit
+  $(GitSha), ThisAssembly.Git.Sha
+  $(GitBaseVersionMajor), ThisAssembly.Git.BaseVersion.Major
+  $(GitBaseVersionMinor), ThisAssembly.Git.BaseVersion.Minor
+  $(GitBaseVersionPatch), ThisAssembly.Git.BaseVersion.Patch
+  $(GitCommits), ThisAssembly.Git.Commits
+  $(GitTag), ThisAssembly.Git.Tag
+  $(GitBaseTag), ThisAssembly.Git.BaseTag
+  $(GitSemVerMajor), ThisAssembly.Git.SemVer.Major
+  $(GitSemVerMinor), ThisAssembly.Git.SemVer.Minor
+  $(GitSemVerPatch), ThisAssembly.Git.SemVer.Patch
+  $(GitSemVerLabel), ThisAssembly.Git.SemVer.Label
+  $(GitSemVerDashLabel), ThisAssembly.Git.SemVer.DashLabel
+  $(GitSemVerSource), ThisAssembly.Git.SemVer.Source
+
+The generated code contains only constants, so it can be used to construct your own assembly/file version attributes:
+
+[assembly: AssemblyVersion(ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + ".0")] 
+[assembly: AssemblyInformationalVersion(ThisAssembly.Git.SemVer.Major + "." + 
+	ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch + "-" + 
+	ThisAssembly.Git.Branch + "+" + ThisAssembly.Git.Commit)]
+		</description>
+		<copyright>Copyright 2015</copyright>
+		<tags>msbuild git semver scc</tags>
+	</metadata>
+  <files>
+	<file src="readme.txt" />
+    <file src="build\GitInfo.cache.pp" target="build" />
+    <file src="build\GitInfo.cs.pp" target="build" />
+    <file src="build\GitInfo.vb.pp" target="build" />
+    <file src="build\GitInfo.targets" target="build" />
+    <file src="build\GitInfo.xbuild" target="build" />
+  </files>
+</package>

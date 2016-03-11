@@ -18,9 +18,10 @@
 
 		<MakeDir Directories="out" Condition="!Exists('out')" />
 
-		<Exec Command='"$(NuGetExe)" Pack "src\GitInfo.nuspec"  $(Args)' />
+		<Exec Command='"$(NuGetExe)" Pack "src\GitInfo\GitInfo.nuspec" $(Args)' />
+		<Exec Command='"$(NuGetExe)" Pack "src\GitInfo.Vsix\GitInfo.Vsix.nuspec" $(Args)' />
 	</Target>
 
-	<Import Project="src\build\GitInfo.targets" />
+	<Import Project="src\GitInfo\build\GitInfo.targets" />
 	
 </Project>

@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <package>
 	<metadata>
-		<id>GitInfo</id>
-		<version>0.1.0</version>
-		<title>Git and SemVer info for MSBuild/C#/VB</title>
+		<id>GitInfo.Vsix</id>
+		<version>$version$</version>
+		<title>VSIX info for MSBuild/C#/VB</title>
 		<authors>Daniel Cazzulino</authors>
 		<iconUrl>https://raw.github.com/kzu/GitInfo/master/img/git.png</iconUrl>
 		<licenseUrl>https://github.com/kzu/GitInfo/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/kzu/GitInfo</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<summary>Access commit information from MSBuild and C#/VB code, and infer SemVer from branch, tag or version file in git repo.</summary>
+		<summary>Access VSIX information from MSBuild and C#/VB code, and automatically version the resulting extension with GitInfo.</summary>
 		<description>Exposes the following information for use directly from MSBuild, C# and VB:
   $(GitBranch), ThisAssembly.Git.Branch
   $(GitCommit), ThisAssembly.Git.Commit
@@ -36,13 +36,15 @@ The generated code contains only constants, so it can be used to construct your 
 		</description>
 		<copyright>Copyright 2015</copyright>
 		<tags>msbuild git semver scc</tags>
+		<dependencies>
+			<dependency id="GitInfo" version="$version$" />
+		</dependencies>
 	</metadata>
   <files>
 	<file src="readme.txt" />
-    <file src="build\GitInfo.cache.pp" target="build" />
-    <file src="build\GitInfo.cs.pp" target="build" />
-    <file src="build\GitInfo.vb.pp" target="build" />
-    <file src="build\GitInfo.targets" target="build" />
-    <file src="build\GitInfo.xbuild" target="build" />
+    <file src="build\GitInfo.Vsix.cache.pp" target="build" />
+    <file src="build\GitInfo.Vsix.cs.pp" target="build" />
+    <file src="build\GitInfo.Vsix.vb.pp" target="build" />
+    <file src="build\GitInfo.Vsix.targets" target="build" />
   </files>
 </package>

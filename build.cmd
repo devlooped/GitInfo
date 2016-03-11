@@ -11,15 +11,17 @@ IF EXIST %CACHED_NUGET% goto copynuget
 echo Downloading latest version of NuGet.exe...
 IF NOT EXIST %LocalAppData%\NuGet md %LocalAppData%\NuGet
 @powershell -NoProfile -ExecutionPolicy unrestricted -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest 'https://www.nuget.org/nuget.exe' -OutFile '%CACHED_NUGET%'"
+%LocalAppData%\NuGet\NuGet.exe Update -Self
 
 :copynuget
-IF EXIST .nuget\nuget.exe goto restore
+IF EXIST .nuget\NuGet.exe goto restore
 md .nuget
-copy %CACHED_NUGET% .nuget\nuget.exe > nul
+copy %CACHED_NUGET% .nuget\NuGet.exe > nul
+.nuget\NuGet.exe Update -Self
 
 :restore
 IF NOT EXIST packages.config goto run
-.nuget\NuGet.exe install packages.config -OutputDirectory packages -ExcludeVersion
+.nuget\NuGet.exe Install packages.config -OutputDirectory packages -ExcludeVersion
 
 :run
 msbuild build.proj /nologo /v:detailed %1 %2 %3 %4 %5 %6 %7 %8 %9
