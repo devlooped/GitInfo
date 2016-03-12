@@ -24,9 +24,8 @@
 		<Vsix2011>&lt;Namespace Prefix='vs' Uri='http://schemas.microsoft.com/developer/vsx-schema/2011'/&gt;</Vsix2011>
 		<Vsix2010>&lt;Namespace Prefix='vs' Uri='http://schemas.microsoft.com/developer/vsx-schema/2010'/&gt;</Vsix2010>
 		<UpdateVsixManifestDependsOn>
-			_GitInputs;
-			GitVersion;
-			GetVsixVersion;
+			FindSourceVsixManifest;
+			VsixInfo;
 			_ReplaceSourceManifest;
 			_UpdateTempManifest;
 		</UpdateVsixManifestDependsOn>
@@ -41,6 +40,7 @@
 			$(VsixInfoDependsOn)
 		</VsixInfoDependsOn>
 		<CompileDependsOn>
+			VsixInfo;
 			VsixThisAssembly;
 			$(CompileDependsOn)
 		</CompileDependsOn>
@@ -58,7 +58,7 @@
 	<Target Name="UpdateVsixManifest" AfterTargets="FindSourceVsixManifest" DependsOnTargets="$(UpdateVsixManifestDependsOn)" />
 
 	<Target Name="_UpdateTempManifest"
-			DependsOnTargets="GetVsixVersion"
+			DependsOnTargets="GetVsixVersion;_ReplaceSourceManifest"
 			Inputs="$(OriginalVsixManifest);@(_GitInput)"
 			Outputs="$(SourceVsixManifest)">
 
@@ -92,7 +92,7 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="GetVsixMetadata" Condition="Exists('@(SourceVsixManifest)')" DependsOnTargets="FindSourceVsixManifest">
+	<Target Name="GetVsixMetadata" Condition="Exists('@(SourceVsixManifest)')" AfterTargets="FindSourceVsixManifest" DependsOnTargets="FindSourceVsixManifest">
 		<XmlPeek Condition="'$(VsixID)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/@Id">
 			<Output TaskParameter="Result" PropertyName="VsixID" />
 		</XmlPeek>
@@ -124,7 +124,7 @@
 
 	<PropertyGroup>
 		<VsixThisAssemblyDependsOn>
-			VsixInfo;
+			UpdateVsixManifest;
 			_VsixGenerateThisAssembly
 		</VsixThisAssemblyDependsOn>
 	</PropertyGroup>
