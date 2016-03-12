@@ -9,7 +9,7 @@
 		<licenseUrl>https://github.com/kzu/GitInfo/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/kzu/GitInfo</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<summary>Access commit information from MSBuild and C#/VB code, and infer SemVer from branch, tag or version file in git repo.</summary>
+		<summary>Access commit information from MSBuild and C#/VB code, and infer SemVer from branch, tag or version file in Git repository.</summary>
 		<description>Exposes the following information for use directly from MSBuild, C# and VB:
   $(GitBranch), ThisAssembly.Git.Branch
   $(GitCommit), ThisAssembly.Git.Commit
@@ -35,7 +35,7 @@ The generated code contains only constants, so it can be used to construct your 
 	ThisAssembly.Git.Branch + "+" + ThisAssembly.Git.Commit)]
 		</description>
 		<copyright>Copyright 2015</copyright>
-		<tags>msbuild git semver scc</tags>
+		<tags>MSBuild Git Versioning GitVersion GitFlowVersion GitFlow GitHubFlow SemVer</tags>
 	</metadata>
   <files>
 	<file src="readme.txt" />

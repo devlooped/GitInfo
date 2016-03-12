@@ -3,13 +3,13 @@
 	<metadata>
 		<id>GitInfo.Vsix</id>
 		<version>$version$</version>
-		<title>VSIX info for MSBuild/C#/VB</title>
+		<title>VSIX, Git and SemVer info for MSBuild/C#/VB</title>
 		<authors>Daniel Cazzulino</authors>
 		<iconUrl>https://raw.github.com/kzu/GitInfo/master/img/git.png</iconUrl>
 		<licenseUrl>https://github.com/kzu/GitInfo/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/kzu/GitInfo</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<summary>Access VSIX information from MSBuild and C#/VB code, and automatically version the resulting extension with GitInfo.</summary>
+		<summary>Automatically version a VSIX extension using SemVer from branch, tag or version file in Git repository, and access VSIX information from MSBuild and C#/VB code.</summary>
 		<description>Exposes the following information for use directly from MSBuild, C# and VB:
   $(VsixID), ThisAssembly.Vsix.Identifier
   $(VsixName), ThisAssembly.Vsix.Name
@@ -23,7 +23,7 @@ The generated code contains only constants, that can be used as follows:
 [assembly: AssemblyCompany(ThisAssembly.Vsix.Author)]
 		</description>
 		<copyright>Copyright 2015</copyright>
-		<tags>msbuild git semver scc vsx vsix extensibility</tags>
+		<tags>MSBuild Git Versioning GitVersion GitFlowVersion GitFlow GitHubFlow SemVer VSX VSIX Extensibility VisualStudio</tags>
 		<dependencies>
 			<dependency id="GitInfo" version="$version$" />
 		</dependencies>
