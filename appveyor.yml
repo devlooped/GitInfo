@@ -2,7 +2,7 @@ init:
   - git config --global core.autocrlf input
 
 build_script:
-  - build.cmd
+  - cmd: build.cmd /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 deploy:
   - provider: NuGet
