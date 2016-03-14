@@ -24,18 +24,18 @@ assembly/file version attributes with whatever format you want:
 
 [assembly: AssemblyVersion (ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)]
 [assembly: AssemblyInformationalVersion (
-	ThisAssembly.Git.SemVer.Major + "." +
-	ThisAssembly.Git.SemVer.Minor + "." +
-	ThisAssembly.Git.SemVer.Patch + "-" +
-	ThisAssembly.Git.Branch + "+" +
-	ThisAssembly.Git.Commit)]
+    ThisAssembly.Git.SemVer.Major + "." +
+    ThisAssembly.Git.SemVer.Minor + "." +
+    ThisAssembly.Git.SemVer.Patch + "-" +
+    ThisAssembly.Git.Branch + "+" +
+    ThisAssembly.Git.Commit)]
 // i..e ^: 1.0.2-master+c218617
-	
+    
 ** NOTE: you may need to close and reopen the solution in order 
          for Visual Studio to refresh intellisense and show the 
          ThisAssembly type right after package installation for 
          the first time.
-	
+    
 All generated constants also have a Summary documentation tag 
 that shows the current value in the intellisense tooltip, making 
 it very easy to see what the different values contain.
@@ -59,30 +59,30 @@ The available constants from code are:
 
 Available MSBuild customizations:
 
-	$(GitThisAssembly): set to 'false' to prevent assembly 
-						metadata and constants generation.
+    $(GitThisAssembly): set to 'false' to prevent assembly 
+                        metadata and constants generation.
 
-	$(GitThisAssemblyMetadata): set to 'false' to prevent assembly 
-  							    metadata generation only. Defaults 
+    $(GitThisAssemblyMetadata): set to 'false' to prevent assembly 
+                                metadata generation only. Defaults 
                                 to 'false'.
-	
-	$(ThisAssemblyNamespace): allows overriding the namespace
-							  for the ThisAssembly class.
-							  Defaults to the global namespace.
-											
-	$(GitDefaultBranch): determines the base branch used to 
-						 calculate commits on top of current branch.
-						 Defaults to 'master'.
-	
-	$(GitVersionFile): determines the name of a file in the Git 
-					   repository root used to provide the base 
-					   version info.
-					   Defaults to 'GitInfo.txt'.
-										 
-	$(GitInfoReportImportance): allows rendering all the retrieved
-								git information with the specified
-								message importance ('high', 
-								'normal' or 'low').
-								Defaults to 'low'.
+    
+    $(ThisAssemblyNamespace): allows overriding the namespace
+                              for the ThisAssembly class.
+                              Defaults to the global namespace.
+                                            
+    $(GitDefaultBranch): determines the base branch used to 
+                         calculate commits on top of current branch.
+                         Defaults to 'master'.
+    
+    $(GitVersionFile): determines the name of a file in the Git 
+                       repository root used to provide the base 
+                       version info.
+                       Defaults to 'GitInfo.txt'.
+                                         
+    $(GitInfoReportImportance): allows rendering all the retrieved
+                                git information with the specified
+                                message importance ('high', 
+                                'normal' or 'low').
+                                Defaults to 'low'.
 
 
