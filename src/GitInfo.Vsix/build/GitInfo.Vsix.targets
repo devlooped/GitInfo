@@ -23,14 +23,6 @@
 		<VsixThisAssemblyFile>$(IntermediateOutputPath)ThisAssembly.VsixInfo.g$(DefaultLanguageSourceExtension)</VsixThisAssemblyFile>
 		<Vsix2011>&lt;Namespace Prefix='vs' Uri='http://schemas.microsoft.com/developer/vsx-schema/2011'/&gt;</Vsix2011>
 		<Vsix2010>&lt;Namespace Prefix='vs' Uri='http://schemas.microsoft.com/developer/vsx-schema/2010'/&gt;</Vsix2010>
-		<UpdateVsixManifestDependsOn>
-			FindSourceVsixManifest;
-			VsixInfo;
-			_ReplaceSourceManifest;
-			_UpdateTempManifest;
-		</UpdateVsixManifestDependsOn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(CreateVsixContainer)' == 'true' or '$(DeployExtension)' == true">
 		<VsixInfoDependsOn>
 			_GitInputs;
 			GitVersion;
@@ -40,11 +32,23 @@
 			$(VsixInfoDependsOn)
 		</VsixInfoDependsOn>
 		<CompileDependsOn>
-			VsixInfo;
 			VsixThisAssembly;
 			$(CompileDependsOn)
 		</CompileDependsOn>
+		<UpdateVsixManifestDependsOn>
+			_GitInputs;
+			GitVersion;
+			GetVsixVersion;
+			_ReplaceSourceManifest;
+			_UpdateTempManifest;
+		</UpdateVsixManifestDependsOn>
 	</PropertyGroup>
+	<!--<PropertyGroup>
+		<CoreCompileDependsOn>
+			VsixThisAssembly;
+			$(CoreCompileDependsOn)
+		</CoreCompileDependsOn>
+	</PropertyGroup>-->
 
 	<!-- Redefine in your project to modify the way the VSIX version is formatted -->
 	<Target Name="GetVsixVersion">
@@ -55,7 +59,9 @@
 
 	<Target Name="VsixInfo" DependsOnTargets="$(VsixInfoDependsOn)" />
 
-	<Target Name="UpdateVsixManifest" AfterTargets="FindSourceVsixManifest" DependsOnTargets="$(UpdateVsixManifestDependsOn)" />
+	<Target Name="UpdateVsixManifest" AfterTargets="FindSourceVsixManifest"
+			Condition="'$(CreateVsixContainer)' == 'true' or '$(DeployExtension)' == true"
+			DependsOnTargets="$(UpdateVsixManifestDependsOn)" />
 
 	<Target Name="_UpdateTempManifest"
 			DependsOnTargets="GetVsixVersion;_ReplaceSourceManifest"
@@ -92,7 +98,7 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="GetVsixMetadata" Condition="Exists('@(SourceVsixManifest)')" AfterTargets="FindSourceVsixManifest" DependsOnTargets="FindSourceVsixManifest">
+	<Target Name="GetVsixMetadata" Condition="Exists('@(SourceVsixManifest)')" DependsOnTargets="FindSourceVsixManifest">
 		<XmlPeek Condition="'$(VsixID)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/@Id">
 			<Output TaskParameter="Result" PropertyName="VsixID" />
 		</XmlPeek>
@@ -124,7 +130,7 @@
 
 	<PropertyGroup>
 		<VsixThisAssemblyDependsOn>
-			UpdateVsixManifest;
+			VsixInfo;
 			_VsixGenerateThisAssembly
 		</VsixThisAssemblyDependsOn>
 	</PropertyGroup>
