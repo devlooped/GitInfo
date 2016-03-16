@@ -43,12 +43,6 @@
 			_UpdateTempManifest;
 		</UpdateVsixManifestDependsOn>
 	</PropertyGroup>
-	<!--<PropertyGroup>
-		<CoreCompileDependsOn>
-			VsixThisAssembly;
-			$(CoreCompileDependsOn)
-		</CoreCompileDependsOn>
-	</PropertyGroup>-->
 
 	<!-- Redefine in your project to modify the way the VSIX version is formatted -->
 	<Target Name="GetVsixVersion">

@@ -55,6 +55,10 @@
 		<GitInfoReportImportance Condition="'$(GitInfoReportImportance)' == ''">low</GitInfoReportImportance>
 		<GitThisAssemblyMetadataDefine Condition="'$(GitThisAssemblyMetadata)' == 'true'">ADDMETADATA</GitThisAssemblyMetadataDefine>
 		<GitThisAssemblyMetadataDefine Condition="'$(GitThisAssemblyMetadata)' != 'true'">NOMETADATA</GitThisAssemblyMetadataDefine>
+
+		<!-- Defaults if overrides are specified when building -->
+		<GitCommits Condition="'$(GitCommits)' == ''">0</GitCommits>
+		<GitSemVerSource Condition="'$(GitBaseVersion)' != ''">MSBuild</GitSemVerSource>
 	</PropertyGroup>
 
 	<!-- Private properties -->
