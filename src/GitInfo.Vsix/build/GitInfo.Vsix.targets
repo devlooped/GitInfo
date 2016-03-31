@@ -87,37 +87,37 @@
 			<SourceVsixManifest>$(IntermediateOutputPath)%(SourceVsixManifest.FileName)%(SourceVsixManifest.Extension)</SourceVsixManifest>
 		</PropertyGroup>
 		<ItemGroup>
-			<SourceVsixManifest Remove="*" />
+			<SourceVsixManifest Remove="@(SourceVsixManifest)" />
 			<SourceVsixManifest Include="$(SourceVsixManifest)" />
 		</ItemGroup>
 	</Target>
 
-	<Target Name="GetVsixMetadata" DependsOnTargets="FindSourceVsixManifest">
-		<XmlPeek Condition="'$(VsixID)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="%(SourceVsixManifest.FullPath)" Query="/vs:Vsix/vs:Identifier/@Id">
+	<Target Name="GetVsixMetadata" Condition="Exists('@(SourceVsixManifest)')" DependsOnTargets="FindSourceVsixManifest">
+		<XmlPeek Condition="'$(VsixID)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/@Id">
 			<Output TaskParameter="Result" PropertyName="VsixID" />
 		</XmlPeek>
-		<XmlPeek Condition="'$(VsixID)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="%(SourceVsixManifest.FullPath)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Id">
+		<XmlPeek Condition="'$(VsixID)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Id">
 			<Output TaskParameter="Result" PropertyName="VsixID" />
 		</XmlPeek>
 
-		<XmlPeek Condition="'$(VsixName)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="%(SourceVsixManifest.FullPath)" Query="/vs:Vsix/vs:Identifier/vs:Name/text()">
+		<XmlPeek Condition="'$(VsixName)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Name/text()">
 			<Output TaskParameter="Result" PropertyName="VsixName" />
 		</XmlPeek>
-		<XmlPeek Condition="'$(VsixName)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="%(SourceVsixManifest.FullPath)" Query="/vs:PackageManifest/vs:Metadata/vs:DisplayName/text()">
+		<XmlPeek Condition="'$(VsixName)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:DisplayName/text()">
 			<Output TaskParameter="Result" PropertyName="VsixName" />
 		</XmlPeek>
 
-		<XmlPeek Condition="'$(VsixDescription)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="%(SourceVsixManifest.FullPath)" Query="/vs:Vsix/vs:Identifier/vs:Description/text()">
+		<XmlPeek Condition="'$(VsixDescription)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Description/text()">
 			<Output TaskParameter="Result" PropertyName="VsixDescription" />
 		</XmlPeek>
-		<XmlPeek Condition="'$(VsixDescription)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="%(SourceVsixManifest.FullPath)" Query="/vs:PackageManifest/vs:Metadata/vs:Description/text()">
+		<XmlPeek Condition="'$(VsixDescription)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Description/text()">
 			<Output TaskParameter="Result" PropertyName="VsixDescription" />
 		</XmlPeek>
 
-		<XmlPeek Condition="'$(VsixAuthor)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="%(SourceVsixManifest.FullPath)" Query="/vs:Vsix/vs:Identifier/vs:Author/text()">
+		<XmlPeek Condition="'$(VsixAuthor)' == ''" Namespaces="$(Vsix2010)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:Vsix/vs:Identifier/vs:Author/text()">
 			<Output TaskParameter="Result" PropertyName="VsixAuthor" />
 		</XmlPeek>
-		<XmlPeek Condition="'$(VsixAuthor)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="%(SourceVsixManifest.FullPath)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Publisher">
+		<XmlPeek Condition="'$(VsixAuthor)' == ''" Namespaces="$(Vsix2011)" XmlInputPath="@(SourceVsixManifest)" Query="/vs:PackageManifest/vs:Metadata/vs:Identity/@Publisher">
 			<Output TaskParameter="Result" PropertyName="VsixAuthor" />
 		</XmlPeek>
 	</Target>
