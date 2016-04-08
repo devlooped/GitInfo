@@ -36,6 +36,11 @@
 								git information with the specified
 								message importance ('high', 'normal' or 'low').
 								Defaults to 'low'.
+                                
+	$(GitIgnoreBranchVersion) and $(GitIgnoreTagVersion): determines 
+								whether the branch and tags (if any) 
+								will be used to find a base version.
+								Defaults to empty value (no ignoring).
 	==============================================================
 	-->
 
@@ -364,7 +369,7 @@
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 					  DependsOnTargets="_GitBranch"
-					  Condition="'$(GitBaseVersion)' == ''">
+					  Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreBranchVersion)' != 'true' ">
 
 		<PropertyGroup>
 			<IsValidGitBaseVersion>
@@ -419,7 +424,7 @@
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 					  DependsOnTargets="_GitBranch;_GitCommit"
-					  Condition="'$(GitBaseVersion)' == ''">
+					  Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' ">
 
 		<Exec Command='$(GitExe) describe --tags --abbrev=0'
 						StandardErrorImportance="low"
@@ -446,7 +451,7 @@
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 					  DependsOnTargets="_GitBaseVersionTagExists"
-					  Condition="'$(GitBaseVersion)' == '' And '$(GitBaseTag)' != ''">
+					  Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' And '$(GitBaseTag)' != ''">
 
 		<!-- At this point, we now there is a base tag already we can leverage -->
 		<Exec Command='$(GitExe) describe --tags'
