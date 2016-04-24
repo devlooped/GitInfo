@@ -146,7 +146,7 @@
 		</PropertyGroup>
 
 		<!-- Account for cygwin separately -->
-		<Exec Command='"$(CygPathExe)" -w $(_GitOutput)" WorkingDir="$(MSBuildProjectDirectory)"'
+		<Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"' WorkingDirectory="$(MSBuildProjectDirectory)"
 						StandardErrorImportance='high'
 						StandardOutputImportance='low'
 						ConsoleToMSBuild='true'
