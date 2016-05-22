@@ -238,10 +238,22 @@
 
 		<PropertyGroup Condition="'$(GitRoot)' != ''">
 			<_GitHead>$([System.IO.Path]::Combine($(GitDir), 'HEAD'))</_GitHead>
+			<_GitHead>$([System.IO.Path]::GetFullPath($(_GitHead)))</_GitHead>
 			<_GitHead>$([System.IO.File]::ReadAllText('$(_GitHead)'))</_GitHead>
 			<GitBranch>$([System.Text.RegularExpressions.Regex]::Match($(_GitHead), '(?&lt;=/)[^/]+$'))</GitBranch>
 			<GitBranch>$(GitBranch.Trim())</GitBranch>
 		</PropertyGroup>
+
+		<!-- CI systems may checkout the specific commit, rather than the branch, so we need to fallback -->
+		<Exec Command='$(GitExe) name-rev --name-only HEAD'
+						Condition=" '$(GitBranch)' == '' "
+						StandardErrorImportance="low"
+						StandardOutputImportance="low"
+						ConsoleToMSBuild="true"
+						WorkingDirectory="$(GitRoot)"
+						ContinueOnError="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
+		</Exec>
 
 		<PropertyGroup Condition="'$(GitRoot)' == ''">
 			<GitBranch>$(GitDefaultBranch)</GitBranch>
