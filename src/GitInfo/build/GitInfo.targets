@@ -218,7 +218,7 @@
 			<GitBaseVersionMajor Condition="'$(GitBaseVersionMajor)' == ''">%(GitInfo.GitBaseVersionMajor)</GitBaseVersionMajor>
 			<GitBaseVersionMinor Condition="'$(GitBaseVersionMinor)' == ''">%(GitInfo.GitBaseVersionMinor)</GitBaseVersionMinor>
 			<GitBaseVersionPatch Condition="'$(GitBaseVersionPatch)' == ''">%(GitInfo.GitBaseVersionPatch)</GitBaseVersionPatch>
-			<GitCommits Condition="'$(GitCommits)' == ''">%(GitInfo.GitCommits)</GitCommits>
+			<GitCommits Condition="'$(GitCommits)' == '' Or '$(GitCommits)' == '0'">%(GitInfo.GitCommits)</GitCommits>
 			<GitTag Condition="'$(GitTag)' == ''">%(GitInfo.GitTag)</GitTag>
 			<GitBaseTag Condition="'$(GitBaseTag)' == ''">%(GitInfo.GitBaseTag)</GitBaseTag>
 			<GitSemVerMajor Condition="'$(GitSemVerMajor)' == ''">%(GitInfo.GitSemVerMajor)</GitSemVerMajor>
