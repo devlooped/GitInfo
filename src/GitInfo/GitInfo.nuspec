@@ -36,6 +36,7 @@ The generated code contains only constants, so it can be used to construct your 
 		</description>
 		<copyright>Copyright 2015</copyright>
 		<tags>MSBuild Git Versioning GitVersion GitFlowVersion GitFlow GitHubFlow SemVer</tags>
+		<developmentDependency>true</developmentDependency>
 	</metadata>
   <files>
 	<file src="readme.txt" />
