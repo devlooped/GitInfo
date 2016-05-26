@@ -24,6 +24,7 @@ The generated code contains only constants, that can be used as follows:
 		</description>
 		<copyright>Copyright 2015</copyright>
 		<tags>MSBuild Git Versioning GitVersion GitFlowVersion GitFlow GitHubFlow SemVer VSX VSIX Extensibility VisualStudio</tags>
+		<developmentDependency>true</developmentDependency>
 		<dependencies>
 			<dependency id="GitInfo" version="$version$" />
 		</dependencies>
