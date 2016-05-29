@@ -365,7 +365,7 @@
 			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
 		</PropertyGroup>
 
-		<Exec Command='$(GitExe) rev-list --count "$(_GitLastBump)"..HEAD'
+		<Exec Command='$(GitExe) rev-list --count "$(_GitLastBump)"..HEAD $([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))'
 						Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
 						StandardErrorImportance="low"
 						StandardOutputImportance="low"
