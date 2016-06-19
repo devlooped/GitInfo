@@ -1,5 +1,5 @@
 # GitInfo
-> A fresh and transparent approach to Git information retrieval from MSBuild without 
+> A fresh and transparent approach to Git information retrieval from MSBuild and Code without 
 > using any custom tasks or compiled code and tools, obscure settings, format strings, etc. 
 
 [![Build status](https://ci.appveyor.com/api/projects/status/p9e5xdd86vnfe0q8?svg=true
@@ -13,7 +13,7 @@
 - Trivially added/installed via [a NuGet package](https://www.nuget.org/packages/GitInfo)
 - No format strings or settings to learn
 - Single well-structured [.targets file](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.targets) 
-  with plain MSBuild
+  with plain MSBuild and no custom tasks
 - [Optional embedding](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.targets#L51) 
   of Git info in assembly [as metadata](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.cs.pp#L4)
 - Optional use of Git info to build arbitrary assembly/file version information, both 
@@ -82,3 +82,6 @@ Because this information is readily available whenever you build the project, yo
 never depend on CI build scripts that generate versions for you, and you can 
 always compile locally exactly the same version of an assembly that was built by 
 a CI server.
+
+You can read more about this project at the 
+[GitInfo announcement blog post](http://www.cazzulino.com/git-info-from-msbuild-and-code.html.
