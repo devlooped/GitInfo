@@ -48,9 +48,9 @@
 		<!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
 		<GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
 		<!-- Default the lookup directory to the project directory unless overriden -->
-		<GitVersionFileBaseDir Condition="'$(GitVersionFileBaseDir)' == ''">$(MSBuildProjectDirectory)</GitVersionFileBaseDir>
+		<GitInfoBaseDir Condition="'$(GitInfoBaseDir)' == ''">$(MSBuildProjectDirectory)</GitInfoBaseDir>
 		<!-- Look it upwards and grab the first one we find. -->
-		<GitVersionFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitVersionFileBaseDir), $(GitVersionFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(GitVersionFileBaseDir), $(GitVersionFile)))\$(GitVersionFile)</GitVersionFile>
+		<GitVersionFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))\$(GitVersionFile)</GitVersionFile>
 
 		<GitDefaultBranch Condition="'$(GitDefaultBranch)' == ''">master</GitDefaultBranch>
 		<GitDefaultCommit Condition="'$(GitDefaultCommit)' == ''">0000000</GitDefaultCommit>
@@ -137,7 +137,7 @@
 						StandardErrorImportance='high'
 						StandardOutputImportance='low'
 						ConsoleToMSBuild='true'
-						WorkingDirectory='$(MSBuildProjectDirectory)'
+						WorkingDirectory='$(GitInfoBaseDir)'
 						ContinueOnError='true'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
@@ -148,7 +148,7 @@
 		</PropertyGroup>
 
 		<!-- Account for cygwin separately -->
-		<Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"' WorkingDirectory="$(MSBuildProjectDirectory)"
+		<Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"' WorkingDirectory="$(GitInfoBaseDir)"
 						StandardErrorImportance='high'
 						StandardOutputImportance='low'
 						ConsoleToMSBuild='true'
@@ -183,7 +183,7 @@
 
 		<Message Text="Determined Git repository root as '$(GitRoot)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
 		<Message Text="Determined Git dir as '$(GitDir)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
-		<Warning Text="Directory $(MSBuildProjectDirectory) is not in a Git repository. Cannot determine Git repository root." Condition="'$(GitRoot)' == ''" />
+		<Warning Text="Directory $(GitInfoBaseDir) is not in a Git repository. Cannot determine Git repository root." Condition="'$(GitRoot)' == ''" />
 
 	</Target>
 
@@ -198,7 +198,7 @@
 	</Target>
 
 	<!-- If the inputs/outputs are outdated, clear the cache -->
-	<Target Name="_GitClearCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)">
+	<Target Name="_GitClearCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)')">
 		<Delete Files="$(_GitInfoFile)" />
 	</Target>
 
@@ -301,7 +301,7 @@
 
 	<Target Name="_GitPopulateInfo">
 		<ItemGroup>
-			<GitInfo>
+			<GitInfo Include="GitInfo">
 				<GitRoot>$(GitRoot)</GitRoot>
 				<GitBranch>$(GitBranch)</GitBranch>
 				<GitCommit>$(GitCommit)</GitCommit>
@@ -608,7 +608,7 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_GitWriteCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)">
+	<Target Name="_GitWriteCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="'$(SkipWriteGitCache)' != 'true'">
 
 		<PropertyGroup>
 			<_GitInfoContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cache.pp'))</_GitInfoContent>
