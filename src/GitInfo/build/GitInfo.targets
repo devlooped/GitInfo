@@ -50,7 +50,7 @@
 		<!-- Default the lookup directory to the project directory unless overriden -->
 		<GitVersionFileBaseDir Condition="'$(GitVersionFileBaseDir)' == ''">$(MSBuildProjectDirectory)</GitVersionFileBaseDir>
 		<!-- Look it upwards and grab the first one we find. -->
-		<GitVersionFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitVersionFileBaseDir), $(GitVersionFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), $(GitVersionFile)))\$(GitVersionFile)</GitVersionFile>
+		<GitVersionFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitVersionFileBaseDir), $(GitVersionFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(GitVersionFileBaseDir), $(GitVersionFile)))\$(GitVersionFile)</GitVersionFile>
 
 		<GitDefaultBranch Condition="'$(GitDefaultBranch)' == ''">master</GitDefaultBranch>
 		<GitDefaultCommit Condition="'$(GitDefaultCommit)' == ''">0000000</GitDefaultCommit>
