@@ -2,8 +2,7 @@
 > A fresh and transparent approach to Git information retrieval from MSBuild and Code without 
 > using any custom tasks or compiled code and tools, obscure settings, format strings, etc. 
 
-[![Build status](https://ci.appveyor.com/api/projects/status/p9e5xdd86vnfe0q8?svg=true
-)](https://ci.appveyor.com/project/MobileEssentials/gitinfo) 
+[![Build status](https://ci.appveyor.com/api/projects/status/p9e5xdd86vnfe0q8?svg=true)](https://ci.appveyor.com/project/MobileEssentials/gitinfo) 
 [![Latest version](https://img.shields.io/nuget/v/GitInfo.svg)](https://www.nuget.org/packages/GitInfo)
 [![License](http://img.shields.io/:license-MIT-blue.svg)](opensource.org/licenses/mit-license.php)
 
@@ -84,4 +83,4 @@ always compile locally exactly the same version of an assembly that was built by
 a CI server.
 
 You can read more about this project at the 
-[GitInfo announcement blog post](http://www.cazzulino.com/git-info-from-msbuild-and-code.html.
+[GitInfo announcement blog post](http://www.cazzulino.com/git-info-from-msbuild-and-code.html).
