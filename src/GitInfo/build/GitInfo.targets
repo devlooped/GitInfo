@@ -70,13 +70,13 @@
 
 	<!-- Private properties -->
 	<PropertyGroup>
-		<CompileDependsOn>
+		<CoreCompileDependsOn>
 			GitInfo;
 			GitVersion;
 			GitThisAssembly;
 			GitInfoReport;
-			$(CompileDependsOn)
-		</CompileDependsOn>
+			$(CoreCompileDependsOn)
+		</CoreCompileDependsOn>
 
 		<_GitBaseVersionExpr Condition="'$(_GitBaseVersionExpr)' == ''">^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</_GitBaseVersionExpr>
 		<!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
