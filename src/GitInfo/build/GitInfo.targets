@@ -713,10 +713,6 @@
 		<Exec Condition="'$(MSBuildRuntimeVersion)' == ''"
 						Command="sed 's/\(.*\)&quot;;;/\1&quot;;/' '$(GitInfoThisAssemblyFile)'" />
 
-		<ItemGroup>
-			<FileWrites Include="$(GitInfoThisAssemblyFile)" Condition="'$(_ThisAssemblyContent)' != ''" />
-		</ItemGroup>
-
 	</Target>
 
 	<!--
