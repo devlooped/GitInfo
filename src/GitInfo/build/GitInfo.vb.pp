@@ -78,6 +78,17 @@ Namespace Global
                 ''' <summary>Label with dash prefix: $GitSemVerSource$</summary>
                 Public Const Source = "$GitSemVerVerSource$"
             End Class
+            ''' <summary>Provides access to BuildDate information for the current assembly.</summary>
+            Partial Public Class BuildDate
+                ''' <summary>Year: $GitBuildDateYear$</summary>
+                Public Const Year = "$GitBuildDateYear$"
+
+                ''' <summary>Month: $GitBuildDateMonth$</summary>
+                Public Const Month = "$GitBuildDateMonth$"
+
+                ''' <summary>Day: $GitBuildDateDay$</summary>
+                Public Const Day = "$GitBuildDateDay$"
+            End Class
         End Class
     End Class
 End Namespace
