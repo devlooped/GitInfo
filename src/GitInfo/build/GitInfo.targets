@@ -660,7 +660,8 @@
 
 		<ItemGroup>
 			<Compile Include="$(GitInfoThisAssemblyFile)" />
-		</ItemGroup>
+      <_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
+    </ItemGroup>
 
 	</Target>
 
