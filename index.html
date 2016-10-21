@@ -34,14 +34,14 @@
 <li>Trivially added/installed via <a href="https://www.nuget.org/packages/GitInfo">a NuGet package</a>
 </li>
 <li>No format strings or settings to learn</li>
-<li>Single well-structured <a href="https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.targets">.targets file</a> with plain MSBuild</li>
+<li>Single well-structured <a href="https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.targets">.targets file</a> with plain MSBuild</li>
 <li>
-<a href="https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.targets#L53">Optional embedding</a> of Git info in assembly <a href="https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.cs#L3">as metadata</a>
+<a href="https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.targets#L53">Optional embedding</a> of Git info in assembly <a href="https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.cs#L3">as metadata</a>
 </li>
 <li>Optional use of Git info to build arbitrary assembly/file version information, both <a href="https://github.com/kzu/GitInfoDemo/blob/master/GitInfoDemo/Properties/AssemblyInfo.cs#L10">in C#</a> as well <a href="https://github.com/kzu/GitInfoDemo/blob/master/GitInfoDemoVB/My%20Project/AssemblyInfo.vb#L8">as VB</a>.</li>
-<li>Trivially modified/improved generated code by just adjusting a <a href="https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.cs">C#/VB template file</a> included in the <a href="https://www.nuget.org/packages/GitInfo">NuGet package</a>
+<li>Trivially modified/improved generated code by just adjusting a <a href="https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.cs">C#/VB template file</a> included in the <a href="https://www.nuget.org/packages/GitInfo">NuGet package</a>
 </li>
-<li>Easily modified/improved by just adjusting a <a href="https://github.com/kzu/GitInfo/blob/master/src/build/GitInfo.targets">single .targets file</a> </li>
+<li>Easily modified/improved by just adjusting a <a href="https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.targets">single .targets file</a> </li>
 <li>100% incremental build-friendly and high-performing (all proper Inputs/Outputs in place, smart caching of Git info, etc.)</li>
 </ul>
 
