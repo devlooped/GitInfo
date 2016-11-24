@@ -656,12 +656,15 @@
 	</PropertyGroup>
 
 	<Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
-					  BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssembly)' == 'true'">
+			BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssembly)' == 'true'">
 
 		<ItemGroup>
-			<Compile Include="$(GitInfoThisAssemblyFile)" />
-      <_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
-    </ItemGroup>
+			<_CompileGitInfo Include="@(Compile)" Condition="'%(Identity)' == '$(GitInfoThisAssemblyFile)'" />
+			<!-- Don't add it twice if it's already there. -->
+			<Compile Include="$(GitInfoThisAssemblyFile)" Condition="'@(_CompileGitInfo)' == ''" />
+			<!-- For the double compilation happening with XAML projects. -->
+			<_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
+		</ItemGroup>
 
 	</Target>
 
