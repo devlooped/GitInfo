@@ -659,11 +659,7 @@
 			BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssembly)' == 'true'">
 
 		<ItemGroup>
-			<_CompileGitInfo Include="@(Compile)" Condition="'%(Identity)' == '$(GitInfoThisAssemblyFile)'" />
-			<!-- Don't add it twice if it's already there. -->
-			<Compile Include="$(GitInfoThisAssemblyFile)" Condition="'@(_CompileGitInfo)' == ''" />
-			<!-- For the double compilation happening with XAML projects. -->
-			<_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
+			<Compile Include="$(GitInfoThisAssemblyFile)" />
 		</ItemGroup>
 
 	</Target>
