@@ -192,7 +192,7 @@
 			<_GitInput Include="$(GitDir)HEAD" />
 			<_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
 		</ItemGroup>
-		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '*.*'))">
+		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '**', '*.*'))">
 			<Output ItemName="_GitInput" TaskParameter="Include" />
 		</CreateItem>
 	</Target>
