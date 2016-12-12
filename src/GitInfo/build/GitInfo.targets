@@ -84,8 +84,8 @@
 	</PropertyGroup>
 
 	<Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
-
 		<Message Importance="$(GitInfoReportImportance)" Text="Git Info:
+  GitInfoBaseDir:       $(GitInfoBaseDir)
   GitRoot:              $(GitRoot)
   GitBranch:            $(GitBranch)
   GitCommit:            $(GitCommit)
@@ -105,7 +105,6 @@
   GitSemVerDashLabel:   $(GitSemVerDashLabel)
   GitSemVerSource:      $(GitSemVerSource)
 "/>
-
 	</Target>
 
 	<PropertyGroup>
@@ -134,11 +133,11 @@
 	<Target Name="_GitRoot" Returns="$(GitRoot)" Condition="'$(GitRoot)' == ''">
 
 		<Exec Command='$(GitExe) rev-parse --show-toplevel'
-						StandardErrorImportance='high'
-						StandardOutputImportance='low'
-						ConsoleToMSBuild='true'
-						WorkingDirectory='$(GitInfoBaseDir)'
-						ContinueOnError='true'>
+			  StandardErrorImportance='high'
+			  StandardOutputImportance='low'
+			  ConsoleToMSBuild='true'
+			  WorkingDirectory='$(GitInfoBaseDir)'
+			  ContinueOnError='true'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -148,11 +147,12 @@
 		</PropertyGroup>
 
 		<!-- Account for cygwin separately -->
-		<Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"' WorkingDirectory="$(GitInfoBaseDir)"
-						StandardErrorImportance='high'
-						StandardOutputImportance='low'
-						ConsoleToMSBuild='true'
-						Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''">
+		<Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"' 
+			  WorkingDirectory="$(GitInfoBaseDir)"
+			  StandardErrorImportance='high'
+			  StandardOutputImportance='low'
+			  ConsoleToMSBuild='true'
+			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''">
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput" />
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -248,12 +248,12 @@
 
 		<!-- CI systems may checkout the specific commit, rather than the branch, so we need to fallback -->
 		<Exec Command='$(GitExe) name-rev --name-only HEAD'
-						Condition=" '$(GitBranch)' == '' "
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  Condition=" '$(GitBranch)' == '' "
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
 		</Exec>
 
@@ -264,17 +264,17 @@
 	</Target>
 
 	<Target Name="_GitCommit" Returns="$(GitCommit)"
-					  DependsOnTargets="_GitRoot"
+			DependsOnTargets="_GitRoot"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
-					  Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
+			Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
 
 		<Exec Command='$(GitExe) log --format=format:$(_ShortShaFormat) -n 1'
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommit"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -284,11 +284,11 @@
 		</PropertyGroup>
 
 		<Exec Command='$(GitExe) log --format=format:$(_LongShaFormat) -n 1'
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitSha"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -328,7 +328,7 @@
 	<Target Name="_GitBaseVersionFile" Returns="$(GitBaseVersion)"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
-					  Condition="'$(GitBaseVersion)' == '' And Exists('$(GitVersionFile)')">
+			Condition="'$(GitBaseVersion)' == '' And Exists('$(GitVersionFile)')">
 
 		<PropertyGroup>
 			<GitBaseVersion>$([System.IO.File]::ReadAllText('$(GitVersionFile)'))</GitBaseVersion>
@@ -350,11 +350,11 @@
 		<Message Text="Using base version from version file $(GitVersionFile)'" Importance="normal" />
 
 		<Exec Command='$(GitExe) log -n 1 --format=format:$(_ShortShaFormat) "$(GitVersionFile)"'
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitLastBump"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -368,12 +368,12 @@
 		</PropertyGroup>
 
 		<Exec Command='$(GitExe) rev-list --count "$(_GitLastBump)"..HEAD $([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))'
-						Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -383,8 +383,8 @@
 	<Target Name="_GitBaseVersionBranch" Returns="$(GitBaseVersion)"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
-					  DependsOnTargets="_GitBranch"
-					  Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreBranchVersion)' != 'true' ">
+			DependsOnTargets="_GitBranch"
+			Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreBranchVersion)' != 'true' ">
 
 		<PropertyGroup>
 			<IsValidGitBaseVersion>
@@ -394,7 +394,7 @@
 		</PropertyGroup>
 
 		<Message Text="Git branch '$(GitBranch)' cannot be used as a version specifier. Skipping branch-based version processing."
-							 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
+				 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
 
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
 			<GitBaseVersion>$(GitBranch)</GitBaseVersion>
@@ -404,18 +404,18 @@
 
 		<!-- Get the initial commit when the current branch departed from the default branch -->
 		<Exec Command='$(GitExe) merge-base --fork-point "$(GitDefaultBranch)"'
-						Condition="'$(IsValidGitBaseVersion)' == 'true'"
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  Condition="'$(IsValidGitBaseVersion)' == 'true'"
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitForkPoint"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 
 		<Warning Text="Could not retrieve first commit where branch $(GitBranch) forked from $(GitDefaultBranch). Defaulting to zero commits."
-							 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
+				 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
 
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'">
 			<GitCommits>0</GitCommits>
@@ -423,12 +423,12 @@
 
 		<!-- Get the commit count from the fork point to the current branch head -->
 		<Exec Command='$(GitExe) rev-list --count "$(_GitForkPoint)"..HEAD'
-						Condition="'$(IsValidGitBaseVersion)' == 'true' and '$(MSBuildLastExitCode)' == '0'"
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  Condition="'$(IsValidGitBaseVersion)' == 'true' and '$(MSBuildLastExitCode)' == '0'"
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -438,16 +438,16 @@
 	<Target Name="_GitBaseVersionTagExists" Returns="$(GitBaseTag)"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
-					  DependsOnTargets="_GitBranch;_GitCommit"
-					  Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' ">
+			DependsOnTargets="_GitBranch;_GitCommit"
+			Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' ">
 
 		<Exec Command='$(GitExe) describe --tags --abbrev=0'
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true"
-						IgnoreExitCode="true">
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true"
+			  IgnoreExitCode="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitBaseTag"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -458,23 +458,23 @@
 		</PropertyGroup>
 
 		<Message Text="No git tags exist. Skipping tag processing."
-							 Importance="low" Condition="'$(GitBaseTag)' == ''" />
+				 Importance="low" Condition="'$(GitBaseTag)' == ''" />
 
 	</Target>
 
 	<Target Name="_GitBaseVersionTag" Returns="$(GitBaseVersion)"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
-					  DependsOnTargets="_GitBaseVersionTagExists"
-					  Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' And '$(GitBaseTag)' != ''">
+			DependsOnTargets="_GitBaseVersionTagExists"
+			Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' And '$(GitBaseTag)' != ''">
 
 		<!-- At this point, we now there is a base tag already we can leverage -->
 		<Exec Command='$(GitExe) describe --tags'
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitTag"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -489,7 +489,7 @@
 		</PropertyGroup>
 
 		<Message Text="Current tag '$(GitBaseTag)' cannot be used as a version specifier. Skipping tag-based version processing."
-							 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
+				 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
 
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'" >
 			<GitBaseVersionSource>GitBaseTag</GitBaseVersionSource>
@@ -498,29 +498,29 @@
 		</PropertyGroup>
 
 		<Exec Command='$(GitExe) rev-list "$(GitBaseTag)" -n 1'
-						Condition="'$(IsValidGitBaseVersion)' == 'true'"
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  Condition="'$(IsValidGitBaseVersion)' == 'true'"
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitBaseTagCommit"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 
 		<Exec Command='$(GitExe) rev-list --count "$(_GitBaseTagCommit)".."$(GitCommit)"'
-						Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(_GitBaseTagCommit)' != '' And '$(GitCommit)' != '' And '$(GitCommit)' != '$(GitDefaultCommit)'"
-						StandardErrorImportance="low"
-						StandardOutputImportance="low"
-						ConsoleToMSBuild="true"
-						WorkingDirectory="$(GitRoot)"
-						ContinueOnError="true">
+			  Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(_GitBaseTagCommit)' != '' And '$(GitCommit)' != '' And '$(GitCommit)' != '$(GitDefaultCommit)'"
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 
 		<Warning Text="Failed to retrieve commit count from tag '$(GitBaseTag)' to tip ${GitCommit). Defaulting to zero commits."
-							 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
+				 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
 
 		<PropertyGroup>
 			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0'">0</GitCommits>
@@ -542,7 +542,7 @@
 
 		<!-- If $(GitBaseVersion) == '' And $(IsValidGitBaseVersion) == ''  -->
 		<Error Text="Fallback version %24(GitDefaultVersion) value of '$(GitDefaultVersion)' is not a valid SemVer 2.0 string."
-						 Condition="'$(IsValidGitDefaultVersion)' == 'false'" />
+			   Condition="'$(IsValidGitDefaultVersion)' == 'false'" />
 
 		<PropertyGroup>
 			<GitBaseVersion>$(GitDefaultVersion)</GitBaseVersion>
@@ -558,7 +558,7 @@
 
 		<!-- If $(GitBaseVersion) == '', it means we couldn't determine a base version by any probing mechanism -->
 		<Error Text="Failed to find a valid base version to use. Please make sure you have a %24(GitVersionFile) file (defaults to '$(GitVersionFile)'), branch, tag or %24(GitDefaultVersion) property with a valid SemVer 2.0 string."
-						 Condition="'$(GitBaseVersion)' == ''" />
+			   Condition="'$(GitBaseVersion)' == ''" />
 
 		<PropertyGroup>
 			<IsValidGitBaseVersion>
@@ -568,7 +568,7 @@
 		</PropertyGroup>
 
 		<Error Text="Current %24(GitBaseVersion) value of '$(GitBaseVersion)' is not a valid SemVer 2.0 string."
-						 Condition="'$(IsValidGitBaseVersion)' == 'false'" />
+			   Condition="'$(IsValidGitBaseVersion)' == 'false'" />
 
 	</Target>
 
@@ -708,10 +708,10 @@
 
 		<!-- Denotes xbuild, which doesn't properly handle escaped semicolon %3B -->
 		<Exec Condition="'$(MSBuildRuntimeVersion)' == ''"
-						Command="sed 's/\(.*\)&quot;/\1&quot;;/' '$(GitInfoThisAssemblyFile)'" />
+			  Command="sed 's/\(.*\)&quot;/\1&quot;;/' '$(GitInfoThisAssemblyFile)'" />
 		<!-- Remove potential double semi-colon we might have added -->
 		<Exec Condition="'$(MSBuildRuntimeVersion)' == ''"
-						Command="sed 's/\(.*\)&quot;;;/\1&quot;;/' '$(GitInfoThisAssemblyFile)'" />
+			  Command="sed 's/\(.*\)&quot;;;/\1&quot;;/' '$(GitInfoThisAssemblyFile)'" />
 
 	</Target>
 
