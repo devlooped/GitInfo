@@ -2,6 +2,7 @@
 #Const $MetadataDefine$ = 1
 
 #If ADDMETADATA
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.IsDirty", Global.RootNamespace.ThisAssembly.Git.IsDirty)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", Global.RootNamespace.ThisAssembly.Git.Branch)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", Global.RootNamespace.ThisAssembly.Git.Commit)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", Global.RootNamespace.ThisAssembly.Git.Sha)>
@@ -28,6 +29,9 @@ Namespace Global
     Partial Class ThisAssembly
         ''' <summary>Provides access to the git information for the current assembly.</summary>
         Partial Public Class Git
+            ''' <summary>IsDirty: $GitIsDirty$</summary>
+            Public Const IsDirty = $GitIsDirty$
+
             ''' <summary>Branch: $GitBranch$</summary>
             Public Const Branch = "$GitBranch$"
 

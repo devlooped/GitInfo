@@ -3,6 +3,7 @@
 #pragma warning disable 0436
 
 #if ADDMETADATA
+[assembly: System.Reflection.AssemblyMetadata("GitInfo.IsDirty", RootNamespace.ThisAssembly.Git.IsDirty)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", RootNamespace.ThisAssembly.Git.Commit)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", RootNamespace.ThisAssembly.Git.Sha)]
@@ -30,6 +31,9 @@ namespace _RootNamespace_
     /// <summary>Provides access to the git information for the current assembly.</summary>
     public partial class Git
     {
+      /// <summary>IsDirty: $GitIsDirty$</summary>
+      public const bool IsDirty = $GitIsDirty$;
+      
       /// <summary>Branch: $GitBranch$</summary>
       public const string Branch = "$GitBranch$";
 

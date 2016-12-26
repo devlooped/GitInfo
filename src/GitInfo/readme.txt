@@ -17,6 +17,7 @@ target that depends on the GitInfo target:
   $(GitSemVerLabel)
   $(GitSemVerDashLabel)
   $(GitSemVerSource)
+  $(GitIsDirty)
 
 From C# and VB, by default code is generated too so that the same 
 information can be accessed from code, to construct your own 
@@ -56,6 +57,8 @@ The available constants from code are:
   ThisAssembly.Git.SemVer.Label
   ThisAssembly.Git.SemVer.DashLabel
   ThisAssembly.Git.SemVer.Source
+  ThisAssembly.Git.IsDirty
+  
 
 Available MSBuild customizations:
 
