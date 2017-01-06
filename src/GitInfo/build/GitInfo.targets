@@ -378,9 +378,11 @@
 		<PropertyGroup>
 			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''">0</GitCommits>
 			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
+			<!-- If the GitVersionFile is at the GitRoot dir, there won't be a directory to specify to base the rev-list count, so no need to quote anything -->
+			<_GitCommitsRelativeTo Condition="'$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' != ''">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
-		<Exec Command='$(GitExe) rev-list --count "$(_GitLastBump)"..HEAD "$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"'
+		<Exec Command='$(GitExe) rev-list --count "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
 			  Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
