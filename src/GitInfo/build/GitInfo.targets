@@ -169,9 +169,40 @@
          repository. -->
 		<PropertyGroup>
 			<GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '.git'))</GitDir>
-			<_IsGitSubmodule>$([System.IO.File]::Exists('$(GitDir)'))</_IsGitSubmodule>
+			<_IsGitFile>$([System.IO.File]::Exists('$(GitDir)'))</_IsGitFile>
 		</PropertyGroup>
-		<PropertyGroup Condition="'$(_IsGitSubmodule)' == 'true'">
+
+		<Exec Condition="'$(_IsGitFile)' == 'true'"
+			  Command='$(GitExe) rev-parse --is-inside-work-tree'
+			  StandardErrorImportance='high'
+			  StandardOutputImportance='low'
+			  ConsoleToMSBuild='true'
+			  WorkingDirectory='$(GitInfoBaseDir)'
+			  ContinueOnError='true'>
+			<Output TaskParameter="ConsoleOutput" PropertyName="_GitIsWorkTree"/>
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+
+		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+			<_IsGitWorkTree>$(_GitIsWorkTree.Trim())</_IsGitWorkTree>
+		</PropertyGroup>
+
+		<Exec Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true'"
+			  Command='$(GitExe) rev-parse --git-common-dir'
+			  StandardErrorImportance='high'
+			  StandardOutputImportance='low'
+			  ConsoleToMSBuild='true'
+			  WorkingDirectory='$(GitInfoBaseDir)'
+			  ContinueOnError='true'>
+			<Output TaskParameter="ConsoleOutput" PropertyName="_GitCommonDir"/>
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+
+		<PropertyGroup Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true'">
+			<GitDir>$(_GitCommonDir)</GitDir>
+		</PropertyGroup>
+
+		<PropertyGroup Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' != 'true'">
 			<_GitFileContents>$([System.IO.File]::ReadAllText('$(GitDir)'))</_GitFileContents>
 			<GitDir>$([System.String]::new('$(_GitFileContents)').Substring(7).Trim())</GitDir>
 			<GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '$(GitDir)'))</GitDir>
