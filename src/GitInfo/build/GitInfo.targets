@@ -696,11 +696,11 @@
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('_RootNamespace_', '$(ThisAssemblyNamespace)'))</_ThisAssemblyContent>
 
 			<!-- no git repository -->
-			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' == '128'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' == '1'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
 			<!-- no git repository -->
-			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' == '128'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'True'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'True'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' == '1'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'True'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
 			
