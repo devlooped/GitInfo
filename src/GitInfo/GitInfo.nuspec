@@ -26,6 +26,7 @@
   $(GitSemVerLabel), ThisAssembly.Git.SemVer.Label
   $(GitSemVerDashLabel), ThisAssembly.Git.SemVer.DashLabel
   $(GitSemVerSource), ThisAssembly.Git.SemVer.Source
+  $(GitIsDirty), ThisAssembly.Git.IsDirty
 
 The generated code contains only constants, so it can be used to construct your own assembly/file version attributes:
 
