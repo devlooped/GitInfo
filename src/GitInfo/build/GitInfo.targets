@@ -413,7 +413,7 @@
 			<_GitCommitsRelativeTo Condition="'$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' != ''">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
-		<Exec Command='$(GitExe) rev-list --count "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
+		<Exec Command='$(GitExe) rev-list --count --full-history "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
 			  Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
