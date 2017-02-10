@@ -239,6 +239,8 @@
 		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'tags', '*.*'))">
 			<Output ItemName="_GitInput" TaskParameter="Include" />
 		</CreateItem>
+		
+		<Delete Files="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)') And '$(SkipReadGitCache)' == 'true'" />
 	</Target>
 
 	<!-- If the inputs/outputs are outdated, clear the cache -->
