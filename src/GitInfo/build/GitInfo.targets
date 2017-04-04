@@ -47,10 +47,13 @@
 	<PropertyGroup>
 		<!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
 		<GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
+		<!-- GitInfoConfigFile allows change configurations for GitInfo -->
+		<GitInfoConfigFile Condition="'$(GitInfoConfigFile)' == ''">GitInfo.config</GitInfoConfigFile>
 		<!-- Default the lookup directory to the project directory unless overriden -->
 		<GitInfoBaseDir Condition="'$(GitInfoBaseDir)' == ''">$(MSBuildProjectDirectory)</GitInfoBaseDir>
 		<!-- Look it upwards and grab the first one we find. -->
 		<GitVersionFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))\$(GitVersionFile)</GitVersionFile>
+		<GitInfoConfigFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitInfoConfigFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitInfoConfigFile)))\$(GitInfoConfigFile)</GitInfoConfigFile>
 
 		<GitDefaultBranch Condition="'$(GitDefaultBranch)' == ''">master</GitDefaultBranch>
 		<GitDefaultCommit Condition="'$(GitDefaultCommit)' == ''">0000000</GitDefaultCommit>
@@ -232,6 +235,7 @@
 		<ItemGroup>
 			<_GitInput Include="$(GitDir)HEAD" />
 			<_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
+			<_GitInput Include="$(GitInfoConfigFile)" Condition="Exists('$(GitInfoConfigFile)')" />
 		</ItemGroup>
 		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '**', '*.*'))">
 			<Output ItemName="_GitInput" TaskParameter="Include" />
@@ -413,8 +417,11 @@
 			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
 			<!-- If the GitVersionFile is at the GitRoot dir, there won't be a directory to specify to base the rev-list count, so no need to quote anything -->
 			<_GitCommitsRelativeTo Condition="'$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' != ''">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
+			<_GitCommitsRelativeTo Condition="Exists('$(GitInfoConfigFile)')">$(_GitCommitsRelativeTo) "$(GitInfoConfigFile)"</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
+		<Message Text='Running command: $(GitExe) rev-list --count --full-history "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)' Importance="normal" />
+		
 		<Exec Command='$(GitExe) rev-list --count --full-history "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
 			  Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
 			  StandardErrorImportance="low"
