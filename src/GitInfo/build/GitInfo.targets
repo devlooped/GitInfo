@@ -47,10 +47,13 @@
 	<PropertyGroup>
 		<!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
 		<GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
+		<!-- GitInfoConfigFile allows change configurations for GitInfo -->
+		<GitInfoConfigFile Condition="'$(GitInfoConfigFile)' == ''">GitInfo.json</GitInfoConfigFile>
 		<!-- Default the lookup directory to the project directory unless overriden -->
 		<GitInfoBaseDir Condition="'$(GitInfoBaseDir)' == ''">$(MSBuildProjectDirectory)</GitInfoBaseDir>
 		<!-- Look it upwards and grab the first one we find. -->
 		<GitVersionFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))\$(GitVersionFile)</GitVersionFile>
+		<GitInfoConfigFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitInfoConfigFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitInfoConfigFile)))\$(GitInfoConfigFile)</GitInfoConfigFile>
 
 		<GitDefaultBranch Condition="'$(GitDefaultBranch)' == ''">master</GitDefaultBranch>
 		<GitDefaultCommit Condition="'$(GitDefaultCommit)' == ''">0000000</GitDefaultCommit>
@@ -227,11 +230,41 @@
 			<Output TaskParameter="ExitCode" PropertyName="GitIsDirty" />
 		</Exec>
 	</Target>
+	
+	<Target Name="_ReadIncludeFiles" Condition="Exists('$(GitInfoConfigFile)')">
+		<PropertyGroup>
+			<PowerShellExe Condition=" '$(PowerShellExe)'=='' ">%WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe</PowerShellExe>
+			<_GitInfoConfigDirectory Condition="'$([System.IO.Path]::GetDirectoryName($(GitInfoConfigFile)))' != ''">$([System.IO.Path]::GetDirectoryName("$(GitInfoConfigFile)"))</_GitInfoConfigDirectory>
+		</PropertyGroup>
+		<Exec Command="$(PowerShellExe) -command &quot;(Get-Content $(GitInfoConfigFile) | Out-String | ConvertFrom-Json).Include &quot;"
+			ConsoleToMSBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_Include"/>
+		</Exec>
+		<ItemGroup>
+			<_Include Include="$(_Include)" />
+		</ItemGroup>
+		<ItemGroup>
+			<_Include>
+				<TokenPopulatedFileName>$([System.String]::Copy('%(Identity)').Replace('&lt;GitRoot&gt;', $(GitRoot)))</TokenPopulatedFileName>
+			</_Include>
+		</ItemGroup>
+		<ItemGroup>
+			<_Include>
+				<FullPathFromGitInfoConfigFile>$([System.IO.Path]::Combine($(_GitInfoConfigDirectory), %(TokenPopulatedFileName)))</FullPathFromGitInfoConfigFile>
+			</_Include>
+		</ItemGroup>
+		<ItemGroup>
+			<IncludeFiles Include="%(_Include.FullPathFromGitInfoConfigFile)"/>
+		</ItemGroup>
+		<Message Text="Files to track changes: @(IncludeFiles)" Importance="normal" />
+	</Target>
 
-	<Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
+	<Target Name="_GitInputs" DependsOnTargets="_GitRoot;_ReadIncludeFiles" Returns="@(_GitInput)">
 		<ItemGroup>
 			<_GitInput Include="$(GitDir)HEAD" />
 			<_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
+			<_GitInput Include="$(GitInfoConfigFile)" Condition="Exists('$(GitInfoConfigFile)')" />
+			<_GitInput Include="%(IncludeFiles.FullPath)" />
 		</ItemGroup>
 		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '**', '*.*'))">
 			<Output ItemName="_GitInput" TaskParameter="Include" />
@@ -245,6 +278,7 @@
 
 	<!-- If the inputs/outputs are outdated, clear the cache -->
 	<Target Name="_GitClearCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)')">
+		<Message Text="Using _GitInput '@(_GitInput, ' ')'" Importance="normal" />
 		<Delete Files="$(_GitInfoFile)" />
 	</Target>
 
@@ -413,8 +447,11 @@
 			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
 			<!-- If the GitVersionFile is at the GitRoot dir, there won't be a directory to specify to base the rev-list count, so no need to quote anything -->
 			<_GitCommitsRelativeTo Condition="'$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' != ''">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
+			<_GitCommitsRelativeTo>$(_GitCommitsRelativeTo) @(IncludeFiles->'"%(FullPath)"', ' ')</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
+		<Message Text='Running command: $(GitExe) rev-list --count --full-history "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)' Importance="normal" />
+		
 		<Exec Command='$(GitExe) rev-list --count --full-history "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
 			  Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
 			  StandardErrorImportance="low"
