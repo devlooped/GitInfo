@@ -48,7 +48,7 @@
 		<!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
 		<GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
 		<!-- GitInfoConfigFile allows change configurations for GitInfo -->
-		<GitInfoConfigFile Condition="'$(GitInfoConfigFile)' == ''">GitInfo.config</GitInfoConfigFile>
+		<GitInfoConfigFile Condition="'$(GitInfoConfigFile)' == ''">GitInfo.json</GitInfoConfigFile>
 		<!-- Default the lookup directory to the project directory unless overriden -->
 		<GitInfoBaseDir Condition="'$(GitInfoBaseDir)' == ''">$(MSBuildProjectDirectory)</GitInfoBaseDir>
 		<!-- Look it upwards and grab the first one we find. -->
