@@ -146,7 +146,7 @@
 			<GitRoot>$(_GitOutput.Trim())</GitRoot>
 		</PropertyGroup>
 
-		<!-- Account for cygwin separately -->
+		<!-- Account for cygwin/WSL separately -->
 		<Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"' 
 			  WorkingDirectory="$(GitInfoBaseDir)"
 			  StandardErrorImportance='high'
@@ -389,13 +389,25 @@
 						 Condition="'$(IsValidGitBaseVersion)' == 'False'" />
 
 		<PropertyGroup>
+			<_GitVersionFile>$(GitVersionFile)</_GitVersionFile>
 			<GitBaseVersionSource>$(GitVersionFile)</GitBaseVersionSource>
 			<GitSemVerSource>File</GitSemVerSource>
 		</PropertyGroup>
 
 		<Message Text="Using base version from version file $(GitVersionFile)'" Importance="normal" />
 
-		<Exec Command='$(GitExe) log -n 1 --format=format:$(_ShortShaFormat) "$(GitVersionFile)"'
+		<!-- Account for cygwin/WSL separately -->
+		<Exec Command='"$(CygPathExe)" -u "$(_GitVersionFile)"' 
+			  WorkingDirectory="$(GitRoot)"
+			  StandardErrorImportance='high'
+			  StandardOutputImportance='low'
+			  ConsoleToMSBuild='true'
+			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_GitVersionFile" />
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+
+		<Exec Command='$(GitExe) log -n 1 --format=format:$(_ShortShaFormat) "$(_GitVersionFile)"'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
@@ -414,6 +426,17 @@
 			<!-- If the GitVersionFile is at the GitRoot dir, there won't be a directory to specify to base the rev-list count, so no need to quote anything -->
 			<_GitCommitsRelativeTo Condition="'$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' != ''">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
 		</PropertyGroup>
+
+		<!-- Account for cygwin/WSL separately -->
+		<Exec Command='"$(CygPathExe)" -u $(_GitCommitsRelativeTo)' 
+			  WorkingDirectory="$(GitRoot)"
+			  StandardErrorImportance='high'
+			  StandardOutputImportance='low'
+			  ConsoleToMSBuild='true'
+			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != '' And '$(_GitCommitsRelativeTo)' != ''">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_GitCommitsRelativeTo" />
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
 
 		<Exec Command='$(GitExe) rev-list --count --full-history "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
 			  Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
@@ -786,7 +809,9 @@
 		<GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files\Git\bin\git.exe')">"C:\Program Files\Git\bin\git.exe"</GitExe>
 		<GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files (x86)\Git\bin\git.exe')">"C:\Program Files (x86)\Git\bin\git.exe"</GitExe>
 		<GitExe Condition="'$(GitExe)' == '' And Exists('C:\msysgit\bin\git.exe')">C:\msysgit\bin\git.exe</GitExe>
+		<GitExe Condition="'$(GitExe)' == '' And Exists('$(LOCALAPPDATA)\lxss\rootfs\usr\bin\git')">$(MSBuildThisFileDirectory)wslrun.cmd git</GitExe>
 		<GitExe Condition="'$(GitExe)' == '' And Exists('C:\cygwin\bin\git.exe')">C:\cygwin\bin\git.exe</GitExe>
+		<GitExe Condition="'$(GitExe)' == '' And Exists('C:\cygwin64\bin\git.exe')">C:\cygwin64\bin\git.exe</GitExe>
 		<!-- Ultimately, just try the exe and hope it exists in the PATH already -->
 		<GitExe Condition="'$(GitExe)' == ''">git.exe</GitExe>
 	</PropertyGroup>
@@ -804,7 +829,9 @@
 	============================================================
 	-->
 	<PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+		<CygPathExe Condition="'$(CygPathExe)' == '' And Exists('$(LOCALAPPDATA)\lxss\rootfs\usr\bin\git') And $(GitExe.Contains('wslrun.cmd'))">$(MSBuildThisFileDirectory)wslpath.cmd</CygPathExe>
 		<CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin\bin\cygpath.exe') And $(GitExe.Contains('cygwin'))">C:\cygwin\bin\cygpath.exe</CygPathExe>
+		<CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin64\bin\cygpath.exe') And $(GitExe.Contains('cygwin64'))">C:\cygwin64\bin\cygpath.exe</CygPathExe>
 	</PropertyGroup>
 
 	<Import Project="GitInfo.xbuild" Condition="'$(MSBuildRuntimeVersion)' == ''" />
