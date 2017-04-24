@@ -30,57 +30,57 @@ Namespace Global
         ''' <summary>Provides access to the git information for the current assembly.</summary>
         Partial Public Class Git
             ''' <summary>IsDirty: $GitIsDirty$</summary>
-            Public Const IsDirty = $GitIsDirty$
+            Public Const IsDirty As String = $GitIsDirty$
 
             ''' <summary>Branch: $GitBranch$</summary>
-            Public Const Branch = "$GitBranch$"
+            Public Const Branch As String = "$GitBranch$"
 
             ''' <summary>Commit: $GitCommit$</summary>
-            Public Const Commit = "$GitCommit$"
+            Public Const Commit As String = "$GitCommit$"
 
             ''' <summary>Commit: $GitSha$</summary>
-            Public Const Sha = "$GitSha$"
+            Public Const Sha As String = "$GitSha$"
 
             ''' <summary>Commits on top of base version: $GitCommits$</summary>
-            Public Const Commits = "$GitCommits$"
+            Public Const Commits As String = "$GitCommits$"
 
             ''' <summary>Tag: $GitTag$</summary>
-            Public Const Tag = "$GitTag$"
+            Public Const Tag As String = "$GitTag$"
 
             ''' <summary>Base tag: $GitBaseTag$</summary>
-            Public Const BaseTag = "$GitBaseTag$"
+            Public Const BaseTag As String = "$GitBaseTag$"
 
             ''' <summary>Provides access to the base version information used to determine the <see cref="SemVer" />.</summary>
             Partial Public Class BaseVersion
                 ''' <summary>Major: $GitBaseVersionMajor$</summary>
-                Public Const Major = "$GitBaseVersionMajor$"
+                Public Const Major As String = "$GitBaseVersionMajor$"
            
               ''' <summary>Minor $GitBaseVersionMinor$</summary>
-              Public Const Minor = "$GitBaseVersionMinor$"
+              Public Const Minor As String = "$GitBaseVersionMinor$"
            
               ''' <summary>Patch $GitBaseVersionPatch$</summary>
-              Public Const Patch = "$GitBaseVersionPatch$"
+              Public Const Patch As String = "$GitBaseVersionPatch$"
             End Class
 
             ''' <summary>Provides access to SemVer information for the current assembly.</summary>
             Partial Public Class SemVer
                 ''' <summary>Major: $GitSemVerMajor$</summary>
-                Public Const Major = "$GitSemVerMajor$"
+                Public Const Major As String = "$GitSemVerMajor$"
 
                 ''' <summary>Minor: $GitSemVerMinor$</summary>
-                Public Const Minor = "$GitSemVerMinor$"
+                Public Const Minor As String = "$GitSemVerMinor$"
 
                 ''' <summary>Patch: $GitSemVerPatch$</summary>
-                Public Const Patch = "$GitSemVerPatch$"
+                Public Const Patch As String = "$GitSemVerPatch$"
 
                 ''' <summary>Label: $GitSemVerLabel$</summary>
-                Public Const Label = "$GitSemVerLabel$"
+                Public Const Label As String = "$GitSemVerLabel$"
 
                 ''' <summary>Label with dash prefix: $GitSemVerDashLabel$</summary>
-                Public Const DashLabel = "$GitSemVerDashLabel$"
+                Public Const DashLabel As String = "$GitSemVerDashLabel$"
 
                 ''' <summary>Label with dash prefix: $GitSemVerSource$</summary>
-                Public Const Source = "$GitSemVerVerSource$"
+                Public Const Source As String = "$GitSemVerVerSource$"
             End Class
         End Class
     End Class
