@@ -288,7 +288,7 @@
 			<_GitHead>$([System.IO.Path]::Combine($(GitDir), 'HEAD'))</_GitHead>
 			<_GitHead>$([System.IO.Path]::GetFullPath($(_GitHead)))</_GitHead>
 			<_GitHead>$([System.IO.File]::ReadAllText('$(_GitHead)'))</_GitHead>
-			<GitBranch>$([System.Text.RegularExpressions.Regex]::Match($(_GitHead), '(?&lt;=/)[^/]+$'))</GitBranch>
+			<GitBranch>$([System.Text.RegularExpressions.Regex]::Match($(_GitHead), '(?&lt;=refs/heads/).+$'))</GitBranch>
 			<GitBranch>$(GitBranch.Trim())</GitBranch>
 		</PropertyGroup>
 
