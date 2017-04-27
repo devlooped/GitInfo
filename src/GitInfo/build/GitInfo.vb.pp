@@ -30,7 +30,7 @@ Namespace Global
         ''' <summary>Provides access to the git information for the current assembly.</summary>
         Partial Public Class Git
             ''' <summary>IsDirty: $GitIsDirty$</summary>
-            Public Const IsDirty As String = $GitIsDirty$
+            Public Const IsDirty As Boolean = $GitIsDirty$
 
             ''' <summary>Branch: $GitBranch$</summary>
             Public Const Branch As String = "$GitBranch$"
