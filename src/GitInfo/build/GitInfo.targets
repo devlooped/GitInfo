@@ -66,6 +66,10 @@
 		<!-- Defaults if overrides are specified when building -->
 		<GitCommits Condition="'$(GitCommits)' == ''">0</GitCommits>
 		<GitSemVerSource Condition="'$(GitBaseVersion)' != ''">MSBuild</GitSemVerSource>
+		
+		<GitBuildDateYear>$([System.DateTime]::Now.ToString("yyyy"))</GitBuildDateYear>
+		<GitBuildDateMonth>$([System.DateTime]::Now.ToString("M"))</GitBuildDateMonth>
+		<GitBuildDateDay>$([System.DateTime]::Now.ToString("d"))</GitBuildDateDay>
 	</PropertyGroup>
 
 	<!-- Private properties -->
@@ -777,6 +781,11 @@
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerLabel$', '$(GitSemVerLabel)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerDashLabel$', '$(GitSemVerDashLabel)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerSource$', '$(GitSemVerSource)'))</_ThisAssemblyContent>
+			
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBuildDateYear$', '$(GitBuildDateYear)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBuildDateMonth$', '$(GitBuildDateMonth)'))</_ThisAssemblyContent>			
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBuildDateDay$', '$(GitBuildDateDay)'))</_ThisAssemblyContent>						
+			
 		</PropertyGroup>
 
 		<PropertyGroup>

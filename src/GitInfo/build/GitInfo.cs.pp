@@ -86,6 +86,21 @@ namespace _RootNamespace_
         /// <summary>Source: $GitSemVerSource$</summary>
         public const string Source = "$GitSemVerSource$";
       }
+	  
+      /// <summary>Provides access to BuildDate information for the current assembly.</summary>
+      public partial class BuildDate
+      {
+        /// <summary>Year: $GitBuildDateYear$</summary>
+        public const string Year = "$GitBuildDateYear$";
+
+        /// <summary>Month: $GitBuildDateMonth$</summary>
+        public const string Month = "$GitBuildDateMonth$";
+
+        /// <summary>Day: $GitBuildDateDay$</summary>
+        public const string Day = "$GitBuildDateDay$";
+		
+	  }
+	  
     }
   }
 #if LOCALNAMESPACE
