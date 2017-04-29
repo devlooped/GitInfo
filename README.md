@@ -4,6 +4,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/p9e5xdd86vnfe0q8?svg=true)](https://ci.appveyor.com/project/MobileEssentials/gitinfo) 
 [![Latest version](https://img.shields.io/nuget/v/GitInfo.svg)](https://www.nuget.org/packages/GitInfo)
+[![Downloads](https://img.shields.io/nuget/dt/GitInfo.svg)](https://www.nuget.org/packages/GitInfo)
 [![License](http://img.shields.io/:license-MIT-blue.svg)](opensource.org/licenses/mit-license.php)
 
 ## Goals
