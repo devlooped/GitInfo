@@ -41,6 +41,12 @@
 								whether the branch and tags (if any) 
 								will be used to find a base version.
 								Defaults to empty value (no ignoring).
+
+	$(GitSkipCache): whether to cache the Git information determined 
+					 in a previous build in a GitInfo.cache for 
+					 performance reasons. 
+					 Defaults to empty value (no ignoring).
+
 	==============================================================
 	-->
 
@@ -66,6 +72,10 @@
 		<!-- Defaults if overrides are specified when building -->
 		<GitCommits Condition="'$(GitCommits)' == ''">0</GitCommits>
 		<GitSemVerSource Condition="'$(GitBaseVersion)' != ''">MSBuild</GitSemVerSource>
+		
+		<GitSkipCache Condition="'$(GitSkipCache)' == ''">false</GitSkipCache>
+		<SkipReadGitCache Condition="'$(SkipReadGitCache)' == ''">$(GitSkipCache)</SkipReadGitCache>
+		<SkipWriteGitCache Condition="'$(SkipWriteGitCache)' == ''">$(GitSkipCache)</SkipWriteGitCache>
 	</PropertyGroup>
 
 	<!-- Private properties -->
