@@ -435,6 +435,8 @@
 			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
 			<!-- If the GitVersionFile is at the GitRoot dir, there won't be a directory to specify to base the rev-list count, so no need to quote anything -->
 			<_GitCommitsRelativeTo Condition="'$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' != ''">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
+			<!-- If the GitVersionFile is at the GitRoot dir, we use the current directory '.' for the count. This allows us to exclude submodule commits -->
+			<_GitCommitsRelativeTo Condition="'$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' == ''">.</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
