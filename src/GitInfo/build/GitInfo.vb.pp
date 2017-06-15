@@ -3,7 +3,7 @@
 #Const $MetadataDefine$ = 1
 
 #If ADDMETADATA
-<Assembly: System.Reflection.AssemblyMetadata("GitInfo.IsDirty", Global.RootNamespace.ThisAssembly.Git.IsDirty)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.IsDirty", Global.RootNamespace.ThisAssembly.Git.IsDirtyString)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", Global.RootNamespace.ThisAssembly.Git.Branch)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", Global.RootNamespace.ThisAssembly.Git.Commit)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", Global.RootNamespace.ThisAssembly.Git.Sha)>
@@ -32,6 +32,9 @@ Namespace Global
         Partial Public Class Git
             ''' <summary>IsDirty: $GitIsDirty$</summary>
             Public Const IsDirty As Boolean = $GitIsDirty$
+
+            ''' <summary>IsDirtyString: $GitIsDirty$</summary>
+            Public Const IsDirtyString As String = "$GitIsDirty$"
 
             ''' <summary>Branch: $GitBranch$</summary>
             Public Const Branch As String = "$GitBranch$"
