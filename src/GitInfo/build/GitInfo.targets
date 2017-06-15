@@ -805,10 +805,10 @@
 		<WriteLinesToFile File='$(GitInfoThisAssemblyFile)' Lines='$(_ThisAssemblyContent)' Overwrite='true' />
 
 		<!-- Denotes xbuild, which doesn't properly handle escaped semicolon %3B -->
-		<Exec Condition="'$(MSBuildRuntimeVersion)' == ''"
+		<Exec Condition="'$(MSBuildRuntimeVersion)' == '' AND '$(OS)' != 'Windows_NT'"
 			  Command="sed 's/\(.*\)&quot;/\1&quot;;/' '$(GitInfoThisAssemblyFile)'" />
 		<!-- Remove potential double semi-colon we might have added -->
-		<Exec Condition="'$(MSBuildRuntimeVersion)' == ''"
+		<Exec Condition="'$(MSBuildRuntimeVersion)' == '' AND '$(OS)' != 'Windows_NT'"
 			  Command="sed 's/\(.*\)&quot;;;/\1&quot;;/' '$(GitInfoThisAssemblyFile)'" />
 
 	</Target>
@@ -851,7 +851,7 @@
 		<CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin64\bin\cygpath.exe') And $(GitExe.Contains('cygwin64'))">C:\cygwin64\bin\cygpath.exe</CygPathExe>
 	</PropertyGroup>
 
-	<Import Project="GitInfo.xbuild" Condition="'$(MSBuildRuntimeVersion)' == ''" />
+	<Import Project="GitInfo.xbuild" Condition="'$(MSBuildRuntimeVersion)' == '' AND '$(OS)' != 'Windows_NT'" />
 
 	<PropertyGroup>
 		<GitInfoImported>true</GitInfoImported>
