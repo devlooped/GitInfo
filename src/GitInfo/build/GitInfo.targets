@@ -605,7 +605,7 @@
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 
-		<Warning Text="Failed to retrieve commit count from tag '$(GitBaseTag)' to tip ${GitCommit). Defaulting to zero commits."
+		<Warning Text="Failed to retrieve commit count from tag '$(GitBaseTag)' to tip $(GitCommit). Defaulting to zero commits."
 				 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
 
 		<PropertyGroup>
