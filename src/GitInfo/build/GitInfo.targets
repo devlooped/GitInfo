@@ -364,6 +364,7 @@
 				<GitRoot>$(GitRoot)</GitRoot>
 				<GitBranch>$(GitBranch)</GitBranch>
 				<GitCommit>$(GitCommit)</GitCommit>
+				<GitSha>$(GitSha)</GitSha>
 			</GitInfo>
 		</ItemGroup>
 	</Target>
