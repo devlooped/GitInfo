@@ -119,6 +119,7 @@
 
 	<PropertyGroup>
 		<GitInfoDependsOn>
+			_EnsureGit;
 			_GitRoot;
 			_GitInputs;
 			_GitClearCache;
@@ -139,6 +140,19 @@
 	</PropertyGroup>
 
 	<Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" Returns="@(GitInfo)" />
+
+	<Target Name="_EnsureGit">
+		<Exec Command='$(GitExe) --version'
+			  EchoOff='true'
+			  ContinueOnError='true'
+			  ConsoleToMSBuild='true'
+			  StandardErrorImportance='high'
+			  StandardOutputImportance='low'>
+			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+		<Error Condition="'$(MSBuildLastExitCode)' != '0'" Text="Failed to run `git --version`. Git may not be properly installed: %0A $(_GitOutput)" />
+	</Target>
 
 	<Target Name="_GitRoot" Returns="$(GitRoot)" Condition="'$(GitRoot)' == ''">
 
@@ -858,10 +872,10 @@
 	<Target Name="SetGitExe" Condition="'$(OS)' == 'Windows_NT'">
 		<!-- If git from %PATH% works, override the paths we calculated with that one instead -->
 		<Exec Command='git --version'
+			  EchoOff='true'
 			  ContinueOnError='true'
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
