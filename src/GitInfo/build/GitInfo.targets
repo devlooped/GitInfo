@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" InitialTargets="SetGitExe" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!--
   ==============================================================
               Retrieves and exposes Git information 
@@ -854,6 +854,20 @@
 	</PropertyGroup>
 
 	<Import Project="GitInfo.xbuild" Condition="'$(MSBuildRuntimeVersion)' == '' AND '$(OS)' != 'Windows_NT'" />
+
+	<Target Name="SetGitExe" Condition="'$(OS)' == 'Windows_NT'">
+		<!-- If git from %PATH% works, override the paths we calculated with that one instead -->
+		<Exec Command='git --version'
+			  ContinueOnError='true'
+			  StandardErrorImportance='high'
+			  StandardOutputImportance='low'>
+			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+			<GitExe>git</GitExe>
+		</PropertyGroup>
+	</Target>
 
 	<PropertyGroup>
 		<GitInfoImported>true</GitInfoImported>
