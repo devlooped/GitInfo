@@ -655,16 +655,28 @@
 				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitDefaultVersion), $(_GitBaseVersionExpr)))
 			</IsValidGitDefaultVersion>
 			<IsValidGitDefaultVersion>$(IsValidGitDefaultVersion.Trim())</IsValidGitDefaultVersion>
+			<GitCommits>0</GitCommits>
 		</PropertyGroup>
 
 		<!-- If $(GitBaseVersion) == '' And $(IsValidGitBaseVersion) == ''  -->
 		<Error Text="Fallback version %24(GitDefaultVersion) value of '$(GitDefaultVersion)' is not a valid SemVer 2.0 string."
 			   Condition="'$(IsValidGitDefaultVersion)' == 'false'" />
 
+		<Exec Command='$(GitExe) rev-list --count $(GitCommit)'
+			  Condition="'$(IsValidGitDefaultVersion)' == 'true' And '$(GitCommit)' != '' And '$(GitCommit)' != '$(GitDefaultCommit)'"
+			  EchoOff='true'
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+
 		<PropertyGroup>
 			<GitBaseVersion>$(GitDefaultVersion)</GitBaseVersion>
 			<GitSemVerSource>Default</GitSemVerSource>
-			<GitCommits>0</GitCommits>
 		</PropertyGroup>
 
 	</Target>
