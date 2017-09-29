@@ -32,6 +32,10 @@
 					   version info.
 					   Defaults to 'GitInfo.txt'.
 
+	$(GitCommitsRelativeTo): optionally specifies an alternative directory 
+							 for counting commits on top of the base version.
+							 Defaults to the $(GitVersionFile) directory.
+
 	$(GitInfoReportImportance): allows rendering all the retrieved
 								git information with the specified
 								message importance ('high', 'normal' or 'low').
@@ -459,10 +463,11 @@
 		<PropertyGroup>
 			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''">0</GitCommits>
 			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
+			<_GitCommitsRelativeTo>$(GitCommitsRelativeTo)</_GitCommitsRelativeTo>
 			<!-- If the GitVersionFile is at the GitRoot dir, there won't be a directory to specify to base the rev-list count, so no need to quote anything -->
-			<_GitCommitsRelativeTo Condition="'$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' != ''">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
+			<_GitCommitsRelativeTo Condition="'$(_GitCommitsRelativeTo)' == '' And '$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' != ''">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
 			<!-- If the GitVersionFile is at the GitRoot dir, we use the current directory '.' for the count. This allows us to exclude submodule commits -->
-			<_GitCommitsRelativeTo Condition="'$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))' == ''">.</_GitCommitsRelativeTo>
+			<_GitCommitsRelativeTo Condition="'$(_GitCommitsRelativeTo)' == ''">.</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
