@@ -80,6 +80,8 @@
 		<GitSkipCache Condition="'$(GitSkipCache)' == ''">false</GitSkipCache>
 		<SkipReadGitCache Condition="'$(SkipReadGitCache)' == ''">$(GitSkipCache)</SkipReadGitCache>
 		<SkipWriteGitCache Condition="'$(SkipWriteGitCache)' == ''">$(GitSkipCache)</SkipWriteGitCache>
+
+		<GitMinVersion>2.5.0</GitMinVersion>
 	</PropertyGroup>
 
 	<!-- Private properties -->
@@ -156,6 +158,13 @@
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 		<Error Condition="'$(MSBuildLastExitCode)' != '0'" Text="Failed to run `git --version`. Git may not be properly installed: %0A $(_GitOutput)" />
+
+		<PropertyGroup>
+			<_GitCurrentVersion>$([System.Text.RegularExpressions.Regex]::Match("$(_GitOutput)", "\d+\.\d+\.\d+").Value)</_GitCurrentVersion>
+		</PropertyGroup>
+
+		<Error Condition="$([System.Version]::Parse('$(_GitCurrentVersion)').CompareTo($([System.Version]::Parse('$(GitMinVersion)')))) &lt; 0"
+			   Text="Required minimum git version is $(GitMinVersion) but found $(_GitCurrentVersion)." />
 	</Target>
 
 	<Target Name="_GitRoot" Returns="$(GitRoot)" Condition="'$(GitRoot)' == ''">
