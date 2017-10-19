@@ -239,8 +239,20 @@
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 
+		<!-- Account for cygwin/WSL separately -->
+		<Exec Command='"$(CygPathExe)" -w "$(_GitCommonDir)"' 
+			  EchoOff='true'
+			  WorkingDirectory="$(GitInfoBaseDir)"
+			  StandardErrorImportance='high'
+			  StandardOutputImportance='low'
+			  ConsoleToMSBuild='true'
+			  Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true' And '$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_GitCommonDir" />
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+
 		<PropertyGroup Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true'">
-			<GitDir>$(_GitCommonDir)</GitDir>
+			<GitDir>$(_GitCommonDir.Trim())</GitDir>
 		</PropertyGroup>
 
 		<PropertyGroup Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' != 'true'">
