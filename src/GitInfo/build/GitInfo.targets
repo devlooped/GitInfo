@@ -125,6 +125,7 @@
 
 	<PropertyGroup>
 		<GitInfoDependsOn>
+			SetGitExe;
 			_EnsureGit;
 			_GitRoot;
 			_GitInputs;
