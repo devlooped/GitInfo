@@ -20,17 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitInfo", "GitInfo", "{66BB
 		GitInfo\readme.txt = GitInfo\readme.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "buildMultitargeting", "buildMultitargeting", "{AB6632C5-F40D-4C6D-87F0-D7135D7E3AF4}"
-	ProjectSection(SolutionItems) = preProject
-		GitInfo\buildMultiTargeting\GitInfo.targets = GitInfo\buildMultiTargeting\GitInfo.targets
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{AB6632C5-F40D-4C6D-87F0-D7135D7E3AF4} = {66BBEFCD-CF18-4251-BA2A-D4D57D9F75B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {93849B01-5244-46B3-9C92-6DE66CBE4E8B}
