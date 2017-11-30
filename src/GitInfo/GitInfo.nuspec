@@ -45,8 +45,8 @@ The generated code contains only constants, so it can be used to construct your 
     <file src="build\GitInfo.cs.pp" target="build" />
     <file src="build\GitInfo.vb.pp" target="build" />
     <file src="build\GitInfo.targets" target="build" />
+    <file src="build\GitInfo.targets" target="buildMultiTargeting" />
     <file src="build\wslrun.cmd" target="build" />
     <file src="build\wslpath.cmd" target="build" />
-    <file src="buildMultiTargeting\GitInfo.targets" target="buildMultiTargeting" />
   </files>
 </package>
