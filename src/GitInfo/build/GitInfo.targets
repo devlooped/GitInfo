@@ -744,8 +744,9 @@
 			<GitSemVerDashLabel Condition="'$(GitSemVerLabel)' != ''" >-$(GitSemVerLabel)</GitSemVerDashLabel>
 		</PropertyGroup>
 
+
 		<ItemGroup>
-			<GitInfo>
+			<_GitInfo Include="@(GitInfo -> Distinct())">
 				<GitBaseVersion>$(GitBaseVersion)</GitBaseVersion>
 				<GitBaseVersionSource>$(GitBaseVersionSource)</GitBaseVersionSource>
 				<GitBaseVersionMajor>$(GitBaseVersionMajor)</GitBaseVersionMajor>
@@ -760,8 +761,11 @@
 				<GitSemVerLabel>$(GitSemVerLabel)</GitSemVerLabel>
 				<GitSemVerDashLabel>$(GitSemVerDashLabel)</GitSemVerDashLabel>
 				<GitSemVerSource>$(GitSemVerSource)</GitSemVerSource>
-			</GitInfo>
-		</ItemGroup>
+			</_GitInfo>
+			<GitInfo Remove="@(GitInfo)" />
+			<GitInfo Include="@(_GitInfo)" />
+	    </ItemGroup>
+		
 	</Target>
 
 	<Target Name="_GitWriteCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="'$(SkipWriteGitCache)' != 'true'">
