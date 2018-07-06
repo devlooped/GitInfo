@@ -50,6 +50,14 @@
 					 in a previous build in a GitInfo.cache for 
 					 performance reasons. 
 					 Defaults to empty value (no ignoring).
+           
+  $(GitTagRegex): Regular Experssion used with git describe to find the BaseTag
+           Defaults to * (all)
+           
+  $(GitBaseVersionExpr): Regular Experssion used with git describe to find the BaseTag
+           Defaults to '^v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)(?:\-(?<LABEL>[\dA-Za-z\-\.]+))?$|^(?<LABEL>[\dA-Za-z\-\.]+)\-v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)$'
+           
+          
 
 	==============================================================
 	-->
@@ -82,6 +90,8 @@
 		<SkipWriteGitCache Condition="'$(SkipWriteGitCache)' == ''">$(GitSkipCache)</SkipWriteGitCache>
 
 		<GitMinVersion>2.5.0</GitMinVersion>
+    <GitBaseVersionExpr Condition="'$(GitBaseVersionExpr)' == ''">^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</GitBaseVersionExpr>
+    <GitTagRegex Condition="'$(GitTagRegex)' == ''">*</GitTagRegex>
 	</PropertyGroup>
 
 	<!-- Private properties -->
@@ -93,8 +103,6 @@
 			GitInfoReport;
 			$(CoreCompileDependsOn)
 		</CoreCompileDependsOn>
-
-		<_GitBaseVersionExpr Condition="'$(_GitBaseVersionExpr)' == ''">^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</_GitBaseVersionExpr>
 		<!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
 		<_GitInfoFile>$(IntermediateOutputPath)GitInfo.cache</_GitInfoFile>
 	</PropertyGroup>
@@ -440,12 +448,12 @@
 			<GitBaseVersion>$([System.IO.File]::ReadAllText('$(GitVersionFile)'))</GitBaseVersion>
 			<GitBaseVersion>$(GitBaseVersion.Trim())</GitBaseVersion>
 			<IsValidGitBaseVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseVersion), $(_GitBaseVersionExpr)))
+				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseVersion), $(GitBaseVersionExpr)))
 			</IsValidGitBaseVersion>
 			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
 		</PropertyGroup>
 
-		<Error Text="$(GitVersionFile) does not contain a valid base version (found '$(GitBaseVersion)', regex: $(_GitBaseVersionExpr))."
+		<Error Text="$(GitVersionFile) does not contain a valid base version (found '$(GitBaseVersion)', regex: $(GitBaseVersionExpr))."
 						 Condition="'$(IsValidGitBaseVersion)' == 'False'" />
 
 		<PropertyGroup>
@@ -524,7 +532,7 @@
 
 		<PropertyGroup>
 			<IsValidGitBaseVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBranch), $(_GitBaseVersionExpr)))
+				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBranch), $(GitBaseVersionExpr)))
 			</IsValidGitBaseVersion>
 			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
 		</PropertyGroup>
@@ -579,7 +587,7 @@
 			DependsOnTargets="_GitBranch;_GitCommit"
 			Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' ">
 
-		<Exec Command='$(GitExe) describe --tags --abbrev=0'
+		<Exec Command='$(GitExe) describe --tags --match=$(GitTagRegex) --abbrev=0'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -608,7 +616,7 @@
 			Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' And '$(GitBaseTag)' != ''">
 
 		<!-- At this point, we now there is a base tag already we can leverage -->
-		<Exec Command='$(GitExe) describe --tags'
+		<Exec Command='$(GitExe) describe --match=$(GitTagRegex) --tags'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -621,7 +629,7 @@
 
 		<PropertyGroup>
 			<IsValidGitBaseVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseTag), $(_GitBaseVersionExpr)))
+				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseTag), $(GitBaseVersionExpr)))
 			</IsValidGitBaseVersion>
 			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
 
@@ -677,7 +685,7 @@
 
 		<PropertyGroup>
 			<IsValidGitDefaultVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitDefaultVersion), $(_GitBaseVersionExpr)))
+				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitDefaultVersion), $(GitBaseVersionExpr)))
 			</IsValidGitDefaultVersion>
 			<IsValidGitDefaultVersion>$(IsValidGitDefaultVersion.Trim())</IsValidGitDefaultVersion>
 			<GitCommits>0</GitCommits>
@@ -716,7 +724,7 @@
 
 		<PropertyGroup>
 			<IsValidGitBaseVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseVersion), $(_GitBaseVersionExpr)))
+				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseVersion), $(GitBaseVersionExpr)))
 			</IsValidGitBaseVersion>
 			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
 		</PropertyGroup>
@@ -732,13 +740,13 @@
 			<!-- Remove the initial optional 'v' or 'V' from the base version. -->
 			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('v'))">$(GitBaseVersion.TrimStart('v'))</GitBaseVersion>
 			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('V'))">$(GitBaseVersion.TrimStart('V'))</GitBaseVersion>
-			<GitBaseVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitBaseVersionMajor>
-			<GitBaseVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MINOR'].Value)</GitBaseVersionMinor>
-			<GitBaseVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['PATCH'].Value)</GitBaseVersionPatch>
+			<GitBaseVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitBaseVersionMajor>
+			<GitBaseVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionExpr)).Groups['MINOR'].Value)</GitBaseVersionMinor>
+			<GitBaseVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionExpr)).Groups['PATCH'].Value)</GitBaseVersionPatch>
 			<GitSemVerMajor>$(GitBaseVersionMajor)</GitSemVerMajor>
 			<GitSemVerMinor>$(GitBaseVersionMinor)</GitSemVerMinor>
 			<GitSemVerPatch>$([MSBuild]::Add('$(GitBaseVersionPatch)', '$(GitCommits)'))</GitSemVerPatch>
-			<GitSemVerLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['LABEL'].Value)</GitSemVerLabel>
+			<GitSemVerLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionExpr)).Groups['LABEL'].Value)</GitSemVerLabel>
 			<GitSemVerDashLabel Condition="'$(GitSemVerLabel)' != ''" >-$(GitSemVerLabel)</GitSemVerDashLabel>
 		</PropertyGroup>
 

@@ -92,3 +92,9 @@ Available MSBuild customizations:
                             whether the branch and tags (if any) 
                             will be used to find a base version.
                             Defaults to empty value (no ignoring).
+
+$(GitTagRegex): Regular Experssion used with git describe to find the BaseTag
+           Defaults to * (all)
+           
+$(GitBaseVersionExpr): Regular Experssion used with git describe to find the BaseTag
+           Defaults to '^v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)(?:\-(?<LABEL>[\dA-Za-z\-\.]+))?$|^(?<LABEL>[\dA-Za-z\-\.]+)\-v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)$'
