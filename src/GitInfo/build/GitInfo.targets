@@ -182,7 +182,7 @@
 		</Exec>
 
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<GitRoot>$(_GitOutput.Trim())</GitRoot>
+			<GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
@@ -198,7 +198,7 @@
 		</Exec>
 
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<GitRoot>$(_GitOutput.Trim())</GitRoot>
+			<GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
 		</PropertyGroup>
 
 		<!-- Determine the .git dir. In the simple case, this is just $(GitRoot)\.git.
@@ -486,8 +486,10 @@
 			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''">0</GitCommits>
 			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
 			<_DirectoryNameOfVersionFile>$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))</_DirectoryNameOfVersionFile>
+			<_DirectoryNameOfVersionFile>$([MSBuild]::NormalizeDirectory($(_DirectoryNameOfVersionFile)))</_DirectoryNameOfVersionFile>
 			<_GitCommitsRelativeTo>$(GitCommitsRelativeTo)</_GitCommitsRelativeTo>
 			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' == '' And '$(_DirectoryNameOfVersionFile)' != '$(GitRoot)'">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
+			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">$([MSBuild]::NormalizeDirectory($(_GitCommitsRelativeTo)))</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
