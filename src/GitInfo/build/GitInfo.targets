@@ -486,10 +486,10 @@
 			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''">0</GitCommits>
 			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
 			<_DirectoryNameOfVersionFile>$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))</_DirectoryNameOfVersionFile>
-			<_DirectoryNameOfVersionFile>$([MSBuild]::NormalizeDirectory($(_DirectoryNameOfVersionFile)))</_DirectoryNameOfVersionFile>
+			<_DirectoryNameOfVersionFile>$([MSBuild]::NormalizePath($(_DirectoryNameOfVersionFile)))</_DirectoryNameOfVersionFile>
 			<_GitCommitsRelativeTo>$(GitCommitsRelativeTo)</_GitCommitsRelativeTo>
 			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' == '' And '$(_DirectoryNameOfVersionFile)' != '$(GitRoot)'">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
-			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">$([MSBuild]::NormalizeDirectory($(_GitCommitsRelativeTo)))</_GitCommitsRelativeTo>
+			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">$([MSBuild]::NormalizePath($(_GitCommitsRelativeTo)))</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
