@@ -182,7 +182,7 @@
 		</Exec>
 
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
+			<GitRoot>$([MSBuild]::NormalizePath($(_GitOutput.Trim())))</GitRoot>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
@@ -198,7 +198,7 @@
 		</Exec>
 
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
+			<GitRoot>$([MSBuild]::NormalizePath($(_GitOutput.Trim())))</GitRoot>
 		</PropertyGroup>
 
 		<!-- Determine the .git dir. In the simple case, this is just $(GitRoot)\.git.
