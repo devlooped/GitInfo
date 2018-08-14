@@ -182,7 +182,7 @@
 		</Exec>
 
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<GitRoot>$([MSBuild]::NormalizePath($(_GitOutput.Trim())))</GitRoot>
+			<GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
@@ -198,7 +198,7 @@
 		</Exec>
 
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<GitRoot>$([MSBuild]::NormalizePath($(_GitOutput.Trim())))</GitRoot>
+			<GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
 		</PropertyGroup>
 
 		<!-- Determine the .git dir. In the simple case, this is just $(GitRoot)\.git.
@@ -208,7 +208,7 @@
          Which points to the actual folder where the git info exists in the containing 
          repository. -->
 		<PropertyGroup>
-			<GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '.git'))</GitDir>
+			<GitDir>$([MSBuild]::NormalizeDirectory('$(GitRoot)', '.git'))</GitDir>
 			<_IsGitFile>$([System.IO.File]::Exists('$(GitDir)'))</_IsGitFile>
 		</PropertyGroup>
 
@@ -258,12 +258,8 @@
 
 		<PropertyGroup Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' != 'true'">
 			<_GitFileContents>$([System.IO.File]::ReadAllText('$(GitDir)'))</_GitFileContents>
-			<GitDir>$([System.String]::new('$(_GitFileContents)').Substring(7).Trim())</GitDir>
-			<GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '$(GitDir)'))</GitDir>
-			<GitDir>$([System.IO.Path]::GetFullPath('$(GitDir)'))</GitDir>
-		</PropertyGroup>
-		<PropertyGroup>
-			<GitDir Condition="!HasTrailingSlash('$(GitDir)')">$(GitDir)$([System.IO.Path]::DirectorySeparatorChar)</GitDir>
+			<GitDir>$(_GitFileContents.Substring(7).Trim())</GitDir>
+			<GitDir>$([MSBuild]::NormalizeDirectory('$(GitRoot)', '$(GitDir)'))</GitDir>
 		</PropertyGroup>
 
 		<Message Text="Determined Git repository root as '$(GitRoot)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
@@ -486,10 +482,12 @@
 			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''">0</GitCommits>
 			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
 			<_DirectoryNameOfVersionFile>$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))</_DirectoryNameOfVersionFile>
-			<_DirectoryNameOfVersionFile>$([MSBuild]::NormalizePath($(_DirectoryNameOfVersionFile)))</_DirectoryNameOfVersionFile>
+			<_DirectoryNameOfVersionFile>$([MSBuild]::NormalizeDirectory($(_DirectoryNameOfVersionFile)))</_DirectoryNameOfVersionFile>
 			<_GitCommitsRelativeTo>$(GitCommitsRelativeTo)</_GitCommitsRelativeTo>
-			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' == '' And '$(_DirectoryNameOfVersionFile)' != '$(GitRoot)'">"$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))"</_GitCommitsRelativeTo>
-			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">$([MSBuild]::NormalizePath($(_GitCommitsRelativeTo)))</_GitCommitsRelativeTo>
+			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' == '' And '$(_DirectoryNameOfVersionFile)' != '$(GitRoot)'">$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))</_GitCommitsRelativeTo>
+			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">$([MSBuild]::NormalizeDirectory($(_GitCommitsRelativeTo)))</_GitCommitsRelativeTo>
+      <!-- Ensure the path is quoted if not empty -->
+      <_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">"$(_GitCommitsRelativeTo.Trim('"'))"</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
