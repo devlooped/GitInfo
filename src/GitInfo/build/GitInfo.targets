@@ -486,8 +486,8 @@
 			<_GitCommitsRelativeTo>$(GitCommitsRelativeTo)</_GitCommitsRelativeTo>
 			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' == '' And '$(_DirectoryNameOfVersionFile)' != '$(GitRoot)'">$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))</_GitCommitsRelativeTo>
 			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">$([MSBuild]::NormalizeDirectory($(_GitCommitsRelativeTo)))</_GitCommitsRelativeTo>
-      <!-- Ensure the path is quoted if not empty -->
-      <_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">"$(_GitCommitsRelativeTo.Trim('"'))"</_GitCommitsRelativeTo>
+			<!-- Ensure the path is quoted if not empty, remove trailing directory separator from NormalizeDirectory -->
+			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">"$(_GitCommitsRelativeTo.Trim('"').TrimEnd('\').TrimEnd('/'))"</_GitCommitsRelativeTo>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
