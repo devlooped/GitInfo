@@ -208,7 +208,7 @@
          Which points to the actual folder where the git info exists in the containing 
          repository. -->
 		<PropertyGroup>
-			<GitDir>$([MSBuild]::NormalizeDirectory('$(GitRoot)', '.git'))</GitDir>
+			<GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '.git'))</GitDir>
 			<_IsGitFile>$([System.IO.File]::Exists('$(GitDir)'))</_IsGitFile>
 		</PropertyGroup>
 
