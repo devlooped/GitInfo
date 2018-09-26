@@ -64,7 +64,7 @@
 
 		<GitDefaultBranch Condition="'$(GitDefaultBranch)' == ''">master</GitDefaultBranch>
 		<GitDefaultCommit Condition="'$(GitDefaultCommit)' == ''">0000000</GitDefaultCommit>
-		<GitDefaultVersion Condition="'$(GitDefaultVersion)' == ''">0.1.0</GitDefaultVersion>
+		<GitDefaultVersion Condition="'$(GitDefaultVersion)' == ''">0.0.0</GitDefaultVersion>
 
 		<GitInfoThisAssemblyFile Condition="'$(GitInfoThisAssemblyFile)' == '' And '$(DefaultLanguageSourceExtension)' != ''">$(IntermediateOutputPath)ThisAssembly.GitInfo.g$(DefaultLanguageSourceExtension)</GitInfoThisAssemblyFile>
 		<GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'VB'">false</GitThisAssembly>
