@@ -278,11 +278,14 @@
 	</Target>
 
 	<Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
+		<PropertyGroup>
+			<_GitPackedRefs>$([System.IO.Path]::Combine('$(GitDir)', 'packed-refs'))</_GitPackedRefs>
+		</PropertyGroup>
 		<ItemGroup>
-			<_GitInput Include="$(GitDir)HEAD" />
+			<_GitInput Include="$([System.IO.Path]::Combine('$(GitDir)', 'HEAD'))" />
 			<_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
 		</ItemGroup>
-		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'packed-refs'))">
+		<CreateItem Include="$(_GitPackedRefs)" Condition="Exists('$(_GitPackedRefs)')">
 			<Output ItemName="_GitInput" TaskParameter="Include" />
 		</CreateItem>		
 		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '**', '*.*'))">
