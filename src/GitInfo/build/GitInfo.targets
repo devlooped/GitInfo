@@ -517,6 +517,13 @@
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 
+		<Warning Text="Could not retrieve commits since '$(_GitLastBump)'. Defaulting to zero."
+							 Condition="'$(MSBuildLastExitCode)' != '0'" />
+
+		<PropertyGroup>
+			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0'">0</GitCommits>
+		</PropertyGroup>
+
 	</Target>
 
 	<Target Name="_GitBaseVersionBranch" Returns="$(GitBaseVersion)"
