@@ -21,6 +21,7 @@
   [as VB](https://github.com/kzu/GitInfoDemo/blob/master/GitInfoDemoVB/My%20Project/AssemblyInfo.vb#L8).
 - Trivially modified/improved generated code by just adjusting a 
   [C#](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.cs.pp) or 
+  [F#](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.fs.pp) or 
   [VB](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.vb.pp) template 
   included in the [NuGet package](https://www.nuget.org/packages/GitInfo)
 - Easily modified/improved by just adjusting a 
@@ -33,7 +34,7 @@ After installing via [NuGet](https://www.nuget.org/packages/GitInfo):
 
 	PM> Install-Package GitInfo
 
-By default, if the containing project is a C# or VB project, a compile-time generated source file will contain 
+By default, if the containing project is a C#, F# or VB project, a compile-time generated source file will contain 
 all the git information and can be accessed from anywhere within the assembly, as constants in a 
 `ThisAssembly` (partial) class and its nested `Git` static class:
 
@@ -64,6 +65,26 @@ C#:
 	ThisAssembly.Git.Commits + "-" + 
 	ThisAssembly.Git.Branch + "+" + 
 	ThisAssembly.Git.Commit)]
+```
+
+F#:
+```
+module AssemblyInfo
+
+open System.Reflection
+
+[<assembly: AssemblyVersion (ThisAssembly.Git.BaseVersion.Major + "." + ThisAssembly.Git.BaseVersion.Minor + "." + ThisAssembly.Git.BaseVersion.Patch)>]
+
+[<assembly: AssemblyFileVersion (ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)>]
+
+[<assembly: AssemblyInformationalVersion (
+    ThisAssembly.Git.SemVer.Major + "." + 
+    ThisAssembly.Git.SemVer.Minor + "." + 
+    ThisAssembly.Git.Commits + "-" + 
+    ThisAssembly.Git.Branch + "+" + 
+    ThisAssembly.Git.Commit)>]
+
+do ()
 ```
 
 VB:

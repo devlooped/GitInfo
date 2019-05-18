@@ -19,7 +19,7 @@ target that depends on the GitInfo target:
   $(GitSemVerSource)
   $(GitIsDirty)
 
-From C# and VB, by default code is generated too so that the same 
+From C#, F# and VB, by default code is generated too so that the same 
 information can be accessed from code, to construct your own 
 assembly/file version attributes with whatever format you want:
 

@@ -9,8 +9,8 @@
 		<licenseUrl>https://github.com/kzu/GitInfo/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/kzu/GitInfo</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<summary>Access commit information from MSBuild and C#/VB code, and infer SemVer from branch, tag or version file in Git repository.</summary>
-		<description>Exposes the following information for use directly from MSBuild, C# and VB:
+		<summary>Access commit information from MSBuild and C#/F#/VB code, and infer SemVer from branch, tag or version file in Git repository.</summary>
+		<description>Exposes the following information for use directly from MSBuild, C#, F# and VB:
   $(GitBranch), ThisAssembly.Git.Branch
   $(GitCommit), ThisAssembly.Git.Commit
   $(GitSha), ThisAssembly.Git.Sha
@@ -43,6 +43,7 @@ The generated code contains only constants, so it can be used to construct your 
 	<file src="readme.txt" />
     <file src="build\GitInfo.cache.pp" target="build" />
     <file src="build\GitInfo.cs.pp" target="build" />
+    <file src="build\GitInfo.fs.pp" target="build" />
     <file src="build\GitInfo.vb.pp" target="build" />
     <file src="build\GitInfo.targets" target="build" />
     <file src="buildMultiTargeting\GitInfo.targets" target="buildMultiTargeting" />

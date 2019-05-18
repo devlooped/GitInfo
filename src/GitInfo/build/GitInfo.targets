@@ -4,7 +4,7 @@
   ==============================================================
               Retrieves and exposes Git information 
 	
-	If the importing project has a C# or VB Language property, 
+	If the importing project has a C#, F# or VB Language property, 
 	by default a ThisAssembly file/class will be generated 
 	containing assembly-level metadata for the git information, 
 	as well as a ThisAssembly static class with constants for 
@@ -67,7 +67,7 @@
 		<GitDefaultVersion Condition="'$(GitDefaultVersion)' == ''">0.0.0</GitDefaultVersion>
 
 		<GitInfoThisAssemblyFile Condition="'$(GitInfoThisAssemblyFile)' == '' And '$(DefaultLanguageSourceExtension)' != ''">$(IntermediateOutputPath)ThisAssembly.GitInfo.g$(DefaultLanguageSourceExtension)</GitInfoThisAssemblyFile>
-		<GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'VB'">false</GitThisAssembly>
+		<GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'F#' And '$(Language)' != 'VB'">false</GitThisAssembly>
 		<GitThisAssembly Condition="'$(GitThisAssembly)' == '' And '$(GitInfoThisAssemblyFile)' != ''">true</GitThisAssembly>
 		<GitInfoReportImportance Condition="'$(GitInfoReportImportance)' == ''">low</GitInfoReportImportance>
 		<GitThisAssemblyMetadataDefine Condition="'$(GitThisAssemblyMetadata)' == 'true'">ADDMETADATA</GitThisAssemblyMetadataDefine>
@@ -826,9 +826,18 @@
 	<Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
 			BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssembly)' == 'true'">
 
-		<ItemGroup>
+		<ItemGroup Condition="'$(Language)' != 'F#'">
 			<Compile Remove="$(GitInfoThisAssemblyFile)" />
 			<Compile Include="$(GitInfoThisAssemblyFile)" />
+
+			<!-- For the double compilation happening with XAML projects. -->
+      		<_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
+		</ItemGroup>
+
+		<ItemGroup Condition="'$(Language)' == 'F#'">
+			<CompileBefore Remove="$(GitInfoThisAssemblyFile)" />			
+			<CompileBefore Include="$(GitInfoThisAssemblyFile)" />
+
 			<!-- For the double compilation happening with XAML projects. -->
       		<_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
 		</ItemGroup>
@@ -855,6 +864,10 @@
 			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' == '1'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+			<!-- no git repository -->
+			<_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitIsDirty)' == '1'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
 			<!-- no git repository -->
 			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' == '1'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'True'))</_ThisAssemblyContent>
