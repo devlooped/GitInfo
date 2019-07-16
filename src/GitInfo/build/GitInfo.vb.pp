@@ -83,8 +83,8 @@ Namespace Global
                 ''' <summary>Label with dash prefix: $GitSemVerDashLabel$</summary>
                 Public Const DashLabel As String = "$GitSemVerDashLabel$"
 
-                ''' <summary>Label with dash prefix: $GitSemVerSource$</summary>
-                Public Const Source As String = "$GitSemVerVerSource$"
+                ''' <summary>Source: $GitSemVerSource$</summary>
+                Public Const Source As String = "$GitSemVerSource$"
             End Class
         End Class
     End Class
