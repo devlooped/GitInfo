@@ -834,9 +834,6 @@
 		<ItemGroup Condition="'$(Language)' == 'F#'">
 			<CompileBefore Remove="$(GitInfoThisAssemblyFile)" />			
 			<CompileBefore Include="$(GitInfoThisAssemblyFile)" />
-
-			<!-- For the double compilation happening with XAML projects. -->
-      		<_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
 		</ItemGroup>
 
 	</Target>
