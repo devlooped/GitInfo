@@ -836,6 +836,10 @@
 			<CompileBefore Include="$(GitInfoThisAssemblyFile)" />
 		</ItemGroup>
 
+		<ItemGroup>
+			<!-- For the double compilation happening with XAML projects. -->
+      		<_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />			
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'"
