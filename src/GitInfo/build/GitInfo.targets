@@ -908,7 +908,8 @@
 	============================================================
 	-->
 	<PropertyGroup Condition="'$(GitExe)' == '' And '$(OS)' != 'Windows_NT'">
-		<GitExe>git</GitExe>
+		<GitExe Condition="Exists('/usr/local/bin/git')">/usr/local/bin/git</GitExe>
+		<GitExe Condition="$(GitExe) == ''">git</GitExe>
 	</PropertyGroup>
 
 	<Target Name="SetGitExe" Condition="'$(GitExe)' == '' And '$(OS)' == 'Windows_NT'">
