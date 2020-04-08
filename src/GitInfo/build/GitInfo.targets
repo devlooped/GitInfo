@@ -185,7 +185,8 @@
 			  StandardOutputImportance='low'
 			  ConsoleToMSBuild='true'
 			  WorkingDirectory='$(GitInfoBaseDir)'
-			  ContinueOnError='true'>
+			  ContinueOnError='true'
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -201,7 +202,8 @@
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'
 			  ConsoleToMSBuild='true'
-			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''">
+			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput" />
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -228,7 +230,8 @@
 			  StandardOutputImportance='low'
 			  ConsoleToMSBuild='true'
 			  WorkingDirectory='$(GitInfoBaseDir)'
-			  ContinueOnError='true'>
+			  ContinueOnError='true'
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitIsWorkTree"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -244,7 +247,8 @@
 			  StandardOutputImportance='low'
 			  ConsoleToMSBuild='true'
 			  WorkingDirectory='$(GitInfoBaseDir)'
-			  ContinueOnError='true'>
+			  ContinueOnError='true'
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitCommonDir"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -256,7 +260,8 @@
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'
 			  ConsoleToMSBuild='true'
-			  Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true' And '$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''">
+			  Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true' And '$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitCommonDir" />
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -281,7 +286,8 @@
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
 			  WorkingDirectory="$(GitRoot)"
-			  IgnoreExitCode="true">
+			  IgnoreExitCode="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ExitCode" PropertyName="GitIsDirty" />
 		</Exec>
 	</Target>
@@ -388,7 +394,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
 		</Exec>
 
@@ -410,7 +417,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommit"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -425,7 +433,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitSha"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -496,7 +505,8 @@
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'
 			  ConsoleToMSBuild='true'
-			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''">
+			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitVersionFile" />
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -507,7 +517,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitLastBump"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -534,7 +545,8 @@
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'
 			  ConsoleToMSBuild='true'
-			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != '' And '$(_GitCommitsRelativeTo)' != ''">
+			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != '' And '$(_GitCommitsRelativeTo)' != ''"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitCommitsRelativeTo" />
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -546,7 +558,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -590,7 +603,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitForkPoint"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -610,7 +624,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -630,7 +645,8 @@
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
-			  IgnoreExitCode="true">
+			  IgnoreExitCode="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitBaseTag"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -658,7 +674,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitTag"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -688,7 +705,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="_GitBaseTagCommit"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -700,7 +718,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -738,7 +757,8 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -976,7 +996,8 @@
 			  EchoOff='true'
 			  ContinueOnError='true'
 			  StandardErrorImportance='high'
-			  StandardOutputImportance='low'>
+			  StandardOutputImportance='low'
+			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 		<PropertyGroup Condition="'$(GitExe)' == '' And '$(MSBuildLastExitCode)' == '0'">
