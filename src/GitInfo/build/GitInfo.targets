@@ -400,12 +400,12 @@
 			Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
 
 		<Exec Command='$(GitExe) -c log.showSignature=false log --format=format:$(_ShortShaFormat) -n 1'
-		      EchoOff='true'
-		      StandardErrorImportance="low"
-		      StandardOutputImportance="low"
-		      ConsoleToMSBuild="true"
-		      WorkingDirectory="$(GitRoot)"
-		      ContinueOnError="true">
+			  EchoOff='true'
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommit"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
