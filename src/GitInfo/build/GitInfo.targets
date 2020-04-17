@@ -22,6 +22,9 @@
 	$(ThisAssemblyNamespace): allows overriding the namespace
 							  for the ThisAssembly class.
 							  Defaults to the global namespace.
+							  
+	$(GitRemoteOrigin): name of remote to get repository url for.
+						Defaults to 'origin'.
 											
 	$(GitDefaultBranch): determines the base branch used to 
 						 calculate commits on top of current branch.
@@ -896,7 +899,8 @@
 			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' == '1'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'True'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
-			
+
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitRepositoryUrl$', '$(GitRepositoryUrl)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBranch$', '$(GitBranch)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommits$', '$(GitCommits)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommit$', '$(GitCommit)'))</_ThisAssemblyContent>

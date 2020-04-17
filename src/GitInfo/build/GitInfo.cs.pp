@@ -5,6 +5,7 @@
 
 #if ADDMETADATA
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.IsDirty", RootNamespace.ThisAssembly.Git.IsDirtyString)]
+[assembly: System.Reflection.AssemblyMetadata("GitInfo.RepositoryUrl", RootNamespace.ThisAssembly.Git.RepositoryUrl)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", RootNamespace.ThisAssembly.Git.Commit)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", RootNamespace.ThisAssembly.Git.Sha)]
@@ -37,6 +38,9 @@ namespace _RootNamespace_
 
       /// <summary>IsDirtyString: $GitIsDirty$</summary>
       public const string IsDirtyString = "$GitIsDirty$";
+
+      /// <summary>Repository URL: $GitRepositoryUrl$</summary>
+      public const string RepositoryUrl = "$GitRepositoryUrl$";
 
       /// <summary>Branch: $GitBranch$</summary>
       public const string Branch = "$GitBranch$";
