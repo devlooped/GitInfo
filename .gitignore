@@ -1,4 +1,5 @@
 .nuget
 out
-/GitInfo.cache
+**/GitInfo.cache
 *.suo
+.vs/
