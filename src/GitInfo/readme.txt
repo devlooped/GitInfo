@@ -44,6 +44,7 @@ it very easy to see what the different values contain.
 
 The available constants from code are:
 
+  ThisAssembly.Git.RepositoryUrl
   ThisAssembly.Git.Branch
   ThisAssembly.Git.Commit
   ThisAssembly.Git.Commits
