@@ -23,9 +23,9 @@
 							  for the ThisAssembly class.
 							  Defaults to the global namespace.
 							  
-	$(GitRemoteOrigin): name of remote to get repository url for.
-						Defaults to 'origin'.
-											
+	$(GitRemote): name of remote to get repository url for.
+				  Defaults to 'origin'.
+
 	$(GitDefaultBranch): determines the base branch used to 
 						 calculate commits on top of current branch.
 						 Defaults to 'master'.
@@ -58,8 +58,8 @@
 	-->
 
 	<PropertyGroup>
-		<!-- Remote origin for repository url -->
-		<GitRemoteOrigin Condition="'$(GitRemoteOrigin)' == ''">origin</GitRemoteOrigin>
+		<!-- Name of remote for repository url -->
+		<GitRemote Condition="'$(GitRemote)' == ''">origin</GitRemote>
 		<!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
 		<GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
 		<!-- Default the lookup directory to the project directory unless overriden -->
@@ -346,7 +346,7 @@
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)">
 
-		<Exec Command="$(GitExe) config --get remote.$(GitRemoteOrigin).url"
+		<Exec Command="$(GitExe) config --get remote.$(GitRemote).url"
 			  Condition="'$(GitRepositoryUrl)' == ''"
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -359,7 +359,7 @@
 		</Exec>
 		
 		<Warning Condition="'$(MSBuildLastExitCode)' != '0'"
-				 Text="Could not retrieve repository url for remote '$(GitRemoteOrigin)'" />
+				 Text="Could not retrieve repository url for remote '$(GitRemote)'" />
 
 		<!--TODO: Sensible default for GitRepositoryUrl-->
 	</Target>

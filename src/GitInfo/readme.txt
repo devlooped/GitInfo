@@ -74,8 +74,8 @@ Available MSBuild customizations:
                             for the ThisAssembly class.
                             Defaults to the global namespace.
 
-  $(GitRemoteOrigin): name of remote to get repository url for.
-                      Defaults to 'origin'.
+  $(GitRemote): name of remote to get repository url for.
+                Defaults to 'origin'.
 
   $(GitDefaultBranch): determines the base branch used to 
                        calculate commits on top of current branch.
