@@ -55,6 +55,8 @@
 	-->
 
 	<PropertyGroup>
+		<!-- Remote origin for repository url -->
+		<GitRemoteOrigin Condition="'$(GitRemoteOrigin)' == ''">origin</GitRemoteOrigin>
 		<!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
 		<GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
 		<!-- Default the lookup directory to the project directory unless overriden -->
@@ -103,6 +105,7 @@
 		<Message Importance="$(GitInfoReportImportance)" Text="Git Info:
   GitInfoBaseDir:       $(GitInfoBaseDir)
   GitRoot:              $(GitRoot)
+  GitRepositoryUrl      $(GitRepositoryUrl)
   GitBranch:            $(GitBranch)
   GitCommit:            $(GitCommit)
   GitSha:               $(GitSha)
@@ -131,6 +134,7 @@
 			_GitInputs;
 			_GitClearCache;
 			_GitReadCache;
+			_GitRepositoryUrl;
 			_GitBranch;
 			_GitCommit;
 			_GitPopulateInfo;
@@ -313,6 +317,7 @@
 		</CreateItem>
 
 		<PropertyGroup>
+			<GitRepositoryUrl Condition="'$(GitRepositoryUrl)' == ''">%(GitInfo.GitRepositoryUrl)</GitRepositoryUrl>
 			<GitBranch Condition="'$(GitBranch)' == ''">%(GitInfo.GitBranch)</GitBranch>
 			<GitCommit Condition="'$(GitCommit)' == ''">%(GitInfo.GitCommit)</GitCommit>
 			<GitSha Condition="'$(GitSha)' == ''">%(GitInfo.GitSha)</GitSha>
@@ -330,6 +335,26 @@
 			<GitSemVerLabel Condition="'$(GitSemVerLabel)' == ''">%(GitInfo.GitSemVerLabel)</GitSemVerLabel>
 			<GitSemVerDashLabel Condition="'$(GitSemVerDashLabel)' == ''">%(GitInfo.GitSemVerDashLabel)</GitSemVerDashLabel>
 			<GitSemVerSource Condition="'$(GitSemVerSource)' == ''">%(GitInfo.GitSemVerSource)</GitSemVerSource>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_GitRepositoryUrl" Returns="$(GitRepositoryUrl)" DependsOnTargets="_GitRoot"
+			Condition="'$(GitRoot)' != '' and '$(GitRepositoryUrl)' == ''"
+			Inputs="@(_GitInput)"
+			Outputs="$(_GitInfoFile)">
+
+		<Exec Command="$(GitExe) config --get remote.$(GitRemoteOrigin).url"
+			  Condition="'$(GitRepositoryUrl)' == ''"
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="GitRepositoryUrl"/>
+		</Exec>
+
+		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
+			<GitSha>$(GitDefaultCommit)</GitSha>
 		</PropertyGroup>
 	</Target>
 
@@ -372,12 +397,12 @@
 			Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
 
 		<Exec Command='$(GitExe) -c log.showSignature=false log --format=format:$(_ShortShaFormat) -n 1'
-			  EchoOff='true'
-			  StandardErrorImportance="low"
-			  StandardOutputImportance="low"
-			  ConsoleToMSBuild="true"
-			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+		      EchoOff='true'
+		      StandardErrorImportance="low"
+		      StandardOutputImportance="low"
+		      ConsoleToMSBuild="true"
+		      WorkingDirectory="$(GitRoot)"
+		      ContinueOnError="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommit"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
@@ -406,6 +431,7 @@
 	<Target Name="_GitPopulateInfo">
 		<ItemGroup>
 			<GitInfo Include="GitInfo">
+				<GitRepositoryUrl>$(GitRepositoryUrl)</GitRepositoryUrl>
 				<GitRoot>$(GitRoot)</GitRoot>
 				<GitBranch>$(GitBranch)</GitBranch>
 				<GitCommit>$(GitCommit)</GitCommit>
@@ -780,7 +806,7 @@
 
 		<PropertyGroup>
 			<_GitInfoContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cache.pp'))</_GitInfoContent>
-
+			<_GitInfoContent>$(_GitInfoContent.Replace('$GitRepositoryUrl$', '$(GitRepositoryUrl)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBranch$', '$(GitBranch)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommits$', '$(GitCommits)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommit$', '$(GitCommit)'))</_GitInfoContent>
