@@ -352,13 +352,16 @@
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
 			  WorkingDirectory="$(GitRoot)"
-			  ContinueOnError="true">
+			  ContinueOnError="true"
+			  IgnoreExitCode="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitRepositoryUrl"/>
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode"/>
 		</Exec>
+		
+		<Warning Condition="'$(MSBuildLastExitCode)' != '0'"
+				 Text="Could not retrieve repository url for remote '$(GitRemoteOrigin)'" />
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
-			<GitSha>$(GitDefaultCommit)</GitSha>
-		</PropertyGroup>
+		<!--TODO: Sensible default for GitRepositoryUrl-->
 	</Target>
 
 	<Target Name="_GitBranch" Returns="$(GitBranch)"
