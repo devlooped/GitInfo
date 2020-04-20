@@ -71,6 +71,8 @@
 		<GitDefaultCommit Condition="'$(GitDefaultCommit)' == ''">0000000</GitDefaultCommit>
 		<GitDefaultVersion Condition="'$(GitDefaultVersion)' == ''">0.0.0</GitDefaultVersion>
 
+		<GitThisAssemblyMetadata Condition="'$(GitThisAssemblyMetadata)' == ''">false</GitThisAssemblyMetadata>
+
 		<GitInfoThisAssemblyFile Condition="'$(GitInfoThisAssemblyFile)' == '' And '$(DefaultLanguageSourceExtension)' != ''">$(IntermediateOutputPath)ThisAssembly.GitInfo.g$(DefaultLanguageSourceExtension)</GitInfoThisAssemblyFile>
 		<GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'F#' And '$(Language)' != 'VB'">false</GitThisAssembly>
 		<GitThisAssembly Condition="'$(GitThisAssembly)' == '' And '$(GitInfoThisAssemblyFile)' != ''">true</GitThisAssembly>
