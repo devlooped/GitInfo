@@ -3,6 +3,7 @@ Git Info from MSBuild, C# and VB
 Exposes the following information for use directly from any MSBuild 
 target that depends on the GitInfo target:
 
+  $(GitRepositoryUrl)
   $(GitBranch)
   $(GitCommit)
   $(GitCommits)
@@ -43,6 +44,7 @@ it very easy to see what the different values contain.
 
 The available constants from code are:
 
+  ThisAssembly.Git.RepositoryUrl
   ThisAssembly.Git.Branch
   ThisAssembly.Git.Commit
   ThisAssembly.Git.Commits
@@ -72,6 +74,9 @@ Available MSBuild customizations:
   $(ThisAssemblyNamespace): allows overriding the namespace
                             for the ThisAssembly class.
                             Defaults to the global namespace.
+
+  $(GitRemote): name of remote to get repository url for.
+                Defaults to 'origin'.
 
   $(GitDefaultBranch): determines the base branch used to 
                        calculate commits on top of current branch.

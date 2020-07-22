@@ -4,6 +4,7 @@
 
 #If ADDMETADATA
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.IsDirty", Global.RootNamespace.ThisAssembly.Git.IsDirtyString)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.RepositoryUrl", Global.RootNamespace.ThisAssembly.Git.RepositoryUrl)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", Global.RootNamespace.ThisAssembly.Git.Branch)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", Global.RootNamespace.ThisAssembly.Git.Commit)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", Global.RootNamespace.ThisAssembly.Git.Sha)>
@@ -35,6 +36,9 @@ Namespace Global
 
             ''' <summary>IsDirtyString: $GitIsDirty$</summary>
             Public Const IsDirtyString As String = "$GitIsDirty$"
+
+            ''' <summary>Repository URL: $GitRepositoryUrl$</summary>
+            Public Const RepositoryUrl As String = "$GitRepositoryUrl$"
 
             ''' <summary>Branch: $GitBranch$</summary>
             Public Const Branch As String = "$GitBranch$"

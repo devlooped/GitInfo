@@ -1,3 +1,4 @@
+GitRepositoryUrl=$GitRepositoryUrl$;
 GitBranch=$GitBranch$;
 GitCommit=$GitCommit$;
 GitSha=$GitSha$;

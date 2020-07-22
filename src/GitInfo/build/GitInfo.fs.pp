@@ -10,6 +10,9 @@ module Git =
     /// <summary>IsDirtyString: $GitIsDirty$</summary>
     let [<Literal>] IsDirtyString = "$GitIsDirty$"
 
+    /// <summary>Repository URL: $GitRepositoryUrl$</summary>
+    let [<Literal>] RepositoryUrl = "$GitRepositoryUrl$"
+
     /// <summary>Branch: $GitBranch$</summary>
     let [<Literal>] Branch = "$GitBranch$"
 
