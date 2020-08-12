@@ -23,6 +23,9 @@
 							  for the ThisAssembly class.
 							  Defaults to the global namespace.
 							  
+	$(GitPreprocessorDefinitions): set to 'false' to prevent C++
+								   preprocessor definitions generation.
+
 	$(GitRemote): name of remote to get repository url for.
 				  Defaults to 'origin'.
 
@@ -79,6 +82,9 @@
 		<GitInfoReportImportance Condition="'$(GitInfoReportImportance)' == ''">low</GitInfoReportImportance>
 		<GitThisAssemblyMetadataDefine Condition="'$(GitThisAssemblyMetadata)' == 'true'">ADDMETADATA</GitThisAssemblyMetadataDefine>
 		<GitThisAssemblyMetadataDefine Condition="'$(GitThisAssemblyMetadata)' != 'true'">NOMETADATA</GitThisAssemblyMetadataDefine>
+
+		<GitPreprocessorDefinitions Condition="'$(Language)' != 'C++'">false</GitPreprocessorDefinitions>
+		<GitPreprocessorDefinitions Condition="'$(GitPreprocessorDefinitions)' == ''">true</GitPreprocessorDefinitions>
 
 		<!-- Defaults if overrides are specified when building -->
 		<GitCommits Condition="'$(GitCommits)' == ''">0</GitCommits>
@@ -953,6 +959,59 @@
 		<MakeDir Directories="$(GitInfoThisAssemblyDir)" Condition="!Exists('$(GitInfoThisAssemblyDir)')" />
 
 		<WriteLinesToFile File='$(GitInfoThisAssemblyFile)' Lines='$(_ThisAssemblyContent)' Overwrite='true' />
+	</Target>
+
+	<PropertyGroup>
+		<GitPreprocessorDefinitionsDependsOn>
+			GitInfo;
+			GitVersion;
+			_GitInputs;
+			_GitGeneratePreprocessorDefinitions
+		</GitPreprocessorDefinitionsDependsOn>
+	</PropertyGroup>
+
+	<Target Name="GitPreprocessorDefinitions" DependsOnTargets="$(GitPreprocessorDefinitionsDependsOn)"
+			BeforeTargets="_PrepareForBuild" Condition="'$(GitPreprocessorDefinitions)' == 'true'">
+		<ItemGroup>
+			<ClCompile>
+				<PreprocessorDefinitions>$(_PreprocessorDefinitionsContent);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			</ClCompile>
+			<ResourceCompile>
+				<PreprocessorDefinitions>$(_PreprocessorDefinitionsContent);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			</ResourceCompile>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_GitGeneratePreprocessorDefinitions" Condition="'$(GitPreprocessorDefinitions)' == 'true'">
+		<PropertyGroup>
+			<_PreprocessorDefinitionsContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.pdef.pp'))</_PreprocessorDefinitionsContent>
+
+			<!-- no git repository -->
+			<_PreprocessorDefinitionsContent Condition="'$(GitRoot)' == ''">$(_PreprocessorDefinitionsContent.Replace('$GitIsDirty$', '0'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent Condition="'$(GitIsDirty)' == '1'">$(_PreprocessorDefinitionsContent.Replace('$GitIsDirty$', '1'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent Condition="'$(GitIsDirty)' == '0'">$(_PreprocessorDefinitionsContent.Replace('$GitIsDirty$', '0'))</_PreprocessorDefinitionsContent>
+
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitRepositoryUrl$', '$(GitRepositoryUrl)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitBranch$', '$(GitBranch)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitCommits$', '$(GitCommits)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitCommit$', '$(GitCommit)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitSha$', '$(GitSha)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitBaseVersionMinor$', '$(GitBaseVersionMinor)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitBaseVersionPatch$', '$(GitBaseVersionPatch)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitTag$', '$(GitTag)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitBaseTag$', '$(GitBaseTag)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitSemVerMajor$', '$(GitSemVerMajor)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitSemVerMinor$', '$(GitSemVerMinor)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitSemVerPatch$', '$(GitSemVerPatch)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitSemVerLabel$', '$(GitSemVerLabel)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitSemVerDashLabel$', '$(GitSemVerDashLabel)'))</_PreprocessorDefinitionsContent>
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Replace('$GitSemVerSource$', '$(GitSemVerSource)'))</_PreprocessorDefinitionsContent>
+
+			<_PreprocessorDefinitionsContent>$(_PreprocessorDefinitionsContent.Split('%0A'))</_PreprocessorDefinitionsContent>
+		</PropertyGroup>
 	</Target>
 
 	<!--
