@@ -799,7 +799,7 @@
 			<GitBaseVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MAJOR'].Value)</GitBaseVersionMajor>
 			<GitBaseVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['MINOR'].Value)</GitBaseVersionMinor>
 			<GitBaseVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(_GitBaseVersionExpr)).Groups['PATCH'].Value)</GitBaseVersionPatch>
-			<GitBaseVersionPatch Condition="$('GitBaseVersionPatch')==''">0</GitBaseVersionPatch>
+			<GitBaseVersionPatch Condition="'$(GitBaseVersionPatch)' == ''">0</GitBaseVersionPatch>
 			<GitSemVerMajor>$(GitBaseVersionMajor)</GitSemVerMajor>
 			<GitSemVerMinor>$(GitBaseVersionMinor)</GitSemVerMinor>
 			<GitSemVerPatch>$([MSBuild]::Add('$(GitBaseVersionPatch)', '$(GitCommits)'))</GitSemVerPatch>
