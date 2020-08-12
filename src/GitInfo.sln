@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitInfo", "GitInfo", "{66BB
 		GitInfo\build\GitInfo.cs.pp = GitInfo\build\GitInfo.cs.pp
 		GitInfo\build\GitInfo.fs.pp = GitInfo\build\GitInfo.fs.pp
 		GitInfo\GitInfo.nuspec = GitInfo\GitInfo.nuspec
+		GitInfo\build\GitInfo.pdef.pp = GitInfo\build\GitInfo.pdef.pp
 		GitInfo\build\GitInfo.targets = GitInfo\build\GitInfo.targets
 		GitInfo\build\GitInfo.vb.pp = GitInfo\build\GitInfo.vb.pp
 		GitInfo\build\GitInfo.xbuild = GitInfo\build\GitInfo.xbuild
