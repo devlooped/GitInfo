@@ -37,62 +37,62 @@ namespace _RootNamespace_
       public const bool IsDirty = $GitIsDirty$;
 
       /// <summary>IsDirtyString: $GitIsDirty$</summary>
-      public const string IsDirtyString = "$GitIsDirty$";
+      public const string IsDirtyString = @"$GitIsDirty$";
 
       /// <summary>Repository URL: $GitRepositoryUrl$</summary>
-      public const string RepositoryUrl = "$GitRepositoryUrl$";
+      public const string RepositoryUrl = @"$GitRepositoryUrl$";
 
       /// <summary>Branch: $GitBranch$</summary>
-      public const string Branch = "$GitBranch$";
+      public const string Branch = @"$GitBranch$";
 
       /// <summary>Commit: $GitCommit$</summary>
-      public const string Commit = "$GitCommit$";
+      public const string Commit = @"$GitCommit$";
 
       /// <summary>Sha: $GitSha$</summary>
-      public const string Sha = "$GitSha$";
+      public const string Sha = @"$GitSha$";
 
       /// <summary>Commits on top of base version: $GitCommits$</summary>
-      public const string Commits = "$GitCommits$";
+      public const string Commits = @"$GitCommits$";
 
       /// <summary>Tag: $GitTag$</summary>
-      public const string Tag = "$GitTag$";
+      public const string Tag = @"$GitTag$";
 
       /// <summary>Base tag: $GitBaseTag$</summary>
-      public const string BaseTag = "$GitBaseTag$";
+      public const string BaseTag = @"$GitBaseTag$";
 
       /// <summary>Provides access to the base version information used to determine the <see cref="SemVer" />.</summary>      
       public partial class BaseVersion
       {
         /// <summary>Major: $GitBaseVersionMajor$</summary>
-        public const string Major = "$GitBaseVersionMajor$";
+        public const string Major = @"$GitBaseVersionMajor$";
 
         /// <summary>Minor: $GitBaseVersionMinor$</summary>
-        public const string Minor = "$GitBaseVersionMinor$";
+        public const string Minor = @"$GitBaseVersionMinor$";
 
         /// <summary>Patch: $GitBaseVersionPatch$</summary>
-        public const string Patch = "$GitBaseVersionPatch$";
+        public const string Patch = @"$GitBaseVersionPatch$";
       }
 
       /// <summary>Provides access to SemVer information for the current assembly.</summary>
       public partial class SemVer
       {
         /// <summary>Major: $GitSemVerMajor$</summary>
-        public const string Major = "$GitSemVerMajor$";
+        public const string Major = @"$GitSemVerMajor$";
 
         /// <summary>Minor: $GitSemVerMinor$</summary>
-        public const string Minor = "$GitSemVerMinor$";
+        public const string Minor = @"$GitSemVerMinor$";
 
         /// <summary>Patch: $GitSemVerPatch$</summary>
-        public const string Patch = "$GitSemVerPatch$";
+        public const string Patch = @"$GitSemVerPatch$";
 
         /// <summary>Label: $GitSemVerLabel$</summary>
-        public const string Label = "$GitSemVerLabel$";
+        public const string Label = @"$GitSemVerLabel$";
 
         /// <summary>Label with dash prefix: $GitSemVerDashLabel$</summary>
-        public const string DashLabel = "$GitSemVerDashLabel$";
+        public const string DashLabel = @"$GitSemVerDashLabel$";
 
         /// <summary>Source: $GitSemVerSource$</summary>
-        public const string Source = "$GitSemVerSource$";
+        public const string Source = @"$GitSemVerSource$";
       }
     }
   }
