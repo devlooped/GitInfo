@@ -22,6 +22,9 @@ module Git =
     /// <summary>Sha: $GitSha$</summary>
     let [<Literal>] Sha = @"$GitSha$"
 
+    /// <summary>Commit date: $GitCommitDate$</summary>
+    let [<Literal>] CommitDate = @"$GitCommitDate$"
+
     /// <summary>Commits on top of base version: $GitCommits$</summary>
     let [<Literal>] Commits = @"$GitCommits$"
 

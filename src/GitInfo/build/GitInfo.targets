@@ -114,6 +114,7 @@
   GitBranch:            $(GitBranch)
   GitCommit:            $(GitCommit)
   GitSha:               $(GitSha)
+  GitCommitDate:        $(GitCommitDate)
   GitBaseVersion:       $(GitBaseVersion)
   GitBaseVersionSource: $(GitBaseVersionSource)
   GitBaseVersionMajor:  $(GitBaseVersionMajor)
@@ -142,6 +143,7 @@
 			_GitRepositoryUrl;
 			_GitBranch;
 			_GitCommit;
+			_GitCommitDate;
 			_GitPopulateInfo;
 		</GitInfoDependsOn>
 	</PropertyGroup>
@@ -149,10 +151,12 @@
 	<PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
 		<_ShortShaFormat>%%h</_ShortShaFormat>
 		<_LongShaFormat>%%H</_LongShaFormat>
+		<_CommitDateFormat>%%cI</_CommitDateFormat>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
 		<_ShortShaFormat>%h</_ShortShaFormat>
 		<_LongShaFormat>%H</_LongShaFormat>
+		<_CommitDateFormat>%cI</_CommitDateFormat>
 	</PropertyGroup>
 
 	<Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" Returns="@(GitInfo)" />
@@ -332,6 +336,7 @@
 			<GitBranch Condition="'$(GitBranch)' == ''">%(GitInfo.GitBranch)</GitBranch>
 			<GitCommit Condition="'$(GitCommit)' == ''">%(GitInfo.GitCommit)</GitCommit>
 			<GitSha Condition="'$(GitSha)' == ''">%(GitInfo.GitSha)</GitSha>
+			<GitCommitDate Condition="'$(GitCommitDate)' == ''">%(GitInfo.GitCommitDate)</GitCommitDate>
 			<GitBaseVersion Condition="'$(GitBaseVersion)' == ''">%(GitInfo.GitBaseVersion)</GitBaseVersion>
 			<GitBaseVersionSource Condition="'$(GitBaseVersionSource)' == ''">%(GitInfo.GitBaseVersionSource)</GitBaseVersionSource>
 			<GitBaseVersionMajor Condition="'$(GitBaseVersionMajor)' == ''">%(GitInfo.GitBaseVersionMajor)</GitBaseVersionMajor>
@@ -370,6 +375,29 @@
 				 Text="Could not retrieve repository url for remote '$(GitRemote)'" />
 
 		<!--TODO: Sensible default for GitRepositoryUrl-->
+	</Target>
+
+	<Target Name="_GitCommitDate" Returns="$(GitCommitDate)"
+			DependsOnTargets="_GitRoot"
+			Inputs="@(_GitInput)"
+			Outputs="$(_GitInfoFile)"
+			Condition="'$(GitRoot)' != '' And '$(GitCommitDate)' == ''">
+
+		<Exec Command='$(GitExe) show --format=$(_CommitDateFormat) -s'
+			  EchoOff='true'
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
+			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommitDate"/>
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+
+		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
+			<GitCommitDate>0001-01-01T00:00:00+00:00</GitCommitDate>
+		</PropertyGroup>
 	</Target>
 
 	<Target Name="_GitBranch" Returns="$(GitBranch)"
@@ -453,6 +481,7 @@
 				<GitBranch>$(GitBranch)</GitBranch>
 				<GitCommit>$(GitCommit)</GitCommit>
 				<GitSha>$(GitSha)</GitSha>
+				<GitCommitDate>$(GitCommitDate)</GitCommitDate>
 			</GitInfo>
 		</ItemGroup>
 	</Target>
@@ -839,6 +868,7 @@
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBranch$', '$(GitBranch)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommits$', '$(GitCommits)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommit$', '$(GitCommit)'))</_GitInfoContent>
+			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommitDate$', '$(GitCommitDate)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitSha$', '$(GitSha)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_GitInfoContent>
@@ -930,6 +960,7 @@
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBranch$', '$(GitBranch)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommits$', '$(GitCommits)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommit$', '$(GitCommit)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommitDate$', '$(GitCommitDate)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSha$', '$(GitSha)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_ThisAssemblyContent>

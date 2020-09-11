@@ -6,6 +6,7 @@ target that depends on the GitInfo target:
   $(GitRepositoryUrl)
   $(GitBranch)
   $(GitCommit)
+  $(GitCommitDate)
   $(GitCommits)
   $(GitTag)
   $(GitBaseTag)
