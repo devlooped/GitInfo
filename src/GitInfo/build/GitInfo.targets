@@ -612,8 +612,12 @@
 			Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreBranchVersion)' != 'true' ">
 
 		<PropertyGroup>
+			<_CandidateValue>$(GitBranch)</_CandidateValue>
+			<_IndexOfSlash>$(_CandidateValue.LastIndexOf('/'))</_IndexOfSlash>
+			<_IndexOfSlash Condition="'$(_IndexOfSlash)' == '-1'">$(_CandidateValue.LastIndexOf('\'))</_IndexOfSlash>
+			<_CandidateValue Condition="'$(_GitBranchIndexOfSlash)' != '-1'">$(_CandidateValue.Substring($([MSBuild]::Add($(_IndexOfSlash), 1))))</_CandidateValue>
 			<IsValidGitBaseVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBranch), $(_GitBaseVersionExpr)))
+				$([System.Text.RegularExpressions.Regex]::IsMatch($(_CandidateValue), $(_GitBaseVersionExpr)))
 			</IsValidGitBaseVersion>
 			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
 		</PropertyGroup>
@@ -622,7 +626,7 @@
 				 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
 
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
-			<GitBaseVersion>$(GitBranch)</GitBaseVersion>
+			<GitBaseVersion>$(_CandidateValue)</GitBaseVersion>
 			<GitBaseVersionSource>GitBranch</GitBaseVersionSource>
 			<GitSemVerSource>Branch</GitSemVerSource>
 		</PropertyGroup>
