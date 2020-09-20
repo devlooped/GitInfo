@@ -294,6 +294,10 @@
 			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ExitCode" PropertyName="GitIsDirty" />
 		</Exec>
+		
+		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0' Or '$(GitIsDirty)' == ''">
+			<GitIsDirty>0</GitIsDirty>
+		</PropertyGroup>		
 	</Target>
 
 	<Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
