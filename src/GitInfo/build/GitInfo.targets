@@ -2,56 +2,59 @@
 <Project ToolsVersion="4.0" InitialTargets="SetGitExe" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!--
   ==============================================================
-              Retrieves and exposes Git information 
-	
-	If the importing project has a C#, F# or VB Language property, 
-	by default a ThisAssembly file/class will be generated 
-	containing assembly-level metadata for the git information, 
-	as well as a ThisAssembly static class with constants for 
+              Retrieves and exposes Git information
+
+	If the importing project has a C#, F# or VB Language property,
+	by default a ThisAssembly file/class will be generated
+	containing assembly-level metadata for the git information,
+	as well as a ThisAssembly static class with constants for
 	all the available values.
-	
+
 	Customization:
-	
-	$(GitThisAssembly): set to 'false' to prevent assembly 
+
+	$(GitThisAssembly): set to 'false' to prevent assembly
 						metadata and constants generation.
 
-	$(GitThisAssemblyMetadata): set to 'false' to prevent assembly 
-  								metadata generation only. Defaults 
+	$(GitThisAssemblyMetadata): set to 'false' to prevent assembly
+  								metadata generation only. Defaults
 								to 'false'.
-	
+
 	$(ThisAssemblyNamespace): allows overriding the namespace
 							  for the ThisAssembly class.
 							  Defaults to the global namespace.
-							  
+
 	$(GitRemote): name of remote to get repository url for.
 				  Defaults to 'origin'.
 
-	$(GitDefaultBranch): determines the base branch used to 
+	$(GitDefaultBranch): determines the base branch used to
 						 calculate commits on top of current branch.
 						 Defaults to 'master'.
-	
-	$(GitVersionFile): determines the name of a file in the Git 
-					   repository root used to provide the base 
+
+	$(GitVersionFile): determines the name of a file in the Git
+					   repository root used to provide the base
 					   version info.
 					   Defaults to 'GitInfo.txt'.
 
-	$(GitCommitsRelativeTo): optionally specifies an alternative directory 
+	$(GitCommitsRelativeTo): optionally specifies an alternative directory
 							 for counting commits on top of the base version.
 							 Defaults to the $(GitVersionFile) directory.
+
+	$(GitCommitsIgnoreMerges): set to 'true' to ignore merge commits when calculating
+							   the number of commits. Defaults to 'false'.
 
 	$(GitInfoReportImportance): allows rendering all the retrieved
 								git information with the specified
 								message importance ('high', 'normal' or 'low').
 								Defaults to 'low'.
-                                
-	$(GitIgnoreBranchVersion) and $(GitIgnoreTagVersion): determines 
-								whether the branch and tags (if any) 
+
+	$(GitIgnoreBranchVersion) and $(GitIgnoreTagVersion): determines
+								whether the branch and tags (if any)
 								will be used to find a base version.
 								Defaults to empty value (no ignoring).
 
-	$(GitSkipCache): whether to cache the Git information determined 
-					 in a previous build in a GitInfo.cache for 
-					 performance reasons. 
+	$(GitSkipCache): whether to cache the Git information determined
+					 in a previous build in a GitInfo.cache for
+					 performance reasons.
 					 Defaults to empty value (no ignoring).
 
 	==============================================================
@@ -82,10 +85,12 @@
 
 		<!-- Defaults if overrides are specified when building -->
 		<GitCommits Condition="'$(GitCommits)' == ''">0</GitCommits>
-		
+
 		<GitSkipCache Condition="'$(GitSkipCache)' == ''">false</GitSkipCache>
 		<SkipReadGitCache Condition="'$(SkipReadGitCache)' == ''">$(GitSkipCache)</SkipReadGitCache>
 		<SkipWriteGitCache Condition="'$(SkipWriteGitCache)' == ''">$(GitSkipCache)</SkipWriteGitCache>
+
+		<GitCommitsIgnoreMerges Condition="'$(GitCommitsIgnoreMerges)' == ''">false</GitCommitsIgnoreMerges>
 
 		<GitMinVersion>2.5.0</GitMinVersion>
 	</PropertyGroup>
@@ -199,7 +204,7 @@
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
-		<Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"' 
+		<Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitInfoBaseDir)"
 			  StandardErrorImportance='high'
@@ -216,10 +221,10 @@
 		</PropertyGroup>
 
 		<!-- Determine the .git dir. In the simple case, this is just $(GitRoot)\.git.
-         But in the case of submodules, a .git *file* rather than a directory 
+         But in the case of submodules, a .git *file* rather than a directory
          will be present at that path, with a value like:
               gitdir: ../../.git/modules/external/toq
-         Which points to the actual folder where the git info exists in the containing 
+         Which points to the actual folder where the git info exists in the containing
          repository. -->
 		<PropertyGroup>
 			<GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '.git'))</GitDir>
@@ -257,7 +262,7 @@
 		</Exec>
 
 		<!-- Account for cygwin/WSL separately -->
-		<Exec Command='"$(CygPathExe)" -w "$(_GitCommonDir)"' 
+		<Exec Command='"$(CygPathExe)" -w "$(_GitCommonDir)"'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitInfoBaseDir)"
 			  StandardErrorImportance='high'
@@ -293,10 +298,10 @@
 			  StdOutEncoding='utf-8'>
 			<Output TaskParameter="ExitCode" PropertyName="GitIsDirty" />
 		</Exec>
-		
+
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0' Or '$(GitIsDirty)' == ''">
 			<GitIsDirty>0</GitIsDirty>
-		</PropertyGroup>		
+		</PropertyGroup>
 	</Target>
 
 	<Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
@@ -309,14 +314,14 @@
 		</ItemGroup>
 		<CreateItem Include="$(_GitPackedRefs)" Condition="Exists('$(_GitPackedRefs)')">
 			<Output ItemName="_GitInput" TaskParameter="Include" />
-		</CreateItem>		
+		</CreateItem>
 		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '**', '*.*'))">
 			<Output ItemName="_GitInput" TaskParameter="Include" />
 		</CreateItem>
 		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'tags', '*.*'))">
 			<Output ItemName="_GitInput" TaskParameter="Include" />
 		</CreateItem>
-		
+
 		<Delete Files="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)') And '$(SkipReadGitCache)' == 'true'" />
 	</Target>
 
@@ -373,7 +378,7 @@
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitRepositoryUrl"/>
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode"/>
 		</Exec>
-		
+
 		<Warning Condition="'$(MSBuildLastExitCode)' != '0'"
 				 Text="Could not retrieve repository url for remote '$(GitRemote)'" />
 
@@ -536,7 +541,7 @@
 		<Message Text="Using base version from version file $(GitVersionFile)'" Importance="normal" />
 
 		<!-- Account for cygwin/WSL separately -->
-		<Exec Command='"$(CygPathExe)" -u "$(_GitVersionFile)"' 
+		<Exec Command='"$(CygPathExe)" -u "$(_GitVersionFile)"'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitRoot)"
 			  StandardErrorImportance='high'
@@ -573,10 +578,11 @@
 			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">$([MSBuild]::NormalizeDirectory($(_GitCommitsRelativeTo)))</_GitCommitsRelativeTo>
 			<!-- Ensure the path is quoted if not empty, remove trailing directory separator from NormalizeDirectory -->
 			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">"$(_GitCommitsRelativeTo.Trim('"').TrimEnd('\').TrimEnd('/'))"</_GitCommitsRelativeTo>
+			<_GitCommitsIgnoreMerges Condition=" '$(GitCommitsIgnoreMerges)' == 'true' ">--no-merges</_GitCommitsIgnoreMerges>
 		</PropertyGroup>
 
 		<!-- Account for cygwin/WSL separately -->
-		<Exec Command='"$(CygPathExe)" -u $(_GitCommitsRelativeTo)' 
+		<Exec Command='"$(CygPathExe)" -u $(_GitCommitsRelativeTo)'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitRoot)"
 			  StandardErrorImportance='high'
@@ -588,7 +594,7 @@
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 
-		<Exec Command='$(GitExe) rev-list --count --full-history "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
+		<Exec Command='$(GitExe) rev-list --count --full-history $(_GitCommitsIgnoreMerges) "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
 			  Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
@@ -869,7 +875,7 @@
 			<GitInfo Remove="@(GitInfo)" />
 			<GitInfo Include="@(_GitInfo)" />
 	    </ItemGroup>
-		
+
 	</Target>
 
 	<Target Name="_GitWriteCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="'$(SkipWriteGitCache)' != 'true'">
@@ -929,13 +935,13 @@
 		</ItemGroup>
 
 		<ItemGroup Condition="'$(Language)' == 'F#'">
-			<CompileBefore Remove="$(GitInfoThisAssemblyFile)" />			
+			<CompileBefore Remove="$(GitInfoThisAssemblyFile)" />
 			<CompileBefore Include="$(GitInfoThisAssemblyFile)" />
 		</ItemGroup>
 
 		<ItemGroup>
 			<!-- For the double compilation happening with XAML projects. -->
-      		<_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />			
+      		<_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
 		</ItemGroup>
 	</Target>
 
@@ -1001,8 +1007,8 @@
 	<!--
     ============================================================
               GitExe Property
-	
-	Cascading probing mechanism will try to locate an installed 
+
+	Cascading probing mechanism will try to locate an installed
 	version of git, msysgit, WSL git or cygwin git.
 	============================================================
 	-->
