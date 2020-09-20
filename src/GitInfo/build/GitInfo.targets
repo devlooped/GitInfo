@@ -82,7 +82,6 @@
 
 		<!-- Defaults if overrides are specified when building -->
 		<GitCommits Condition="'$(GitCommits)' == ''">0</GitCommits>
-		<GitSemVerSource Condition="'$(GitBaseVersion)' != ''">MSBuild</GitSemVerSource>
 		
 		<GitSkipCache Condition="'$(GitSkipCache)' == ''">false</GitSkipCache>
 		<SkipReadGitCache Condition="'$(SkipReadGitCache)' == ''">$(GitSkipCache)</SkipReadGitCache>
