@@ -377,6 +377,11 @@
 		<Warning Condition="'$(MSBuildLastExitCode)' != '0'"
 				 Text="Could not retrieve repository url for remote '$(GitRemote)'" />
 
+		<PropertyGroup>
+			<!-- Remove username and password from repository URL -->
+			<GitRepositoryUrl>$([System.Text.RegularExpressions.Regex]::Replace($(GitRepositoryUrl), "://[^/]*@", "://"))</GitRepositoryUrl>
+		</PropertyGroup>
+
 		<!--TODO: Sensible default for GitRepositoryUrl-->
 	</Target>
 
