@@ -98,3 +98,16 @@ Available MSBuild customizations:
                             whether the branch and tags (if any) 
                             will be used to find a base version.
                             Defaults to empty value (no ignoring).
+
+  $(GitNameRevOptions): Options passed to git name-rev when finding
+              a branch name for the current commit (Detached head).
+              The default is '--refs=refs/heads/*'
+              meaning branch names only. For legacy behavior where
+              $(GitBranch) for detached head can also be a tag name,
+              use '--refs=refs/*'.
+              Refs can be included and excluded, see git name-rev docs.
+
+  $(GitSkipCache): whether to cache the Git information determined
+           in a previous build in a GitInfo.cache for
+           performance reasons.
+           Defaults to empty value (no ignoring).
