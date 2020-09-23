@@ -52,6 +52,14 @@
 								will be used to find a base version.
 								Defaults to empty value (no ignoring).
 
+	$(GitNameRevOptions): Options passed to git name-rev when finding
+						a branch name for a commit (Detached head).
+						The default is '&#45;&#45;refs=refs/heads/*'
+						meaning branch names only. For the legacy behavior where
+						$(GitBranch) for detached head can also be a tag name,
+						use '&#45;&#45;refs=refs/*'.
+						Refs can be included and excluded, see git name-rev docs.
+
 	$(GitSkipCache): whether to cache the Git information determined
 					 in a previous build in a GitInfo.cache for
 					 performance reasons.
@@ -91,6 +99,8 @@
 		<SkipWriteGitCache Condition="'$(SkipWriteGitCache)' == ''">$(GitSkipCache)</SkipWriteGitCache>
 
 		<GitCommitsIgnoreMerges Condition="'$(GitCommitsIgnoreMerges)' == ''">false</GitCommitsIgnoreMerges>
+
+		<GitNameRevOptions Condition="'$(GitNameRevOptions)' == ''">--refs=refs/heads/*</GitNameRevOptions>
 
 		<GitMinVersion>2.5.0</GitMinVersion>
 	</PropertyGroup>
@@ -428,7 +438,7 @@
 		</PropertyGroup>
 
 		<!-- CI systems may checkout the specific commit, rather than the branch, so we need to fallback -->
-		<Exec Command='$(GitExe) name-rev --name-only HEAD'
+		<Exec Command='$(GitExe) name-rev --name-only $(GitNameRevOptions) HEAD'
 			  Condition=" '$(GitBranch)' == '' "
 			  EchoOff='true'
 			  StandardErrorImportance="low"
