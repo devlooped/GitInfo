@@ -32,7 +32,7 @@ assembly/file version attributes with whatever format you want:
   ThisAssembly.Git.SemVer.Patch + "-" +
   ThisAssembly.Git.Branch + "+" +
   ThisAssembly.Git.Commit)]
-// i..e ^: 1.0.2-master+c218617
+// i..e ^: 1.0.2-main+c218617
 
 ** NOTE: you may need to close and reopen the solution in order 
          for Visual Studio to refresh intellisense and show the 

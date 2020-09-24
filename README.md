@@ -12,20 +12,20 @@
 - No compiled code or tools -> 100% transparency
 - Trivially added/installed via [a NuGet package](https://www.nuget.org/packages/GitInfo)
 - No format strings or settings to learn
-- Single well-structured [.targets file](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.targets) 
+- Single well-structured [.targets file](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.targets) 
   with plain MSBuild and no custom tasks
-- [Optional embedding](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.targets#L51) 
-  of Git info in assembly [as metadata](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.cs.pp#L4)
+- [Optional embedding](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.targets#L51) 
+  of Git info in assembly [as metadata](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.cs.pp#L4)
 - Optional use of Git info to build arbitrary assembly/file version information, both 
-  [in C#](https://github.com/kzu/GitInfoDemo/blob/master/GitInfoDemo/Properties/AssemblyInfo.cs#L10) as well 
-  [as VB](https://github.com/kzu/GitInfoDemo/blob/master/GitInfoDemoVB/My%20Project/AssemblyInfo.vb#L8).
+  [in C#](https://github.com/kzu/GitInfoDemo/blob/main/GitInfoDemo/Properties/AssemblyInfo.cs#L10) as well 
+  [as VB](https://github.com/kzu/GitInfoDemo/blob/main/GitInfoDemoVB/My%20Project/AssemblyInfo.vb#L8).
 - Trivially modified/improved generated code by just adjusting a 
-  [C#](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.cs.pp) or 
-  [F#](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.fs.pp) or 
-  [VB](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.vb.pp) template 
+  [C#](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.cs.pp) or 
+  [F#](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.fs.pp) or 
+  [VB](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.vb.pp) template 
   included in the [NuGet package](https://www.nuget.org/packages/GitInfo)
 - Easily modified/improved by just adjusting a 
-  [single .targets file](https://github.com/kzu/GitInfo/blob/master/src/GitInfo/build/GitInfo.targets) 
+  [single .targets file](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.targets) 
 - 100% incremental build-friendly and high-performing (all proper Inputs/Outputs in place, smart caching of Git info, etc.)
 
 ## Overview
@@ -43,7 +43,7 @@ all the git information and can be accessed from anywhere within the assembly, a
 All generated constants also have a Summary documentation tag that shows the current 
 value in the intellisense tooltip, making it easier to see what the different values contain:
 
-![](https://raw.github.com/kzu/GitInfo/master/img/tooltip.png)
+![](https://raw.github.com/kzu/GitInfo/main/img/tooltip.png)
 
 > NOTE: you may need to close and reopen the solution in order 
 > for Visual Studio to refresh intellisense and show the 

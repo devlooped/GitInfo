@@ -5,8 +5,8 @@
 		<version>$version$</version>
 		<title>Git and SemVer info for MSBuild/C#/VB</title>
 		<authors>Daniel Cazzulino</authors>
-		<iconUrl>https://raw.github.com/kzu/GitInfo/master/img/git.png</iconUrl>
-		<licenseUrl>https://github.com/kzu/GitInfo/blob/master/LICENSE</licenseUrl>
+		<iconUrl>https://raw.github.com/kzu/GitInfo/main/img/git.png</iconUrl>
+		<license type="expression">MIT</license>
 		<projectUrl>https://github.com/kzu/GitInfo</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<summary>Access commit information from MSBuild and C#/F#/VB code, and infer SemVer from branch, tag or version file in Git repository.</summary>
@@ -35,7 +35,7 @@ The generated code contains only constants, so it can be used to construct your 
 	ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch + "-" + 
 	ThisAssembly.Git.Branch + "+" + ThisAssembly.Git.Commit)]
 		</description>
-		<copyright>Copyright 2015</copyright>
+		<copyright>Copyright 2020</copyright>
 		<tags>MSBuild Git Versioning GitVersion GitFlowVersion GitFlow GitHubFlow SemVer</tags>
 		<developmentDependency>true</developmentDependency>
 	</metadata>
