@@ -16,6 +16,6 @@ indent_size = 4
 indent_style = tab
 indent_size = 4
 
-[*.{csproj,ps1,resx,rst,fsproj}]
+[*.{csproj,ps1,resx,rst,fsproj,txt}]
 indent_style = space
 indent_size = 2

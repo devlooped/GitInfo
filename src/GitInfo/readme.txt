@@ -99,6 +99,11 @@ Available MSBuild customizations:
                             will be used to find a base version.
                             Defaults to empty value (no ignoring).
 
+  $(GitSkipCache): whether to cache the Git information determined
+           in a previous build in a GitInfo.cache for
+           performance reasons.
+           Defaults to empty value (no ignoring).
+
   $(GitNameRevOptions): Options passed to git name-rev when finding
               a branch name for the current commit (Detached head).
               The default is '--refs=refs/heads/*'
@@ -107,7 +112,11 @@ Available MSBuild customizations:
               use '--refs=refs/*'.
               Refs can be included and excluded, see git name-rev docs.
 
-  $(GitSkipCache): whether to cache the Git information determined
-           in a previous build in a GitInfo.cache for
-           performance reasons.
-           Defaults to empty value (no ignoring).
+  $(GitTagRegex): Regular expression used with git describe to filter the tags 
+                  to consider for base version lookup.
+                  Defaults to * (all)
+           
+  $(GitBaseVersionRegex): Regular expression used to match and validate valid base versions
+                          in branch, tag or file sources. By default, matches any string that 
+                          *ends* in a valid SemVer2 string.
+                          Defaults to 'v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)(?:\-(?<LABEL>[\dA-Za-z\-\.]+))?$|^(?<LABEL>[\dA-Za-z\-\.]+)\-v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)$'
