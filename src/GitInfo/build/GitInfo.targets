@@ -53,11 +53,11 @@
 								Defaults to empty value (no ignoring).
 
 	$(GitNameRevOptions): Options passed to git name-rev when finding
-						a branch name for a commit (Detached head).
-						The default is '&#45;&#45;refs=refs/heads/*'
-						meaning branch names only. For the legacy behavior where
-						$(GitBranch) for detached head can also be a tag name,
-						use '&#45;&#45;refs=refs/*'.
+						a branch name for a commit (Detached head). The default is
+						'&#45;&#45;refs=refs/heads/* &#45;&#45;no-undefined &#45;&#45;always'
+						meaning branch names only, falling back to commit hash.
+						For the legacy behavior where $(GitBranch) for detached head
+						can also be a tag name, use '&#45;&#45;refs=refs/*'.
 						Refs can be included and excluded, see git name-rev docs.
 
 	$(GitSkipCache): whether to cache the Git information determined
@@ -109,7 +109,8 @@
 
 		<GitCommitsIgnoreMerges Condition="'$(GitCommitsIgnoreMerges)' == ''">false</GitCommitsIgnoreMerges>
 
-		<GitNameRevOptions Condition="'$(GitNameRevOptions)' == ''">--refs=refs/heads/*</GitNameRevOptions>
+		<!-- If head is detached, use a matching ref under refs/heads, or fall back to using commit hash -->
+		<GitNameRevOptions Condition="'$(GitNameRevOptions)' == ''">--refs=refs/heads/* --no-undefined --always</GitNameRevOptions>
 
 		<GitTagRegex Condition="'$(GitTagRegex)' == ''">*</GitTagRegex>
 		
