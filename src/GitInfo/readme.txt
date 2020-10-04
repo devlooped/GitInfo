@@ -105,11 +105,11 @@ Available MSBuild customizations:
            Defaults to empty value (no ignoring).
 
   $(GitNameRevOptions): Options passed to git name-rev when finding
-              a branch name for the current commit (Detached head).
-              The default is '--refs=refs/heads/*'
-              meaning branch names only. For legacy behavior where
-              $(GitBranch) for detached head can also be a tag name,
-              use '--refs=refs/*'.
+              a branch name for the current commit (Detached head). The default is
+              '--refs=refs/heads/* --no-undefined --alwas'
+              meaning branch names only, falling back to commit hash.
+              For legacy behavior where $(GitBranch) for detached head
+              can also be a tag name, use '--refs=refs/*'.
               Refs can be included and excluded, see git name-rev docs.
 
   $(GitTagRegex): Regular expression used with git describe to filter the tags 
