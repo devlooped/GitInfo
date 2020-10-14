@@ -311,7 +311,9 @@
 
 		<Message Text="Determined Git repository root as '$(GitRoot)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
 		<Message Text="Determined Git dir as '$(GitDir)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
-		<Warning Text="Directory $(GitInfoBaseDir) is not in a Git repository. Cannot determine Git repository root." Condition="'$(GitRoot)' == ''" />
+		<Warning Text="Directory $(GitInfoBaseDir) is not in a Git repository. Cannot determine Git repository root." 
+				 Code="GI001"
+				 Condition="'$(GitRoot)' == ''" />
 
 		<Exec Command='$(GitExe) diff-index --quiet HEAD'
 			  Condition="'$(GitRoot)' != ''"
@@ -405,6 +407,7 @@
 		</Exec>
 
 		<Warning Condition="'$(MSBuildLastExitCode)' != '0'"
+				 Code="GI002"
 				 Text="Could not retrieve repository url for remote '$(GitRemote)'" />
 
 		<PropertyGroup>
@@ -591,7 +594,8 @@
 		</Exec>
 
 		<Warning Text="Could not retrieve last commit for $(GitVersionFile). Defaulting to its declared version '$(GitBaseVersion)' and no additional commits."
-							 Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''" />
+				 Code="GI003"
+				 Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''" />
 
 		<PropertyGroup>
 			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''">0</GitCommits>
@@ -633,7 +637,8 @@
 		</Exec>
 
 		<Warning Text="Could not retrieve commits since '$(_GitLastBump)'. Defaulting to zero."
-							 Condition="'$(MSBuildLastExitCode)' != '0'" />
+				 Code="GI004"
+				 Condition="'$(MSBuildLastExitCode)' != '0'" />
 
 		<PropertyGroup>
 			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0'">0</GitCommits>
@@ -682,6 +687,7 @@
 		</Exec>
 
 		<Warning Text="Could not retrieve first commit where branch $(GitBranch) forked from $(GitDefaultBranch). Defaulting to zero commits."
+				 Code="GI005"
 				 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
 
 		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'">
@@ -797,6 +803,7 @@
 		</Exec>
 
 		<Warning Text="Failed to retrieve commit count from tag '$(GitBaseTag)' to tip $(GitCommit). Defaulting to zero commits."
+				 Code="GI006"
 				 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
 
 		<PropertyGroup>
