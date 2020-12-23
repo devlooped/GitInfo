@@ -1,0 +1,10 @@
+usernames-as-github-logins=true
+header-label=
+issues_wo_labels=true
+pr_wo_labels=true
+exclude-labels=dependencies,duplicate,question,invalid,wontfix,need info
+enhancement-label=:sparkles: Implemented enhancements:
+bugs-label=:bug: Fixed bugs:
+issues-label=:hammer: Other:
+pr-label=:twisted_rightwards_arrows: Merged:
+unreleased=false

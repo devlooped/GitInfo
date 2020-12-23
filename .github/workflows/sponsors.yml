@@ -1,0 +1,23 @@
+# Runs on new issues/PRs and applies sponsor labels
+
+name: sponsors
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  sponsors:
+    runs-on: windows-latest
+    steps:
+      - name: 🤘 checkout
+        uses: actions/checkout@v2
+
+      - name: 🔽 gh 
+        run: |
+          iwr -useb get.scoop.sh | iex
+          scoop install gh
+
+      - name: 💛 sponsors
+        run: ./.github/workflows/sponsors.ps1
+        env:
+          GH_TOKEN: ${{ secrets.DEVLOOPED_TOKEN }}

@@ -1,0 +1,56 @@
+# Updates a release with release notes
+name: release-notes
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release-notes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🤘 checkout
+        uses: actions/checkout@v2
+        with: 
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: 🏷 current
+        run: echo "CURRENT_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: 🏷 since
+        run: echo "SINCE_TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1))" >> $GITHUB_ENV
+
+      - name: ⚙ changelog
+        uses: faberNovel/github-changelog-generator-action@master
+        if: env.SINCE_TAG != ''
+        with:
+          options: --token ${{ secrets.GITHUB_TOKEN }} --since-tag ${{ env.SINCE_TAG }} --o changelog.md
+
+      - name: ⚙ changelog
+        uses: faberNovel/github-changelog-generator-action@master
+        if: env.SINCE_TAG == ''
+        with:
+          options: --token ${{ secrets.GITHUB_TOKEN }} --o changelog.md
+
+      - name: 🖉 release
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $id = iwr "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/releases/tags/$env:CURRENT_TAG" | 
+            select -ExpandProperty Content | 
+            ConvertFrom-Json | 
+            select -ExpandProperty id
+            
+          $notes = (Get-Content .\changelog.md | where { !($_ -like '\*') } | %{ $_.replace('\', '\\') }) -join '\n'
+          $headers = @{ 'Accept'='application/vnd.github.v3+json;charset=utf-8'; 'Authorization' = "bearer $env:GITHUB_TOKEN" }
+          $body = '{ "body":"' + $notes + '" }'
+
+          # ensure we can convert to json
+          $body | ConvertFrom-Json | ConvertTo-Json
+
+          # patch & render response nicely
+          iwr -Body $body "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/releases/$id" -Method PATCH -Headers $headers |
+            select -ExpandProperty Content | 
+            ConvertFrom-Json | 
+            ConvertTo-Json
