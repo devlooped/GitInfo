@@ -1,0 +1,58 @@
+name: pages
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - pages
+
+env:
+  PAGES_ORGANIZATION: ${{ secrets.PAGES_ORGANIZATION }}
+  PAGES_REPOSITORY: ${{ secrets.PAGES_REPOSITORY }}
+
+jobs:
+  gh-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🤘 checkout
+        uses: actions/checkout@v2
+
+      - name: ⚙ jekyll
+        run: |
+          sudo gem install bundler
+          bundle install
+
+      - name: 🖉 default env
+        env:
+          PAGES_ORGANIZATION: ${{ secrets.PAGES_ORGANIZATION }}
+          PAGES_REPOSITORY: ${{ secrets.PAGES_REPOSITORY }}
+        run: |
+          echo "PAGES_ORGANIZATION=${PAGES_ORGANIZATION}" >> $GITHUB_ENV
+          echo "PAGES_REPOSITORY=${PAGES_REPOSITORY}" >> $GITHUB_ENV
+
+      - name: 🖉 default repo
+        if: env.PAGES_REPOSITORY == ''
+        run: echo "PAGES_REPOSITORY=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+
+      - name: 🙏 build
+        run: bundle exec jekyll build -b ${{ env.PAGES_REPOSITORY }}
+        env:
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ✓ commit
+        run: |
+          cd _site
+          git init
+          git add -A
+          git config --local user.email "bot@devlooped.com"
+          git config --local user.name "bot@devlooped.com"
+          git commit -m "Publish pages from ${GITHUB_REPOSITORY}@${GITHUB_SHA:0:9}"
+
+      - name: 🚀 push
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.PAGES_ACCESS_TOKEN }}
+          repository: ${{ env.PAGES_ORGANIZATION }}/${{ env.PAGES_REPOSITORY }}
+          branch: gh-pages
+          force: true
+          directory: ./_site
