@@ -73,6 +73,10 @@
 							in branch, tag or file sources. By default, matches any string that 
 							*ends* in a valid SemVer2 string.
 							Defaults to 'v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)(?:\-(?<LABEL>[\dA-Za-z\-\.]+))?$|^(?<LABEL>[\dA-Za-z\-\.]+)\-v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)$'
+	
+	$(GitCommitDateFormat): The value passed as the format option when trying to retrieve
+							the git commit date
+							Defaults to %%cI (windows) or %cI (non windows)
            
 	==============================================================
 	-->
@@ -119,6 +123,10 @@
 		<GitBaseVersionRegex Condition="'$(GitBaseVersionRegex)' == ''">v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</GitBaseVersionRegex>
 
 		<GitMinVersion>2.5.0</GitMinVersion>
+
+		<!-- Under Unix, we don't double %% the format. That only works on Windows. -->
+		<GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' And '$(OS)' == 'Windows_NT'">%%cI</GitCommitDateFormat>
+		<GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' And '$(OS)' != 'Windows_NT'">%cI</GitCommitDateFormat>
 	</PropertyGroup>
 
 	<!-- Private properties -->
@@ -180,12 +188,10 @@
 	<PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
 		<_ShortShaFormat>%%h</_ShortShaFormat>
 		<_LongShaFormat>%%H</_LongShaFormat>
-		<_CommitDateFormat>%%cI</_CommitDateFormat>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
 		<_ShortShaFormat>%h</_ShortShaFormat>
 		<_LongShaFormat>%H</_LongShaFormat>
-		<_CommitDateFormat>%cI</_CommitDateFormat>
 	</PropertyGroup>
 
 	<Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" Returns="@(GitInfo)" />
@@ -424,7 +430,7 @@
 			Outputs="$(_GitInfoFile)"
 			Condition="'$(GitRoot)' != '' And '$(GitCommitDate)' == ''">
 
-		<Exec Command='$(GitExe) show --format=$(_CommitDateFormat) -s'
+		<Exec Command='$(GitExe) show --format=$(GitCommitDateFormat) -s'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -437,7 +443,8 @@
 		</Exec>
 
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
-			<GitCommitDate>0001-01-01T00:00:00+00:00</GitCommitDate>
+			<GitCommitDate Condition="$(GitCommitDateFormat.EndsWith('%cI'))">0001-01-01T00:00:00+00:00</GitCommitDate>
+			<GitCommitDate Condition="!$(GitCommitDateFormat.EndsWith('%cI'))"></GitCommitDate>
 		</PropertyGroup>
 	</Target>
 
