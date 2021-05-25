@@ -1,3 +1,4 @@
+GitIsDirty=$GitIsDirty$;
 GitRepositoryUrl=$GitRepositoryUrl$;
 GitBranch=$GitBranch$;
 GitCommit=$GitCommit$;

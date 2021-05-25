@@ -146,6 +146,7 @@
 	<Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
 		<Message Importance="$(GitInfoReportImportance)" Text="Git Info:
   GitInfoBaseDir:       $(GitInfoBaseDir)
+  GitIsDirty:           $(GitIsDirty)
   GitRoot:              $(GitRoot)
   GitRepositoryUrl      $(GitRepositoryUrl)
   GitBranch:            $(GitBranch)
@@ -373,6 +374,7 @@
 		</CreateItem>
 
 		<PropertyGroup>
+			<GitIsDirty Condition="'$(GitIsDirty)' == ''">%(GitInfo.GitIsDirty)</GitIsDirty>
 			<GitRepositoryUrl Condition="'$(GitRepositoryUrl)' == ''">%(GitInfo.GitRepositoryUrl)</GitRepositoryUrl>
 			<GitBranch Condition="'$(GitBranch)' == ''">%(GitInfo.GitBranch)</GitBranch>
 			<GitCommit Condition="'$(GitCommit)' == ''">%(GitInfo.GitCommit)</GitCommit>
@@ -921,6 +923,7 @@
 
 		<PropertyGroup>
 			<_GitInfoContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cache.pp'))</_GitInfoContent>
+			<_GitInfoContent>$(_GitInfoContent.Replace('$GitIsDirty$', '$(GitIsDirty)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitRepositoryUrl$', '$(GitRepositoryUrl)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBranch$', '$(GitBranch)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommits$', '$(GitCommits)'))</_GitInfoContent>
