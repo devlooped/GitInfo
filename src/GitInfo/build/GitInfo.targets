@@ -141,6 +141,9 @@
 
 		<!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
 		<_GitInfoFile>$(IntermediateOutputPath)GitInfo.cache</_GitInfoFile>
+
+		<!-- Stores value of GitIsDirty variable from last execution, file is changed when the value changes betwee runs. -->
+		<_GitIsDirtyFile>$(IntermediateOutputPath)GitIsDirty.cache</_GitIsDirtyFile>
 	</PropertyGroup>
 
 	<Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
@@ -335,6 +338,8 @@
 		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0' Or '$(GitIsDirty)' == ''">
 			<GitIsDirty>0</GitIsDirty>
 		</PropertyGroup>
+
+		<WriteLinesToFile File="$(_GitIsDirtyFile)" Lines="$(GitIsDirty)" WriteOnlyWhenDifferent="true"/>
 	</Target>
 
 	<Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
@@ -344,6 +349,7 @@
 		<ItemGroup>
 			<_GitInput Include="$([System.IO.Path]::Combine('$(GitDir)', 'HEAD'))" />
 			<_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
+			<_GitInput Include="$(_GitIsDirtyFile)" Condition="Exists('$(_GitIsDirtyFile)')" />
 		</ItemGroup>
 		<CreateItem Include="$(_GitPackedRefs)" Condition="Exists('$(_GitPackedRefs)')">
 			<Output ItemName="_GitInput" TaskParameter="Include" />
