@@ -321,7 +321,7 @@
 				 Code="GI001"
 				 Condition="'$(GitRoot)' == ''" />
 
-		<Exec Command='$(GitExe) diff-index --quiet HEAD'
+		<Exec Command='$(GitExe) diff --quiet HEAD'
 			  Condition="'$(GitRoot)' != ''"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
