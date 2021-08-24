@@ -42,7 +42,7 @@ jobs:
             ConvertFrom-Json | 
             select -ExpandProperty id
             
-          $notes = (Get-Content .\changelog.md | where { !($_ -like '\*') } | %{ $_.replace('\', '\\').replace('"', '\"') }) -join '\n'
+          $notes = (Get-Content .\changelog.md | where { !($_ -like '\*') } | %{ $_.replace('\', '\\').replace('"', "'") }) -join '\n'
           $headers = @{ 'Accept'='application/vnd.github.v3+json;charset=utf-8'; 'Authorization' = "bearer $env:GITHUB_TOKEN" }
           $body = '{ "body":"' + $notes + '" }'
 
