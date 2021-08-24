@@ -139,8 +139,8 @@
 	skip
 [file ".github/workflows/release-notes.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/release-notes.yml
-	sha = dda8ab48d046301d78ea7ec5f7e414068e1a72a4
-	etag = fc7ce718cff2dc2060cef686f4b7ba1ec0809eed13c44f380fa92d421301e04d
+	sha = 2b73cb30c178b2da5c5c9a7799d84a1ec610f0b0
+	etag = 4b34604646239af01dca220d3bfaa01a305d773860e80edf69aec3d1f15f917a
 	weak
 [file ".github/workflows/pages.yml"]
 	url = https://github.com/devlooped/.github/blob/main/.github/workflows/pages.yml
