@@ -1,23 +1,15 @@
 
 
-## [v2.2.0-beta](https://github.com/devlooped/GitInfo/tree/v2.2.0-beta) (2021-08-24)
+## [v2.2.0-rc](https://github.com/devlooped/GitInfo/tree/v2.2.0-rc) (2021-08-24)
 
-[Full Changelog](https://github.com/devlooped/GitInfo/compare/89d9e9d5e61e983f507cd1fd2133ee23dd3b6af2...v2.2.0-beta)
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v2.1.2...v2.2.0-rc)
 
 :sparkles: Implemented enhancements:
 
+- Add source repository information to package [\#169](https://github.com/devlooped/GitInfo/issues/169)
 - Build error when the first commit on a new branch is a cherry pick [\#133](https://github.com/devlooped/GitInfo/issues/133)
-- Option to exclude merges when calculating SemVerPatch [\#124](https://github.com/devlooped/GitInfo/issues/124)
-- RepositoryUrl may contain username and password [\#122](https://github.com/devlooped/GitInfo/issues/122)
-- Folder Syntax are not supported [\#101](https://github.com/devlooped/GitInfo/issues/101)
-- Only consider version tags [\#100](https://github.com/devlooped/GitInfo/issues/100)
 - support for git worktree [\#88](https://github.com/devlooped/GitInfo/issues/88)
-- Add "CheckinDate" to the ThisAssembly to be used in AssemblyInfo [\#65](https://github.com/devlooped/GitInfo/issues/65)
 - Issue with GitIsDirty and GitCache [\#60](https://github.com/devlooped/GitInfo/issues/60)
-- Error when the path to file GitInfo.txt contains spaces [\#13](https://github.com/devlooped/GitInfo/issues/13)
-- Include boolean indicating whether working tree is dirty [\#10](https://github.com/devlooped/GitInfo/issues/10)
-- GitExe in the PATH should be first [\#6](https://github.com/devlooped/GitInfo/issues/6)
-- Thoughts on including date information [\#2](https://github.com/devlooped/GitInfo/issues/2)
 
 :hammer: Other:
 
@@ -34,6 +26,35 @@
 - Port from non-sdk-style to sdk-style project: Access custom static class properties [\#141](https://github.com/devlooped/GitInfo/issues/141)
 - $\(GitCommits\) is wrong when running on GitHub Actions [\#140](https://github.com/devlooped/GitInfo/issues/140)
 - "ThisAssembly.Git.Branch" returns "undefined" in Linux system [\#139](https://github.com/devlooped/GitInfo/issues/139)
+
+:twisted_rightwards_arrows: Merged:
+
+- 🖆 Apply devlooped/oss template, nugetize and modernize [\#168](https://github.com/devlooped/GitInfo/pull/168) (@kzu)
+- Is dirty always check [\#165](https://github.com/devlooped/GitInfo/pull/165) (@freza-tm)
+- Add support for nuget transitive dependecy for .targets [\#155](https://github.com/devlooped/GitInfo/pull/155) (@PadreSVK)
+- Updating content readme.txt for issue \#152 [\#153](https://github.com/devlooped/GitInfo/pull/153) (@Jehoel)
+- Handle add non-zero exit codes from Git [\#147](https://github.com/devlooped/GitInfo/pull/147) (@Therzok)
+- Allowed git commit date format to be configured through GitCommitDateFormat property [\#145](https://github.com/devlooped/GitInfo/pull/145) (@tomcurran)
+- Add --always to default name-rev args, so a commit hash is used instead of 'undefined' [\#132](https://github.com/devlooped/GitInfo/pull/132) (@andersforsgren)
+
+## [v2.1.2](https://github.com/devlooped/GitInfo/tree/v2.1.2) (2020-09-24)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/89d9e9d5e61e983f507cd1fd2133ee23dd3b6af2...v2.1.2)
+
+:sparkles: Implemented enhancements:
+
+- Option to exclude merges when calculating SemVerPatch [\#124](https://github.com/devlooped/GitInfo/issues/124)
+- RepositoryUrl may contain username and password [\#122](https://github.com/devlooped/GitInfo/issues/122)
+- Folder Syntax are not supported [\#101](https://github.com/devlooped/GitInfo/issues/101)
+- Only consider version tags [\#100](https://github.com/devlooped/GitInfo/issues/100)
+- Add "CheckinDate" to the ThisAssembly to be used in AssemblyInfo [\#65](https://github.com/devlooped/GitInfo/issues/65)
+- Error when the path to file GitInfo.txt contains spaces [\#13](https://github.com/devlooped/GitInfo/issues/13)
+- Include boolean indicating whether working tree is dirty [\#10](https://github.com/devlooped/GitInfo/issues/10)
+- GitExe in the PATH should be first [\#6](https://github.com/devlooped/GitInfo/issues/6)
+- Thoughts on including date information [\#2](https://github.com/devlooped/GitInfo/issues/2)
+
+:hammer: Other:
+
 - Possibility to exclude tag refs from $\(GitBranch\) [\#126](https://github.com/devlooped/GitInfo/issues/126)
 - "Unrecognized escape sequence" when remote url is a Windows path [\#119](https://github.com/devlooped/GitInfo/issues/119)
 - GitSemVerPatch always 0 after update from 2.0.26 to 2.0.29 [\#116](https://github.com/devlooped/GitInfo/issues/116)
@@ -87,13 +108,6 @@
 
 :twisted_rightwards_arrows: Merged:
 
-- 🖆 Apply devlooped/oss template, nugetize and modernize [\#168](https://github.com/devlooped/GitInfo/pull/168) (@kzu)
-- Is dirty always check [\#165](https://github.com/devlooped/GitInfo/pull/165) (@freza-tm)
-- Add support for nuget transitive dependecy for .targets [\#155](https://github.com/devlooped/GitInfo/pull/155) (@PadreSVK)
-- Updating content readme.txt for issue \#152 [\#153](https://github.com/devlooped/GitInfo/pull/153) (@Jehoel)
-- Handle add non-zero exit codes from Git [\#147](https://github.com/devlooped/GitInfo/pull/147) (@Therzok)
-- Allowed git commit date format to be configured through GitCommitDateFormat property [\#145](https://github.com/devlooped/GitInfo/pull/145) (@tomcurran)
-- Add --always to default name-rev args, so a commit hash is used instead of 'undefined' [\#132](https://github.com/devlooped/GitInfo/pull/132) (@andersforsgren)
 - Allow tag and base version customization, flex matching [\#129](https://github.com/devlooped/GitInfo/pull/129) (@kzu)
 - Prevent tag refs in $\(GitBranch\) for detached heads. [\#127](https://github.com/devlooped/GitInfo/pull/127) (@andersforsgren)
 - Add GitCommitsIgnoreMerges option [\#125](https://github.com/devlooped/GitInfo/pull/125) (@christianerbsmehl)
