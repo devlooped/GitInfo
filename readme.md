@@ -1,4 +1,4 @@
-![Icon](https://raw.githubusercontent.com/devlooped/GitInfo/main/assets/img/git.png) GitInfo
+![Icon](https://raw.githubusercontent.com/devlooped/GitInfo/main/assets/images/git.png) GitInfo
 ============
 
 Git Info from MSBuild, C# and VB
@@ -26,7 +26,7 @@ all the git information and can be accessed from anywhere within the assembly, a
 All generated constants also have a Summary documentation tag that shows the current 
 value in the intellisense tooltip, making it easier to see what the different values contain:
 
-![](https://raw.githubusercontent.com/devlooped/GitInfo/main/assets/img/tooltip.png)
+![](https://raw.githubusercontent.com/devlooped/GitInfo/main/assets/images/tooltip.png)
 
 > NOTE: you may need to close and reopen the solution in order 
 > for Visual Studio to refresh intellisense and show the 
