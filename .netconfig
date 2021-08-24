@@ -113,9 +113,7 @@
 	sha = fde1f6f17926f429a52e64de5ec355bb643e25bc
 [file "src/kzu.snk"]
 	url = https://github.com/devlooped/oss/blob/main/src/kzu.snk
-	etag = b8d789b5b6bea017cdcc8badcea888ad78de3e34298efca922054e9fb0e7b6b9
-	weak
-	sha = 0683ee777d7d878d4bf013d7deea352685135a05
+	skip
 [file "support.md"]
 	url = https://github.com/devlooped/oss/blob/main/support.md
 	etag = 2d47e2fc4fdfa3515203d452674566e3df507461f9938f451a06d79deb687d24
@@ -138,9 +136,7 @@
 	weak
 [file ".github/workflows/release-artifacts.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/release-artifacts.yml
-	sha = 55c0b32601e94e1eed35028a0cad510c6bcbb265
-	etag = 53f2dd2465fd15a065828468139544449ab7ccc0ba40f9074d7ac92426bfd07b
-	weak
+	skip
 [file ".github/workflows/release-notes.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/release-notes.yml
 	sha = 70bc909d2ce6924385a8bcc3a9fb1cff338a3fb7
