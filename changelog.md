@@ -1,6 +1,6 @@
 
 
-## [v2.2.0-rc](https://github.com/devlooped/GitInfo/tree/v2.2.0-rc) (2021-08-24)
+## [v2.2.0-rc](https://github.com/devlooped/GitInfo/tree/v2.2.0-rc) (2021-08-25)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v2.1.2...v2.2.0-rc)
 
@@ -123,7 +123,6 @@
 - Fix SemVer.Source not working in Visual Basic [\#97](https://github.com/devlooped/GitInfo/pull/97) (@MobileManiC)
 - F\# support [\#93](https://github.com/devlooped/GitInfo/pull/93) (@ndani14)
 - Don't cause MSBuild warnings 'expected' failures [\#90](https://github.com/devlooped/GitInfo/pull/90) (@alanmcgovern)
-- Fix incremental build [\#82](https://github.com/devlooped/GitInfo/pull/82) (@shadow-cs)
 - Reintroduce NormalizeDirectory usage, fix actual error [\#75](https://github.com/devlooped/GitInfo/pull/75) (@kzu)
 - Ensure we normalize to the correct path separator [\#73](https://github.com/devlooped/GitInfo/pull/73) (@alanmcgovern)
 - Allow counting all commits in the repository [\#66](https://github.com/devlooped/GitInfo/pull/66) (@alanmcgovern)
