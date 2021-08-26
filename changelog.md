@@ -7,24 +7,16 @@
 :sparkles: Implemented enhancements:
 
 - Add source repository information to package [\#169](https://github.com/devlooped/GitInfo/issues/169)
+- Add support for nuget transitive dependencies \(via PackageReference\) [\#154](https://github.com/devlooped/GitInfo/issues/154)
+- GitThisAssemblyMetadata documentation is confusing [\#152](https://github.com/devlooped/GitInfo/issues/152)
+- Feature request: let \_CommitDateFormat be configurable [\#144](https://github.com/devlooped/GitInfo/issues/144)
 - Build error when the first commit on a new branch is a cherry pick [\#133](https://github.com/devlooped/GitInfo/issues/133)
 - support for git worktree [\#88](https://github.com/devlooped/GitInfo/issues/88)
 - Issue with GitIsDirty and GitCache [\#60](https://github.com/devlooped/GitInfo/issues/60)
 
 :hammer: Other:
 
-- 'ThisAssembly' does not exist in the current context [\#163](https://github.com/devlooped/GitInfo/issues/163)
-- Bamboo version missmatch? [\#162](https://github.com/devlooped/GitInfo/issues/162)
-- Need help achieving proper version control with GitInfo. [\#161](https://github.com/devlooped/GitInfo/issues/161)
-- Add support for nuget transitive dependencies \(via PackageReference\) [\#154](https://github.com/devlooped/GitInfo/issues/154)
-- GitThisAssemblyMetadata documentation is confusing [\#152](https://github.com/devlooped/GitInfo/issues/152)
-- dotnet pack does not set package version when GeneratePackageOnBuild is set to true [\#150](https://github.com/devlooped/GitInfo/issues/150)
 - Project URL should be devlooped.github.io/GitInfo [\#149](https://github.com/devlooped/GitInfo/issues/149)
-- MSB3100	Syntax for "AdditionalMetadata" parameter is not valid after a big commit [\#146](https://github.com/devlooped/GitInfo/issues/146)
-- Feature request: let \_CommitDateFormat be configurable [\#144](https://github.com/devlooped/GitInfo/issues/144)
-- Could not retrieve repository url for remote 'origin' [\#142](https://github.com/devlooped/GitInfo/issues/142)
-- Port from non-sdk-style to sdk-style project: Access custom static class properties [\#141](https://github.com/devlooped/GitInfo/issues/141)
-- $\(GitCommits\) is wrong when running on GitHub Actions [\#140](https://github.com/devlooped/GitInfo/issues/140)
 - "ThisAssembly.Git.Branch" returns "undefined" in Linux system [\#139](https://github.com/devlooped/GitInfo/issues/139)
 
 :twisted_rightwards_arrows: Merged:
