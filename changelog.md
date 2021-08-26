@@ -14,6 +14,10 @@
 - support for git worktree [\#88](https://github.com/devlooped/GitInfo/issues/88)
 - Issue with GitIsDirty and GitCache [\#60](https://github.com/devlooped/GitInfo/issues/60)
 
+:bug: Fixed bugs:
+
+- Handle add non-zero exit codes from Git [\#147](https://github.com/devlooped/GitInfo/pull/147) (@Therzok)
+
 :hammer: Other:
 
 - Project URL should be devlooped.github.io/GitInfo [\#149](https://github.com/devlooped/GitInfo/issues/149)
@@ -25,7 +29,6 @@
 - Is dirty always check [\#165](https://github.com/devlooped/GitInfo/pull/165) (@freza-tm)
 - Add support for nuget transitive dependecy for .targets [\#155](https://github.com/devlooped/GitInfo/pull/155) (@PadreSVK)
 - Updating content readme.txt for issue \#152 [\#153](https://github.com/devlooped/GitInfo/pull/153) (@Jehoel)
-- Handle add non-zero exit codes from Git [\#147](https://github.com/devlooped/GitInfo/pull/147) (@Therzok)
 - Allowed git commit date format to be configured through GitCommitDateFormat property [\#145](https://github.com/devlooped/GitInfo/pull/145) (@tomcurran)
 - Add --always to default name-rev args, so a commit hash is used instead of 'undefined' [\#132](https://github.com/devlooped/GitInfo/pull/132) (@andersforsgren)
 
