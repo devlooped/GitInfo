@@ -82,6 +82,24 @@ VB:
     ThisAssembly.Git.Commit)>
 ```
 
+NET CORE:
+```
+<!-- Just edit .csproj file -->  
+<ItemGroup>
+    <PackageReference Include="GitInfo" >
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+<Target Name="PopulateInfo" DependsOnTargets="GitInfo" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <RepositoryBranch>$(GitBranch)</RepositoryBranch>
+      <RepositoryCommit>$(GitCommit)</RepositoryCommit>
+      <SourceRevisionId>$(GitBranch) $(GitCommit)</SourceRevisionId>
+    </PropertyGroup>
+</Target>
+```
+
 Because this information is readily available whenever you build the project, you 
 never depend on CI build scripts that generate versions for you, and you can 
 always compile locally exactly the same version of an assembly that was built by 
