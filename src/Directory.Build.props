@@ -23,7 +23,13 @@
     <Copyright>Copyright (C) Daniel Cazzulino and Contributors. All rights reserved.</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <!-- Pick src-level readme+icon automatically -->
     <PackageIcon Condition="Exists('$(MSBuildThisFileDirectory)icon.png')">icon.png</PackageIcon>
+    <PackageReadmeFile Condition="Exists('$(MSBuildThisFileDirectory)readme.md')">readme.md</PackageReadmeFile>
+    <!-- Pick project-level readme+icon overrides automatically -->
+    <PackageIcon Condition="Exists('$(MSBuildProjectDirectory)\icon.png')">icon.png</PackageIcon>
+    <PackageReadmeFile Condition="Exists('$(MSBuildProjectDirectory)\readme.md')">readme.md</PackageReadmeFile>
 
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <GenerateRepositoryUrlAttribute>true</GenerateRepositoryUrlAttribute>
@@ -32,21 +38,13 @@
 
     <!-- Use Directory.Packages.props if possible. NOTE: other MSBuild SDKs (i.e. NoTargets/Traversal) do not support central packages -->
     <ManagePackageVersionsCentrally Condition="Exists('$(MSBuildThisFileDirectory)Directory.Packages.props') AND ('$(MSBuildProjectExtension)' == '.csproj' OR '$(MSBuildProjectExtension)' == '.vbproj')">true</ManagePackageVersionsCentrally>
-    <!-- Always add our my CI package feed first for easier dogfooding -->
-    <RestoreSources>https://pkg.kzu.io/index.json;https://api.nuget.org/v3/index.json;$(RestoreSources)</RestoreSources>
+    <RestoreSources>https://api.nuget.org/v3/index.json;https://pkg.kzu.io/index.json;$(RestoreSources)</RestoreSources>
   </PropertyGroup>
-
-  <ItemGroup Label="NuGet">
-    <!-- This is compatible with nugetizer and SDK pack -->
-    <None Include="$(MSBuildThisFileDirectory)icon.png" Link="icon.png"
-          Pack="true"
-          Visible="false"
-          PackagePath="%(Filename)%(Extension)"
-          Condition="Exists('$(MSBuildThisFileDirectory)icon.png')" />
-  </ItemGroup>
 
   <PropertyGroup Label="Build">
     <Configuration Condition="'$(Configuration)' == '' and $(CI)">Release</Configuration>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile Condition="$(MSBuildProjectName.Contains('Tests'))">false</GenerateDocumentationFile>
     <LangVersion>Latest</LangVersion>
 
     <!-- See https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies -->
