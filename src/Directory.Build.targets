@@ -42,7 +42,7 @@
           Pack="true" PackagePath="%(Filename)%(Extension)"
           Condition="Exists('$(MSBuildThisFileDirectory)icon.png') and !Exists('$(MSBuildProjectDirectory)icon.png')" />
 
-    <None Include="$(MSBuildThisFileDirectory)readme.md" Link="readme.md" Visible="false" 
+    <None Include="$(MSBuildThisFileDirectory)readme.md" Link="readme.md"  
           Pack="true" PackagePath="%(Filename)%(Extension)"
           Condition="Exists('$(MSBuildThisFileDirectory)readme.md') and !Exists('$(MSBuildProjectDirectory)readme.md')" />
   </ItemGroup>
@@ -109,8 +109,11 @@
 
   <ItemGroup>
     <!-- Make these available via ThisAssembly.Project -->
+    <ProjectProperty Include="RepositoryBranch" />
     <ProjectProperty Include="RepositorySha" />
     <ProjectProperty Include="RepositoryCommit" />
+    <ProjectProperty Include="RepositoryRoot" />
+    <ProjectProperty Include="RepositoryUrl" />
   </ItemGroup>
 
   <!-- Make sure the source control info is available before calling source generators -->
@@ -129,6 +132,15 @@
       <RepositorySha Condition="'$(RepositorySha)' == ''">$(SourceRevisionId.Substring(0, 9))</RepositorySha>
       <!-- This allows the commit label added to the InformationalVersion to be the short sha instead :) -->
       <SourceRevisionId>$(RepositorySha)</SourceRevisionId>
+    </PropertyGroup>
+
+    <!-- Add SourceRoot as a project property too -->
+    <ItemGroup>
+      <_GitSourceRoot Include="@(SourceRoot -> WithMetadataValue('SourceControl', 'git'))" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <RepositoryRoot>@(_GitSourceRoot)</RepositoryRoot>
     </PropertyGroup>
 
   </Target>
