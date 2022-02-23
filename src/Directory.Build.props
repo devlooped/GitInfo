@@ -39,6 +39,9 @@
     <!-- Use Directory.Packages.props if possible. NOTE: other MSBuild SDKs (i.e. NoTargets/Traversal) do not support central packages -->
     <ManagePackageVersionsCentrally Condition="Exists('$(MSBuildThisFileDirectory)Directory.Packages.props') AND ('$(MSBuildProjectExtension)' == '.csproj' OR '$(MSBuildProjectExtension)' == '.vbproj')">true</ManagePackageVersionsCentrally>
     <RestoreSources>https://api.nuget.org/v3/index.json;https://pkg.kzu.io/index.json;$(RestoreSources)</RestoreSources>
+
+    <!-- Ensure MSBuild tooling can access package artifacts always via PKG_[PackageId] -->
+    <GeneratePathProperty>true</GeneratePathProperty>
   </PropertyGroup>
 
   <PropertyGroup Label="Build">
@@ -80,6 +83,9 @@
     
     <!-- Preserve transitively copied content in VS: https://github.com/dotnet/msbuild/issues/1054#issuecomment-847959047 -->
     <MSBuildCopyContentTransitively>true</MSBuildCopyContentTransitively>
+    
+    <!-- Global tools should run on whatever latest runtime is installed. See https://docs.microsoft.com/en-us/dotnet/core/versions/selection#framework-dependent-apps-roll-forward -->
+    <RollForward>LatestMinor</RollForward>
   </PropertyGroup>
 
   <PropertyGroup Label="StrongName" Condition="Exists('$(MSBuildThisFileDirectory)kzu.snk')">
@@ -124,6 +130,8 @@
   </PropertyGroup>
 
   <ItemGroup Label="ThisAssembly.Project">
+    <ProjectProperty Include="CI" />
+  
     <ProjectProperty Include="Version" />
     <ProjectProperty Include="VersionPrefix" />
     <ProjectProperty Include="VersionSuffix" />
