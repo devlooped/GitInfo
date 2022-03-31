@@ -64,6 +64,13 @@
 					 in a previous build in a GitInfo.cache for
 					 performance reasons.
 					 Defaults to empty value (no ignoring).
+					 
+  $(GitCachePath): where to cache the determined Git information
+				   gives the chance to use a shared location
+				   for different projects. this can improve
+				   the overall build time.
+				   has to end with a path seperator
+				   Defaults to empty value ('$(IntermediateOutputPath)').
 
 	$(GitTagRegex): Regular expression used with git describe to filter the tags 
 					to consider for base version lookup.
@@ -110,6 +117,7 @@
 		<GitSkipCache Condition="'$(GitSkipCache)' == ''">false</GitSkipCache>
 		<SkipReadGitCache Condition="'$(SkipReadGitCache)' == ''">$(GitSkipCache)</SkipReadGitCache>
 		<SkipWriteGitCache Condition="'$(SkipWriteGitCache)' == ''">$(GitSkipCache)</SkipWriteGitCache>
+		<GitCachePath Condition="'$(GitCachePath)' == ''">$(IntermediateOutputPath)</GitCachePath>
 
 		<GitCommitsIgnoreMerges Condition="'$(GitCommitsIgnoreMerges)' == ''">false</GitCommitsIgnoreMerges>
 
@@ -140,10 +148,10 @@
 		</CoreCompileDependsOn>
 
 		<!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
-		<_GitInfoFile>$(IntermediateOutputPath)GitInfo.cache</_GitInfoFile>
+		<_GitInfoFile>$(GitCachePath)GitInfo.cache</_GitInfoFile>
 
 		<!-- Stores value of GitIsDirty variable from last execution, file is changed when the value changes betwee runs. -->
-		<_GitIsDirtyFile>$(IntermediateOutputPath)GitIsDirty.cache</_GitIsDirtyFile>
+		<_GitIsDirtyFile>$(GitCachePath)GitIsDirty.cache</_GitIsDirtyFile>
 	</PropertyGroup>
 
 	<Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
