@@ -47,7 +47,7 @@ Namespace Global
             ''' <summary>Commit: $GitCommit$</summary>
             Public Const Commit As String = "$GitCommit$"
 
-            ''' <summary>Commit: $GitSha$</summary>
+            ''' <summary>Sha: $GitSha$</summary>
             Public Const Sha As String = "$GitSha$"
 
             ''' <summary>Commit date: $GitCommitDate$</summary>
