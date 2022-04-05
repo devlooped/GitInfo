@@ -22,6 +22,9 @@ module Git =
     /// <summary>Sha: $GitSha$</summary>
     let [<Literal>] Sha = @"$GitSha$"
 
+    /// <summary>Message: $GitMessage$</summary>
+    let [<Literal>] Message = @"$GitMessage$"
+
     /// <summary>Commit date: $GitCommitDate$</summary>
     let [<Literal>] CommitDate = @"$GitCommitDate$"
 

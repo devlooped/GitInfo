@@ -154,6 +154,7 @@
   GitBranch:            $(GitBranch)
   GitCommit:            $(GitCommit)
   GitSha:               $(GitSha)
+  GitMessage:           $(GitMessage)
   GitCommitDate:        $(GitCommitDate)
   GitBaseVersion:       $(GitBaseVersion)
   GitBaseVersionSource: $(GitBaseVersionSource)
@@ -383,6 +384,7 @@
 			<GitBranch Condition="'$(GitBranch)' == ''">%(GitInfo.GitBranch)</GitBranch>
 			<GitCommit Condition="'$(GitCommit)' == ''">%(GitInfo.GitCommit)</GitCommit>
 			<GitSha Condition="'$(GitSha)' == ''">%(GitInfo.GitSha)</GitSha>
+			<GitMessage Condition="'$(GitMessage)' == ''">%(GitInfo.GitMessage)</GitMessage>
 			<GitCommitDate Condition="'$(GitCommitDate)' == ''">%(GitInfo.GitCommitDate)</GitCommitDate>
 			<GitBaseVersion Condition="'$(GitBaseVersion)' == ''">%(GitInfo.GitBaseVersion)</GitBaseVersion>
 			<GitBaseVersionSource Condition="'$(GitBaseVersionSource)' == ''">%(GitInfo.GitBaseVersionSource)</GitBaseVersionSource>
@@ -525,6 +527,22 @@
 			<GitSha>$(GitDefaultCommit)</GitSha>
 		</PropertyGroup>
 
+    	<Exec Command='$(GitExe) -c log.showSignature=false log --format=%%s -n 1'
+			  EchoOff='true'
+			  StandardErrorImportance="low"
+			  StandardOutputImportance="low"
+			  ConsoleToMSBuild="true"
+			  WorkingDirectory="$(GitRoot)"
+			  ContinueOnError="true"
+			  StdOutEncoding='utf-8'>
+			<Output TaskParameter="ConsoleOutput" PropertyName="GitMessage" />
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+
+    	<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
+            <GitMessage></GitMessage>
+		</PropertyGroup>
+
 	</Target>
 
 	<Target Name="_GitPopulateInfo">
@@ -535,6 +553,7 @@
 				<GitBranch>$(GitBranch)</GitBranch>
 				<GitCommit>$(GitCommit)</GitCommit>
 				<GitSha>$(GitSha)</GitSha>
+				<GitMessage>$(GitMessage)</GitMessage>
 				<GitCommitDate>$(GitCommitDate)</GitCommitDate>
 			</GitInfo>
 		</ItemGroup>
@@ -933,6 +952,7 @@
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommit$', '$(GitCommit)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommitDate$', '$(GitCommitDate)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitSha$', '$(GitSha)'))</_GitInfoContent>
+			<_GitInfoContent>$(_GitInfoContent.Replace('$GitMessage$', '$(GitMessage)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_GitInfoContent>
 			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_GitInfoContent>
@@ -1025,6 +1045,7 @@
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommit$', '$(GitCommit)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommitDate$', '$(GitCommitDate)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSha$', '$(GitSha)'))</_ThisAssemblyContent>
+			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitMessage$', '$(GitMessage)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_ThisAssemblyContent>
 			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_ThisAssemblyContent>

@@ -8,6 +8,7 @@
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", Global.RootNamespace.ThisAssembly.Git.Branch)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", Global.RootNamespace.ThisAssembly.Git.Commit)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", Global.RootNamespace.ThisAssembly.Git.Sha)>
+<Assembly: System.Reflection.AssemblyMetadata("GitInfo.Message", Global.RootNamespace.ThisAssembly.Git.Message)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.CommitDate", Global.RootNamespace.ThisAssembly.Git.CommitDate)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Major", Global.RootNamespace.ThisAssembly.Git.BaseVersion.Major)>
 <Assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Minor", Global.RootNamespace.ThisAssembly.Git.BaseVersion.Minor)>
@@ -49,6 +50,9 @@ Namespace Global
 
             ''' <summary>Sha: $GitSha$</summary>
             Public Const Sha As String = "$GitSha$"
+
+            ''' <summary>Message: $GitMessage$</summary>
+            Public Const Message As String = "$GitMessage$"
 
             ''' <summary>Commit date: $GitCommitDate$</summary>
             Public Const CommitDate As String = "$GitCommitDate$"

@@ -2,6 +2,7 @@ GitRepositoryUrl=$GitRepositoryUrl$;
 GitBranch=$GitBranch$;
 GitCommit=$GitCommit$;
 GitSha=$GitSha$;
+GitMessage=$GitMessage$;
 GitCommitDate=$GitCommitDate$;
 GitBaseVersion=$GitBaseVersion$;
 GitBaseVersionSource=$GitBaseVersionSource$;

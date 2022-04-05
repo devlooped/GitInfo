@@ -9,6 +9,7 @@
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Branch", RootNamespace.ThisAssembly.Git.Branch)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Commit", RootNamespace.ThisAssembly.Git.Commit)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.Sha", RootNamespace.ThisAssembly.Git.Sha)]
+[assembly: System.Reflection.AssemblyMetadata("GitInfo.Message", RootNamespace.ThisAssembly.Git.Message)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.CommitDate", RootNamespace.ThisAssembly.Git.CommitDate)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Major", RootNamespace.ThisAssembly.Git.BaseVersion.Major)]
 [assembly: System.Reflection.AssemblyMetadata("GitInfo.BaseVersion.Minor", RootNamespace.ThisAssembly.Git.BaseVersion.Minor)]
@@ -51,6 +52,9 @@ namespace _RootNamespace_
 
       /// <summary>Sha: $GitSha$</summary>
       public const string Sha = @"$GitSha$";
+
+      /// <summary>Message: $GitMessage$</summary>
+      public const string Message = @"$GitMessage$";
 
       /// <summary>Commit date: $GitCommitDate$</summary>
       public const string CommitDate = @"$GitCommitDate$";
