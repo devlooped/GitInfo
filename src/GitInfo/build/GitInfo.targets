@@ -539,8 +539,13 @@
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 
-    	<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
-            <GitMessage></GitMessage>
+		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
+			<GitMessage></GitMessage>
+		</PropertyGroup>
+
+		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+			<!-- Escape double quotes in commit message -->
+			<GitMessage>$([System.String]::Copy('$(GitMessage)').Replace('"','""'))</GitMessage>
 		</PropertyGroup>
 
 	</Target>
