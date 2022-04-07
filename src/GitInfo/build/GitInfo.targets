@@ -127,6 +127,8 @@
 		<!-- Under Unix, we don't double %% the format. That only works on Windows. -->
 		<GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' And '$(OS)' == 'Windows_NT'">%%cI</GitCommitDateFormat>
 		<GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' And '$(OS)' != 'Windows_NT'">%cI</GitCommitDateFormat>
+
+		<GitAddMessage Condition="'$(GitAddMessage)' == ''">false</GitAddMessage>
 	</PropertyGroup>
 
 	<!-- Private properties -->
@@ -539,11 +541,11 @@
 			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
 		</Exec>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
+		<PropertyGroup Condition="'$(GitAddMessage)' != 'true' Or '$(MSBuildLastExitCode)' != '0'">
 			<GitMessage></GitMessage>
 		</PropertyGroup>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+		<PropertyGroup Condition="'$(GitAddMessage)' == 'true' And '$(MSBuildLastExitCode)' == '0'">
 			<!-- Escape double quotes in commit message -->
 			<GitMessage>$([System.String]::Copy('$(GitMessage)').Replace('"','""'))</GitMessage>
 		</PropertyGroup>

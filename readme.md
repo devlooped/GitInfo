@@ -218,6 +218,8 @@ Available MSBuild customizations:
                           in branch, tag or file sources. By default, matches any string that 
                           *ends* in a valid SemVer2 string.
                           Defaults to 'v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)(?:\-(?<LABEL>[\dA-Za-z\-\.]+))?$|^(?<LABEL>[\dA-Za-z\-\.]+)\-v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)$'
+
+  $(GitAddMessage): set to 'true' to enable git message constant generation.
 ```
 
 ## Goals
