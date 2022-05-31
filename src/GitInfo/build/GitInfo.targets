@@ -459,16 +459,21 @@
 			Condition="'$(GitBranch)' == ''"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)">
-
-		<PropertyGroup Condition="'$(GitRoot)' != ''">
-			<_GitHead>$([System.IO.Path]::Combine($(GitDir), 'HEAD'))</_GitHead>
-			<_GitHead>$([System.IO.Path]::GetFullPath($(_GitHead)))</_GitHead>
-			<_GitHead>$([System.IO.File]::ReadAllText('$(_GitHead)'))</_GitHead>
-			<GitBranch>$([System.Text.RegularExpressions.Regex]::Match($(_GitHead), '(?&lt;=refs/heads/).+$'))</GitBranch>
-			<GitBranch>$(GitBranch.Trim())</GitBranch>
-		</PropertyGroup>
-
-		<!-- CI systems may checkout the specific commit, rather than the branch, so we need to fallback -->
+		
+		<Exec Command='$(GitExe) rev-parse --abbrev-ref HEAD'
+			Condition="'$(GitRoot)' != ''"              
+			EchoOff='true'
+			StandardErrorImportance="low"
+			StandardOutputImportance="low"
+			ConsoleToMSBuild="true"
+			WorkingDirectory="$(GitRoot)"
+			ContinueOnError="true"
+			StdOutEncoding='utf-8'>
+			<Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
+			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+		</Exec>
+			
+			<!-- CI systems may checkout the specific commit, rather than the branch, so we need to fallback -->
 		<Exec Command='$(GitExe) name-rev --name-only $(GitNameRevOptions) HEAD'
 			  Condition=" '$(GitBranch)' == '' "
 			  EchoOff='true'
