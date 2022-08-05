@@ -1,5 +1,4 @@
 usernames-as-github-logins=true
-header-label=
 issues_wo_labels=true
 pr_wo_labels=true
 exclude-labels=bydesign,dependencies,duplicate,question,invalid,wontfix,need info

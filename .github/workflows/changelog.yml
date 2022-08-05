@@ -24,10 +24,15 @@ jobs:
           ref: main
           token: ${{ env.GH_TOKEN }}
 
-      - name: ⚙ changelog
-        uses: faberNovel/github-changelog-generator-action@master
+      - name: ⚙ ruby
+        uses: ruby/setup-ruby@v1
         with:
-          options: --token ${{ secrets.GITHUB_TOKEN }} --o changelog.md
+          ruby-version: 3.0.3
+
+      - name: ⚙ changelog
+        run: |
+          gem install github_changelog_generator 
+          github_changelog_generator --user ${GITHUB_REPOSITORY%/*} --project ${GITHUB_REPOSITORY##*/} --token ${{ secrets.GITHUB_TOKEN }} --o changelog.md --config-file .github/.github_changelog_generator
 
       - name: 🚀 changelog
         run: |
