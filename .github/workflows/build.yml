@@ -11,6 +11,7 @@ on:
       - code-of-conduct.md
       - security.md
       - support.md
+      - readme.md
   pull_request:
     types: [opened, synchronize, reopened]
 

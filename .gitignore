@@ -13,6 +13,7 @@ TestResults
 *.nupkg
 *.metaproj
 *.tmp
+*.log
 *.cache
 *.binlog
 *.zip

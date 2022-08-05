@@ -145,7 +145,6 @@
 
   </Target>
 
-  <!-- Always append the link to the direct source tree for the current build -->
   <Target Name="UpdatePackageMetadata"
           BeforeTargets="PrepareForBuild;GenerateMSBuildEditorConfigFileShouldRun;GetAssemblyVersion;GetPackageMetadata;GenerateNuspec;Pack"
           DependsOnTargets="EnsureProjectInformation"
@@ -153,10 +152,6 @@
                      '$(IsPackable)' == 'true'">
     <PropertyGroup>
       <PackageProjectUrl Condition="'$(PackageProjectUrl)' == '' and '$(PublishRepositoryUrl)' == 'true'">$(RepositoryUrl)</PackageProjectUrl>
-      <Description Condition="'$(RepositorySha)' != '' and '$(RepositoryUrl)' != ''">$(Description)
-
-Built from $(RepositoryUrl)/tree/$(RepositorySha)
-      </Description>
       <PackageDescription>$(Description)</PackageDescription>
       <PackageReleaseNotes Condition="'$(RepositoryUrl)' != '' and Exists('$(MSBuildThisFileDirectory)..\changelog.md')">$(RepositoryUrl)/blob/main/changelog.md</PackageReleaseNotes>
     </PropertyGroup>
@@ -164,55 +159,5 @@ Built from $(RepositoryUrl)/tree/$(RepositorySha)
 
   <!-- Import before UsingTask because first to declare tasks wins -->
   <Import Project="Directory.targets" Condition="Exists('Directory.targets')"/>
-
-  <!--
-  ==============================================================
-    DumpItems Task
-    Helper task useful for quickly inspecting the full metadata
-    of arbitrary items in any target.
-
-    Properties:
-    - Items: Microsoft.Build.Framework.ITaskItem[] (Input, Required)
-    - ItemName: string (Input, Optional)
-	==============================================================
-  -->
-  <UsingTask TaskName="DumpItems" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
-    <ParameterGroup>
-      <Items ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
-      <ItemName />
-    </ParameterGroup>
-    <Task>
-      <Reference Include="Microsoft.Build" />
-      <Reference Include="Microsoft.CSharp" />
-      <Reference Include="System" />
-      <Reference Include="System.Core" />
-      <Using Namespace="Microsoft.Build.Framework" />
-      <Using Namespace="Microsoft.Build.Utilities" />
-      <Using Namespace="System" />
-      <Using Namespace="System.Linq" />
-      <Code Type="Fragment" Language="cs">
-        <![CDATA[
-			  var itemName = ItemName ?? "Item";
-			  if (Items.Length == 0)
-				  Log.LogMessage(MessageImportance.High, "No {0} items received to dump.", ItemName ?? "");
-			  else
-				  Log.LogMessage(MessageImportance.High, "Dumping {0} {1} items.", Items.Length, ItemName ?? "");
-
-			  foreach (var item in Items.OrderBy(i => i.ItemSpec))
-			  {
-				  Log.LogMessage(MessageImportance.High, "{0}: {1}", itemName, item.ItemSpec);
-				  foreach (var name in item.MetadataNames.OfType<string>().OrderBy(_ => _))
-				  {
-					  try
-					  {
-						  Log.LogMessage(MessageImportance.High, "\t{0}={1}", name, item.GetMetadata(name));
-					  }
-					  catch { }
-				  }
-			  }
-      ]]>
-      </Code>
-    </Task>
-  </UsingTask>
 
 </Project>

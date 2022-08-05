@@ -1,4 +1,4 @@
-﻿# Synchronizes .netconfig-configured files with dotnet-file
+# Synchronizes .netconfig-configured files with dotnet-file
 name: dotnet-file
 on:
   workflow_dispatch:
@@ -22,6 +22,22 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo "GH_TOKEN=${GITHUB_TOKEN}" >> $GITHUB_ENV
 
+      - name: ⌛ rate
+        shell: pwsh
+        run: |
+          # add random sleep since we run on fixed schedule
+          sleep (get-random -max 60)
+          # get currently authenticated user rate limit info
+          $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+          # if we don't have at least 100 requests left, wait until reset
+          if ($rate.remaining -lt 10) {
+              $wait = ($rate.reset - (Get-Date (Get-Date).ToUniversalTime() -UFormat %s))
+              echo "Rate limit remaining is $($rate.remaining), waiting for $($wait / 1000) seconds to reset"
+              sleep $wait
+              $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+              echo "Rate limit has reset to $($rate.remaining) requests"
+          }
+
       - name: 🤘 checkout
         uses: actions/checkout@v2
         with:
@@ -30,6 +46,7 @@ jobs:
           token: ${{ env.GH_TOKEN }}
 
       - name: 🔄 sync
+        shell: pwsh
         run: |
           dotnet tool update -g dotnet-gcm
           dotnet gcm store --protocol=https --host=github.com --username=$env:GITHUB_ACTOR --password=$env:GH_TOKEN
