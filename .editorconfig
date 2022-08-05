@@ -87,3 +87,6 @@ csharp_new_line_before_catch = true
 csharp_new_line_before_finally = true
 csharp_new_line_before_members_in_object_initializers = true
 csharp_new_line_before_members_in_anonymous_types = true
+
+# xUnit1013: Public method should be marked as test. Allows using records as test classes
+dotnet_diagnostic.xUnit1013.severity = none
