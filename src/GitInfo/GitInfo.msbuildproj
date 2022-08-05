@@ -16,6 +16,7 @@
   <ItemGroup>
     <None Include="build/**/*.*" />
     <None Include="buildMultiTargeting/**/*.*" />
+    <None Include="buildTransitive/**/*.*" />
     <None Include="..\..\readme.md" PackagePath="readme.md" />
   </ItemGroup>
 </Project>

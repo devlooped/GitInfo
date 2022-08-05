@@ -29,12 +29,6 @@ jobs:
       - name: 🙏 build
         run: dotnet build -m:1 -p:version=${GITHUB_REF#refs/*/v}
 
-      - name: ⚙ GNU grep
-        if: matrix.os == 'macOS-latest'
-        run: |
-          brew install grep
-          echo 'export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"' >> .bash_profile
-
       - name: 🧪 test
         uses: ./.github/workflows/test
 
