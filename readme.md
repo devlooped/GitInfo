@@ -242,10 +242,4 @@ Available MSBuild customizations:
 - 100% incremental build-friendly and high-performing (all proper Inputs/Outputs in place, smart caching of Git info, etc.)
 
 
-
-
-## Sponsors
-
-[![sponsored](https://raw.githubusercontent.com/devlooped/oss/main/assets/images/sponsors.svg)](https://github.com/sponsors/devlooped) [![clarius](https://raw.githubusercontent.com/clarius/branding/main/logo/byclarius.svg)](https://github.com/clarius)[![clarius](https://raw.githubusercontent.com/clarius/branding/main/logo/logo.svg)](https://github.com/clarius)
-
-*[get mentioned here too](https://github.com/sponsors/devlooped)!*
+<!-- include docs/footer.md -->
