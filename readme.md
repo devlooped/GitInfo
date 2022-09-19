@@ -160,7 +160,7 @@ The available constants from code are:
   ThisAssembly.Git.IsDirty
 ```
 
-Available MSBuild customizations:
+Available [MSBuild properties](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-properties):
 
 ```
   $(GitThisAssembly): set to 'false' to prevent assembly 
