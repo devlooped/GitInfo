@@ -43,9 +43,9 @@
 	sha = 0683ee777d7d878d4bf013d7deea352685135a05
 [file ".github/dependabot.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/dependabot.yml
-	etag = 2fc8a0d2b47091b058ae3e1f68333492044b49a684621f4939a0bce5bff869d5
+	etag = 35f2134fff3b0235ff8dac8618a76198c8ef533ad2f29628bbb435cd1134d638
 	weak
-	sha = 0683ee777d7d878d4bf013d7deea352685135a05
+	sha = 4f070a477b4162a280f02722ae666376ae4fcc71
 [file ".github/workflows/build.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/build.yml
 	etag = 546728274c46d85038c67a385df421cb8865552673ada35fcf0b30ff4f1c7548
@@ -169,11 +169,16 @@
 	weak
 [file "docs/sponsors.md"]
 	url = https://github.com/devlooped/sponsors/blob/main/sponsors.md
-	sha = 04f5dfbc23ea499703f23bd547e6fcb61dbfcbf8
-	etag = f9cbf44977602aaeb14aa5e3fbfebfb3199beb405ca46af57edd108f25653d08
+	sha = 61c63547c933ae35f3793a7cda4f0c6047b9e39a
+	etag = 8712d863c15c2534170cbe97c0e7d1b1167f725197fab567f8ac18fbea38034c
 	weak
 [file ".github/workflows/sponsor.yml"]
 	url = https://github.com/devlooped/.github/blob/main/.github/workflows/sponsor.yml
 	sha = e347e5c7b91aaeb11eff95037c2c0b54206cc976
 	etag = 06319ff741c03cf4cd5113926d490ec09999a85b5a0e0480ce44222db026341a
+	weak
+[file ".github/workflows/combine-prs.yml"]
+	url = https://github.com/devlooped/oss/blob/main/.github/workflows/combine-prs.yml
+	sha = 74189b061850a3527676d76281de61044abc86a2
+	etag = 10106929413a89658d22c36b5b934c598809e1deb8cdd994ec846f824195aac6
 	weak
