@@ -82,15 +82,14 @@ VB:
     ThisAssembly.Git.Commit)>
 ```
 
-NET CORE:
+MSBuild:
+
 ```
 <!-- Just edit .csproj file -->  
 <ItemGroup>
-    <PackageReference Include="GitInfo" >
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+  <PackageReference Include="GitInfo" PrivateAssets="all" />
+</ItemGroup>
+
 <Target Name="PopulateInfo" DependsOnTargets="GitInfo" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <RepositoryBranch>$(GitBranch)</RepositoryBranch>
