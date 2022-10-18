@@ -90,6 +90,22 @@ a CI server.
 You can read more about this project at the 
 [GitInfo announcement blog post](http://www.cazzulino.com/git-info-from-msbuild-and-code.html).
 
+### MSBuild
+
+If you want to set other properties in your project, such as `$(Version)` or `$(PackageVersion)` 
+based on the populated values from GitInfo, you must do so from a target, such as:
+
+```xml
+<Target Name="_SetVersion" BeforeTargets="GetAssemblyVersion;GenerateNuspec;GetPackageContents">
+    <PropertyGroup>
+        <Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)</Version>
+        <PackageVersion>$(Version)</PackageVersion>
+    </PropertyGroup>
+</Target>
+```
+
+In this case, we're setting the version and package version.
+
 ## Details
 
 Exposes the following information for use directly from any MSBuild 
