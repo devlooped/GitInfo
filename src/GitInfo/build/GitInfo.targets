@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" InitialTargets="SetGitExe" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<!--
+  <!--
   ==============================================================
               Retrieves and exposes Git information
 
@@ -88,74 +88,75 @@
 	==============================================================
 	-->
 
-	<PropertyGroup>
-		<!-- Name of remote for repository url -->
-		<GitRemote Condition="'$(GitRemote)' == ''">origin</GitRemote>
-		<!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
-		<GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
-		<!-- Default the lookup directory to the project directory unless overriden -->
-		<GitInfoBaseDir Condition="'$(GitInfoBaseDir)' == ''">$(MSBuildProjectDirectory)</GitInfoBaseDir>
-		<!-- Look it upwards and grab the first one we find. -->
-		<GitVersionFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))\$(GitVersionFile)</GitVersionFile>
+  <PropertyGroup>
+    <!-- Name of remote for repository url -->
+    <GitRemote Condition="'$(GitRemote)' == ''">origin</GitRemote>
+    <!-- GitVersionFile allows overriding tags/branch names as a source for base version information -->
+    <GitVersionFile Condition="'$(GitVersionFile)' == ''">GitInfo.txt</GitVersionFile>
+    <!-- Default the lookup directory to the project directory unless overriden -->
+    <GitInfoBaseDir Condition="'$(GitInfoBaseDir)' == ''">$(MSBuildProjectDirectory)</GitInfoBaseDir>
+    <!-- Look it upwards and grab the first one we find. -->
+    <GitVersionFile Condition="'$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))' != ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(GitInfoBaseDir), $(GitVersionFile)))\$(GitVersionFile)</GitVersionFile>
 
-		<GitDefaultBranch Condition="'$(GitDefaultBranch)' == ''">master</GitDefaultBranch>
-		<GitDefaultCommit Condition="'$(GitDefaultCommit)' == ''">0000000</GitDefaultCommit>
-		<GitDefaultVersion Condition="'$(GitDefaultVersion)' == ''">0.0.0</GitDefaultVersion>
+    <GitDefaultBranch Condition="'$(GitDefaultBranch)' == ''">master</GitDefaultBranch>
+    <GitDefaultCommit Condition="'$(GitDefaultCommit)' == ''">0000000</GitDefaultCommit>
+    <GitDefaultVersion Condition="'$(GitDefaultVersion)' == ''">0.0.0</GitDefaultVersion>
 
-		<GitThisAssemblyMetadata Condition="'$(GitThisAssemblyMetadata)' == ''">false</GitThisAssemblyMetadata>
+    <GitThisAssemblyMetadata Condition="'$(GitThisAssemblyMetadata)' == ''">false</GitThisAssemblyMetadata>
 
-		<GitInfoThisAssemblyFile Condition="'$(GitInfoThisAssemblyFile)' == '' And '$(DefaultLanguageSourceExtension)' != ''">$(IntermediateOutputPath)ThisAssembly.GitInfo.g$(DefaultLanguageSourceExtension)</GitInfoThisAssemblyFile>
-		<GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'F#' And '$(Language)' != 'VB'">false</GitThisAssembly>
-		<GitThisAssembly Condition="'$(GitThisAssembly)' == '' And '$(GitInfoThisAssemblyFile)' != ''">true</GitThisAssembly>
-		<GitInfoReportImportance Condition="'$(GitInfoReportImportance)' == ''">low</GitInfoReportImportance>
-		<GitThisAssemblyMetadataDefine Condition="'$(GitThisAssemblyMetadata)' == 'true'">ADDMETADATA</GitThisAssemblyMetadataDefine>
-		<GitThisAssemblyMetadataDefine Condition="'$(GitThisAssemblyMetadata)' != 'true'">NOMETADATA</GitThisAssemblyMetadataDefine>
+    <GitInfoThisAssemblyFile Condition="'$(GitInfoThisAssemblyFile)' == '' And '$(DefaultLanguageSourceExtension)' != ''">$(IntermediateOutputPath)ThisAssembly.GitInfo.g$(DefaultLanguageSourceExtension)</GitInfoThisAssemblyFile>
+    <GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'F#' And '$(Language)' != 'VB'">false</GitThisAssembly>
+    <GitThisAssembly Condition="'$(GitThisAssembly)' == '' And '$(GitInfoThisAssemblyFile)' != ''">true</GitThisAssembly>
+    <GitInfoReportImportance Condition="'$(GitInfoReportImportance)' == ''">low</GitInfoReportImportance>
+    <GitThisAssemblyMetadataDefine Condition="'$(GitThisAssemblyMetadata)' == 'true'">ADDMETADATA</GitThisAssemblyMetadataDefine>
+    <GitThisAssemblyMetadataDefine Condition="'$(GitThisAssemblyMetadata)' != 'true'">NOMETADATA</GitThisAssemblyMetadataDefine>
 
-		<!-- Defaults if overrides are specified when building -->
-		<GitCommits Condition="'$(GitCommits)' == ''">0</GitCommits>
+    <!-- Defaults if overrides are specified when building -->
+    <GitCommits Condition="'$(GitCommits)' == ''">0</GitCommits>
 
-		<GitSkipCache Condition="'$(GitSkipCache)' == ''">false</GitSkipCache>
-		<SkipReadGitCache Condition="'$(SkipReadGitCache)' == ''">$(GitSkipCache)</SkipReadGitCache>
-		<SkipWriteGitCache Condition="'$(SkipWriteGitCache)' == ''">$(GitSkipCache)</SkipWriteGitCache>
-		<GitCachePath Condition="'$(GitCachePath)' == ''">$(IntermediateOutputPath)</GitCachePath>
+    <GitSkipCache Condition="'$(GitSkipCache)' == ''">false</GitSkipCache>
+    <SkipReadGitCache Condition="'$(SkipReadGitCache)' == ''">$(GitSkipCache)</SkipReadGitCache>
+    <SkipWriteGitCache Condition="'$(SkipWriteGitCache)' == ''">$(GitSkipCache)</SkipWriteGitCache>
+    <GitCachePath Condition="'$(GitCachePath)' == ''">$(IntermediateOutputPath)</GitCachePath>
 
-		<GitCommitsIgnoreMerges Condition="'$(GitCommitsIgnoreMerges)' == ''">false</GitCommitsIgnoreMerges>
+    <GitCommitsIgnoreMerges Condition="'$(GitCommitsIgnoreMerges)' == ''">false</GitCommitsIgnoreMerges>
 
-		<!-- If head is detached, use a matching ref under refs/heads, or fall back to using commit hash -->
-		<GitNameRevOptions Condition="'$(GitNameRevOptions)' == ''">--refs=refs/heads/* --no-undefined --always</GitNameRevOptions>
+    <!-- If head is detached, use a matching ref under refs/heads, or fall back to using commit hash -->
+    <GitNameRevOptions Condition="'$(GitNameRevOptions)' == ''">--refs=refs/heads/* --no-undefined --always</GitNameRevOptions>
 
-		<GitTagRegex Condition="'$(GitTagRegex)' == ''">*</GitTagRegex>
-		
-		<!-- For backwards compatibility if anyone has changed the expression before. -->
-		<GitBaseVersionRegex Condition="'$(_GitBaseVersionExpr)' != ''">$(_GitBaseVersionExpr)</GitBaseVersionRegex>
-		<GitBaseVersionRegex Condition="'$(GitBaseVersionRegex)' == ''">v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</GitBaseVersionRegex>
+    <GitTagRegex Condition="'$(GitTagRegex)' == ''">*</GitTagRegex>
 
-		<GitMinVersion>2.5.0</GitMinVersion>
+    <!-- For backwards compatibility if anyone has changed the expression before. -->
+    <GitBaseVersionRegex Condition="'$(_GitBaseVersionExpr)' != ''">$(_GitBaseVersionExpr)</GitBaseVersionRegex>
+    <GitBaseVersionRegex Condition="'$(GitBaseVersionRegex)' == ''">v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)(?:\-(?&lt;LABEL&gt;[\dA-Za-z\-\.]+))?$|^(?&lt;LABEL&gt;[\dA-Za-z\-\.]+)\-v?(?&lt;MAJOR&gt;\d+)\.(?&lt;MINOR&gt;\d+)\.(?&lt;PATCH&gt;\d+)$</GitBaseVersionRegex>
 
-		<!-- Under Unix, we don't double %% the format. That only works on Windows. -->
-		<GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' And '$(OS)' == 'Windows_NT'">%%cI</GitCommitDateFormat>
-		<GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' And '$(OS)' != 'Windows_NT'">%cI</GitCommitDateFormat>
-	</PropertyGroup>
+    <GitMinVersion>2.5.0</GitMinVersion>
 
-	<!-- Private properties -->
-	<PropertyGroup>
-		<CoreCompileDependsOn>
-			GitInfo;
-			GitVersion;
-			GitThisAssembly;
-			GitInfoReport;
-			$(CoreCompileDependsOn)
-		</CoreCompileDependsOn>
+    <!-- Under Unix, we don't double %% the format. That only works on Windows. -->
+    <GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' And '$(OS)' == 'Windows_NT'">%%cI</GitCommitDateFormat>
+    <GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' And '$(OS)' != 'Windows_NT'">%cI</GitCommitDateFormat>
+  </PropertyGroup>
 
-		<!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
-		<_GitInfoFile>$(GitCachePath)GitInfo.cache</_GitInfoFile>
 
-		<!-- Stores value of GitIsDirty variable from last execution, file is changed when the value changes betwee runs. -->
-		<_GitIsDirtyFile>$(GitCachePath)GitIsDirty.cache</_GitIsDirtyFile>
-	</PropertyGroup>
+  <!-- Private properties -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GitInfo;
+      GitVersion;
+      GitThisAssembly;
+      GitInfoReport;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
 
-	<Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
-		<Message Importance="$(GitInfoReportImportance)" Text="Git Info:
+    <!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
+    <_GitInfoFile>$(GitCachePath)GitInfo.cache</_GitInfoFile>
+
+    <!-- Stores value of GitIsDirty variable from last execution, file is changed when the value changes betwee runs. -->
+    <_GitIsDirtyFile>$(GitCachePath)GitIsDirty.cache</_GitIsDirtyFile>
+  </PropertyGroup>
+
+  <Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
+    <Message Importance="$(GitInfoReportImportance)" Text="Git Info:
   GitInfoBaseDir:       $(GitInfoBaseDir)
   GitRoot:              $(GitRoot)
   GitRepositoryUrl      $(GitRepositoryUrl)
@@ -178,58 +179,58 @@
   GitSemVerDashLabel:   $(GitSemVerDashLabel)
   GitSemVerSource:      $(GitSemVerSource)
 "/>
-	</Target>
+  </Target>
 
-	<PropertyGroup>
-		<GitInfoDependsOn>
-			SetGitExe;
-			_EnsureGit;
-			_GitRoot;
-			_GitInputs;
-			_GitClearCache;
-			_GitReadCache;
-			_GitRepositoryUrl;
-			_GitBranch;
-			_GitCommit;
-			_GitCommitDate;
-			_GitPopulateInfo;
-		</GitInfoDependsOn>
-	</PropertyGroup>
-	<!-- Under Unix, we don't double %% the format. That only works on Windows. -->
-	<PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-		<_ShortShaFormat>%%h</_ShortShaFormat>
-		<_LongShaFormat>%%H</_LongShaFormat>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
-		<_ShortShaFormat>%h</_ShortShaFormat>
-		<_LongShaFormat>%H</_LongShaFormat>
-	</PropertyGroup>
+  <PropertyGroup>
+    <GitInfoDependsOn>
+      SetGitExe;
+      _EnsureGit;
+      _GitRoot;
+      _GitInputs;
+      _GitClearCache;
+      _GitReadCache;
+      _GitRepositoryUrl;
+      _GitBranch;
+      _GitCommit;
+      _GitCommitDate;
+      _GitPopulateInfo;
+    </GitInfoDependsOn>
+  </PropertyGroup>
+  <!-- Under Unix, we don't double %% the format. That only works on Windows. -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <_ShortShaFormat>%%h</_ShortShaFormat>
+    <_LongShaFormat>%%H</_LongShaFormat>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <_ShortShaFormat>%h</_ShortShaFormat>
+    <_LongShaFormat>%H</_LongShaFormat>
+  </PropertyGroup>
 
-	<Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" Returns="@(GitInfo)" />
+  <Target Name="GitInfo" DependsOnTargets="$(GitInfoDependsOn)" Returns="@(GitInfo)" />
 
-	<Target Name="_EnsureGit">
-		<Exec Command='$(GitExe) --version'
+  <Target Name="_EnsureGit">
+    <Exec Command='$(GitExe) --version'
 			  EchoOff='true'
 			  ContinueOnError='true'
 			  ConsoleToMSBuild='true'
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
-		<Error Condition="'$(MSBuildLastExitCode)' != '0'" Text="Failed to run `git --version`. Git may not be properly installed: %0A $(_GitOutput)" />
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
+    <Error Condition="'$(MSBuildLastExitCode)' != '0'" Text="Failed to run `git --version`. Git may not be properly installed: %0A $(_GitOutput)" />
 
-		<PropertyGroup>
-			<_GitCurrentVersion>$([System.Text.RegularExpressions.Regex]::Match("$(_GitOutput)", "\d+\.\d+\.\d+").Value)</_GitCurrentVersion>
-		</PropertyGroup>
+    <PropertyGroup>
+      <_GitCurrentVersion>$([System.Text.RegularExpressions.Regex]::Match("$(_GitOutput)", "\d+\.\d+\.\d+").Value)</_GitCurrentVersion>
+    </PropertyGroup>
 
-		<Error Condition="$([System.Version]::Parse('$(_GitCurrentVersion)').CompareTo($([System.Version]::Parse('$(GitMinVersion)')))) &lt; 0"
+    <Error Condition="$([System.Version]::Parse('$(_GitCurrentVersion)').CompareTo($([System.Version]::Parse('$(GitMinVersion)')))) &lt; 0"
 			   Text="Required minimum git version is $(GitMinVersion) but found $(_GitCurrentVersion)." />
-	</Target>
+  </Target>
 
-	<Target Name="_GitRoot" Returns="$(GitRoot)" Condition="'$(GitRoot)' == ''">
+  <Target Name="_GitRoot" Returns="$(GitRoot)" Condition="'$(GitRoot)' == ''">
 
-		<Exec Command='$(GitExe) rev-parse --show-toplevel'
+    <Exec Command='$(GitExe) rev-parse --show-toplevel'
 			  EchoOff='true'
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'
@@ -237,16 +238,16 @@
 			  WorkingDirectory='$(GitInfoBaseDir)'
 			  ContinueOnError='true'
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+      <GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
+    </PropertyGroup>
 
-		<!-- Account for cygwin/WSL separately -->
-		<Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"'
+    <!-- Account for cygwin/WSL separately -->
+    <Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitInfoBaseDir)"
 			  StandardErrorImportance='high'
@@ -254,26 +255,26 @@
 			  ConsoleToMSBuild='true'
 			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput" />
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitOutput" />
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+      <GitRoot>$([MSBuild]::NormalizeDirectory($(_GitOutput.Trim())))</GitRoot>
+    </PropertyGroup>
 
-		<!-- Determine the .git dir. In the simple case, this is just $(GitRoot)\.git.
+    <!-- Determine the .git dir. In the simple case, this is just $(GitRoot)\.git.
          But in the case of submodules, a .git *file* rather than a directory
          will be present at that path, with a value like:
               gitdir: ../../.git/modules/external/toq
          Which points to the actual folder where the git info exists in the containing
          repository. -->
-		<PropertyGroup>
-			<GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '.git'))</GitDir>
-			<_IsGitFile>$([System.IO.File]::Exists('$(GitDir)'))</_IsGitFile>
-		</PropertyGroup>
+    <PropertyGroup>
+      <GitDir>$([System.IO.Path]::Combine('$(GitRoot)', '.git'))</GitDir>
+      <_IsGitFile>$([System.IO.File]::Exists('$(GitDir)'))</_IsGitFile>
+    </PropertyGroup>
 
-		<Exec Condition="'$(_IsGitFile)' == 'true'"
+    <Exec Condition="'$(_IsGitFile)' == 'true'"
 			  Command='$(GitExe) rev-parse --is-inside-work-tree'
 			  EchoOff='true'
 			  StandardErrorImportance='high'
@@ -282,15 +283,15 @@
 			  WorkingDirectory='$(GitInfoBaseDir)'
 			  ContinueOnError='true'
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitIsWorkTree"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitIsWorkTree"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<_IsGitWorkTree>$(_GitIsWorkTree.Trim())</_IsGitWorkTree>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+      <_IsGitWorkTree>$(_GitIsWorkTree.Trim())</_IsGitWorkTree>
+    </PropertyGroup>
 
-		<Exec Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true'"
+    <Exec Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true'"
 			  Command='$(GitExe) rev-parse --git-common-dir'
 			  EchoOff='true'
 			  StandardErrorImportance='high'
@@ -299,12 +300,12 @@
 			  WorkingDirectory='$(GitInfoBaseDir)'
 			  ContinueOnError='true'
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitCommonDir"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitCommonDir"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<!-- Account for cygwin/WSL separately -->
-		<Exec Command='"$(CygPathExe)" -w "$(_GitCommonDir)"'
+    <!-- Account for cygwin/WSL separately -->
+    <Exec Command='"$(CygPathExe)" -w "$(_GitCommonDir)"'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitInfoBaseDir)"
 			  StandardErrorImportance='high'
@@ -312,27 +313,27 @@
 			  ConsoleToMSBuild='true'
 			  Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true' And '$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitCommonDir" />
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitCommonDir" />
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true'">
-			<GitDir>$(_GitCommonDir.Trim())</GitDir>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true'">
+      <GitDir>$(_GitCommonDir.Trim())</GitDir>
+    </PropertyGroup>
 
-		<PropertyGroup Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' != 'true'">
-			<_GitFileContents>$([System.IO.File]::ReadAllText('$(GitDir)'))</_GitFileContents>
-			<GitDir>$(_GitFileContents.Substring(7).Trim())</GitDir>
-			<GitDir>$([MSBuild]::NormalizeDirectory('$(GitRoot)', '$(GitDir)'))</GitDir>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' != 'true'">
+      <_GitFileContents>$([System.IO.File]::ReadAllText('$(GitDir)'))</_GitFileContents>
+      <GitDir>$(_GitFileContents.Substring(7).Trim())</GitDir>
+      <GitDir>$([MSBuild]::NormalizeDirectory('$(GitRoot)', '$(GitDir)'))</GitDir>
+    </PropertyGroup>
 
-		<Message Text="Determined Git repository root as '$(GitRoot)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
-		<Message Text="Determined Git dir as '$(GitDir)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
-		<Warning Text="Directory $(GitInfoBaseDir) is not in a Git repository. Cannot determine Git repository root." 
+    <Message Text="Determined Git repository root as '$(GitRoot)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
+    <Message Text="Determined Git dir as '$(GitDir)'" Importance="$(GitInfoReportImportance)" Condition="'$(GitRoot)' != ''" />
+    <Warning Text="Directory $(GitInfoBaseDir) is not in a Git repository. Cannot determine Git repository root."
 				 Code="GI001"
 				 Condition="'$(GitRoot)' == ''" />
 
-		<Exec Command='$(GitExe) diff --quiet HEAD'
+    <Exec Command='$(GitExe) diff --quiet HEAD'
 			  Condition="'$(GitRoot)' != ''"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
@@ -340,81 +341,81 @@
 			  WorkingDirectory="$(GitRoot)"
 			  IgnoreExitCode="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ExitCode" PropertyName="GitIsDirty" />
-		</Exec>
+      <Output TaskParameter="ExitCode" PropertyName="GitIsDirty" />
+    </Exec>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0' Or '$(GitIsDirty)' == ''">
-			<GitIsDirty>0</GitIsDirty>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0' Or '$(GitIsDirty)' == ''">
+      <GitIsDirty>0</GitIsDirty>
+    </PropertyGroup>
 
-		<WriteLinesToFile File="$(_GitIsDirtyFile)" Lines="$(GitIsDirty)" Overwrite="true" WriteOnlyWhenDifferent="true"/>
-	</Target>
+    <WriteLinesToFile File="$(_GitIsDirtyFile)" Lines="$(GitIsDirty)" Overwrite="true" WriteOnlyWhenDifferent="true"/>
+  </Target>
 
-	<Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
-		<PropertyGroup>
-			<_GitPackedRefs>$([System.IO.Path]::Combine('$(GitDir)', 'packed-refs'))</_GitPackedRefs>
-		</PropertyGroup>
-		<ItemGroup>
-			<_GitInput Include="$([System.IO.Path]::Combine('$(GitDir)', 'HEAD'))" />
-			<_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
-			<_GitInput Include="$(_GitIsDirtyFile)" Condition="Exists('$(_GitIsDirtyFile)')" />
-		</ItemGroup>
-		<CreateItem Include="$(_GitPackedRefs)" Condition="Exists('$(_GitPackedRefs)')">
-			<Output ItemName="_GitInput" TaskParameter="Include" />
-		</CreateItem>
-		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '**', '*.*'))">
-			<Output ItemName="_GitInput" TaskParameter="Include" />
-		</CreateItem>
-		<CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'tags', '*.*'))">
-			<Output ItemName="_GitInput" TaskParameter="Include" />
-		</CreateItem>
+  <Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
+    <PropertyGroup>
+      <_GitPackedRefs>$([System.IO.Path]::Combine('$(GitDir)', 'packed-refs'))</_GitPackedRefs>
+    </PropertyGroup>
+    <ItemGroup>
+      <_GitInput Include="$([System.IO.Path]::Combine('$(GitDir)', 'HEAD'))" />
+      <_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
+      <_GitInput Include="$(_GitIsDirtyFile)" Condition="Exists('$(_GitIsDirtyFile)')" />
+    </ItemGroup>
+    <CreateItem Include="$(_GitPackedRefs)" Condition="Exists('$(_GitPackedRefs)')">
+      <Output ItemName="_GitInput" TaskParameter="Include" />
+    </CreateItem>
+    <CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '**', '*.*'))">
+      <Output ItemName="_GitInput" TaskParameter="Include" />
+    </CreateItem>
+    <CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'tags', '*.*'))">
+      <Output ItemName="_GitInput" TaskParameter="Include" />
+    </CreateItem>
 
-		<Delete Files="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)') And '$(SkipReadGitCache)' == 'true'" />
-	</Target>
+    <Delete Files="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)') And '$(SkipReadGitCache)' == 'true'" />
+  </Target>
 
-	<!-- If the inputs/outputs are outdated, clear the cache -->
-	<Target Name="_GitClearCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)')">
-		<Delete Files="$(_GitInfoFile)" />
-	</Target>
+  <!-- If the inputs/outputs are outdated, clear the cache -->
+  <Target Name="_GitClearCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)')">
+    <Delete Files="$(_GitInfoFile)" />
+  </Target>
 
-	<Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') And '$(SkipReadGitCache)' != 'true' ">
-		<PropertyGroup>
-			<_GitCachedInfo>$([System.IO.File]::ReadAllText('$(_GitInfoFile)'))</_GitCachedInfo>
-		</PropertyGroup>
+  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') And '$(SkipReadGitCache)' != 'true' ">
+    <PropertyGroup>
+      <_GitCachedInfo>$([System.IO.File]::ReadAllText('$(_GitInfoFile)'))</_GitCachedInfo>
+    </PropertyGroup>
 
-		<CreateItem Include="GitInfo" AdditionalMetadata="$(_GitCachedInfo.Split(';'))">
-			<Output TaskParameter="Include" ItemName="GitInfo" />
-		</CreateItem>
+    <CreateItem Include="GitInfo" AdditionalMetadata="$(_GitCachedInfo.Split(';'))">
+      <Output TaskParameter="Include" ItemName="GitInfo" />
+    </CreateItem>
 
-		<PropertyGroup>
-			<GitRepositoryUrl Condition="'$(GitRepositoryUrl)' == ''">%(GitInfo.GitRepositoryUrl)</GitRepositoryUrl>
-			<GitBranch Condition="'$(GitBranch)' == ''">%(GitInfo.GitBranch)</GitBranch>
-			<GitCommit Condition="'$(GitCommit)' == ''">%(GitInfo.GitCommit)</GitCommit>
-			<GitSha Condition="'$(GitSha)' == ''">%(GitInfo.GitSha)</GitSha>
-			<GitCommitDate Condition="'$(GitCommitDate)' == ''">%(GitInfo.GitCommitDate)</GitCommitDate>
-			<GitBaseVersion Condition="'$(GitBaseVersion)' == ''">%(GitInfo.GitBaseVersion)</GitBaseVersion>
-			<GitBaseVersionSource Condition="'$(GitBaseVersionSource)' == ''">%(GitInfo.GitBaseVersionSource)</GitBaseVersionSource>
-			<GitBaseVersionMajor Condition="'$(GitBaseVersionMajor)' == ''">%(GitInfo.GitBaseVersionMajor)</GitBaseVersionMajor>
-			<GitBaseVersionMinor Condition="'$(GitBaseVersionMinor)' == ''">%(GitInfo.GitBaseVersionMinor)</GitBaseVersionMinor>
-			<GitBaseVersionPatch Condition="'$(GitBaseVersionPatch)' == ''">%(GitInfo.GitBaseVersionPatch)</GitBaseVersionPatch>
-			<GitCommits Condition="'$(GitCommits)' == '' Or '$(GitCommits)' == '0'">%(GitInfo.GitCommits)</GitCommits>
-			<GitTag Condition="'$(GitTag)' == ''">%(GitInfo.GitTag)</GitTag>
-			<GitBaseTag Condition="'$(GitBaseTag)' == ''">%(GitInfo.GitBaseTag)</GitBaseTag>
-			<GitSemVerMajor Condition="'$(GitSemVerMajor)' == ''">%(GitInfo.GitSemVerMajor)</GitSemVerMajor>
-			<GitSemVerMinor Condition="'$(GitSemVerMinor)' == ''">%(GitInfo.GitSemVerMinor)</GitSemVerMinor>
-			<GitSemVerPatch Condition="'$(GitSemVerPatch)' == ''">%(GitInfo.GitSemVerPatch)</GitSemVerPatch>
-			<GitSemVerLabel Condition="'$(GitSemVerLabel)' == ''">%(GitInfo.GitSemVerLabel)</GitSemVerLabel>
-			<GitSemVerDashLabel Condition="'$(GitSemVerDashLabel)' == ''">%(GitInfo.GitSemVerDashLabel)</GitSemVerDashLabel>
-			<GitSemVerSource Condition="'$(GitSemVerSource)' == ''">%(GitInfo.GitSemVerSource)</GitSemVerSource>
-		</PropertyGroup>
-	</Target>
+    <PropertyGroup>
+      <GitRepositoryUrl Condition="'$(GitRepositoryUrl)' == ''">%(GitInfo.GitRepositoryUrl)</GitRepositoryUrl>
+      <GitBranch Condition="'$(GitBranch)' == ''">%(GitInfo.GitBranch)</GitBranch>
+      <GitCommit Condition="'$(GitCommit)' == ''">%(GitInfo.GitCommit)</GitCommit>
+      <GitSha Condition="'$(GitSha)' == ''">%(GitInfo.GitSha)</GitSha>
+      <GitCommitDate Condition="'$(GitCommitDate)' == ''">%(GitInfo.GitCommitDate)</GitCommitDate>
+      <GitBaseVersion Condition="'$(GitBaseVersion)' == ''">%(GitInfo.GitBaseVersion)</GitBaseVersion>
+      <GitBaseVersionSource Condition="'$(GitBaseVersionSource)' == ''">%(GitInfo.GitBaseVersionSource)</GitBaseVersionSource>
+      <GitBaseVersionMajor Condition="'$(GitBaseVersionMajor)' == ''">%(GitInfo.GitBaseVersionMajor)</GitBaseVersionMajor>
+      <GitBaseVersionMinor Condition="'$(GitBaseVersionMinor)' == ''">%(GitInfo.GitBaseVersionMinor)</GitBaseVersionMinor>
+      <GitBaseVersionPatch Condition="'$(GitBaseVersionPatch)' == ''">%(GitInfo.GitBaseVersionPatch)</GitBaseVersionPatch>
+      <GitCommits Condition="'$(GitCommits)' == '' Or '$(GitCommits)' == '0'">%(GitInfo.GitCommits)</GitCommits>
+      <GitTag Condition="'$(GitTag)' == ''">%(GitInfo.GitTag)</GitTag>
+      <GitBaseTag Condition="'$(GitBaseTag)' == ''">%(GitInfo.GitBaseTag)</GitBaseTag>
+      <GitSemVerMajor Condition="'$(GitSemVerMajor)' == ''">%(GitInfo.GitSemVerMajor)</GitSemVerMajor>
+      <GitSemVerMinor Condition="'$(GitSemVerMinor)' == ''">%(GitInfo.GitSemVerMinor)</GitSemVerMinor>
+      <GitSemVerPatch Condition="'$(GitSemVerPatch)' == ''">%(GitInfo.GitSemVerPatch)</GitSemVerPatch>
+      <GitSemVerLabel Condition="'$(GitSemVerLabel)' == ''">%(GitInfo.GitSemVerLabel)</GitSemVerLabel>
+      <GitSemVerDashLabel Condition="'$(GitSemVerDashLabel)' == ''">%(GitInfo.GitSemVerDashLabel)</GitSemVerDashLabel>
+      <GitSemVerSource Condition="'$(GitSemVerSource)' == ''">%(GitInfo.GitSemVerSource)</GitSemVerSource>
+    </PropertyGroup>
+  </Target>
 
-	<Target Name="_GitRepositoryUrl" Returns="$(GitRepositoryUrl)" DependsOnTargets="_GitRoot"
+  <Target Name="_GitRepositoryUrl" Returns="$(GitRepositoryUrl)" DependsOnTargets="_GitRoot"
 			Condition="'$(GitRoot)' != '' and '$(GitRepositoryUrl)' == ''"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)">
 
-		<Exec Command="$(GitExe) config --get remote.$(GitRemote).url"
+    <Exec Command="$(GitExe) config --get remote.$(GitRemote).url"
 			  Condition="'$(GitRepositoryUrl)' == ''"
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -422,29 +423,29 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  IgnoreExitCode="true">
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitRepositoryUrl"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode"/>
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitRepositoryUrl"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode"/>
+    </Exec>
 
-		<Warning Condition="'$(MSBuildLastExitCode)' != '0'"
+    <Warning Condition="'$(MSBuildLastExitCode)' != '0'"
 				 Code="GI002"
 				 Text="Could not retrieve repository url for remote '$(GitRemote)'" />
 
-		<PropertyGroup>
-			<!-- Remove username and password from repository URL -->
-			<GitRepositoryUrl>$([System.Text.RegularExpressions.Regex]::Replace($(GitRepositoryUrl), "://[^/]*@", "://"))</GitRepositoryUrl>
-		</PropertyGroup>
+    <PropertyGroup>
+      <!-- Remove username and password from repository URL -->
+      <GitRepositoryUrl>$([System.Text.RegularExpressions.Regex]::Replace($(GitRepositoryUrl), "://[^/]*@", "://"))</GitRepositoryUrl>
+    </PropertyGroup>
 
-		<!--TODO: Sensible default for GitRepositoryUrl-->
-	</Target>
+    <!--TODO: Sensible default for GitRepositoryUrl-->
+  </Target>
 
-	<Target Name="_GitCommitDate" Returns="$(GitCommitDate)"
+  <Target Name="_GitCommitDate" Returns="$(GitCommitDate)"
 			DependsOnTargets="_GitRoot"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 			Condition="'$(GitRoot)' != '' And '$(GitCommitDate)' == ''">
 
-		<Exec Command='$(GitExe) show --format=$(GitCommitDateFormat) -s'
+    <Exec Command='$(GitExe) show --format=$(GitCommitDateFormat) -s'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -452,24 +453,24 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommitDate"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitDate"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
-			<GitCommitDate Condition="$(GitCommitDateFormat.EndsWith('%cI'))">0001-01-01T00:00:00+00:00</GitCommitDate>
-			<GitCommitDate Condition="!$(GitCommitDateFormat.EndsWith('%cI'))"></GitCommitDate>
-		</PropertyGroup>
-	</Target>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
+      <GitCommitDate Condition="$(GitCommitDateFormat.EndsWith('%cI'))">0001-01-01T00:00:00+00:00</GitCommitDate>
+      <GitCommitDate Condition="!$(GitCommitDateFormat.EndsWith('%cI'))"></GitCommitDate>
+    </PropertyGroup>
+  </Target>
 
-	<Target Name="_GitBranch" Returns="$(GitBranch)"
+  <Target Name="_GitBranch" Returns="$(GitBranch)"
 					  DependsOnTargets="_GitInputs"
 			Condition="'$(GitBranch)' == ''"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)">
-		
-		<Exec Command='$(GitExe) rev-parse --abbrev-ref HEAD'
-			Condition="'$(GitRoot)' != ''"              
+
+    <Exec Command='$(GitExe) rev-parse --abbrev-ref HEAD'
+			Condition="'$(GitRoot)' != ''"
 			EchoOff='true'
 			StandardErrorImportance="low"
 			StandardOutputImportance="low"
@@ -477,12 +478,12 @@
 			WorkingDirectory="$(GitRoot)"
 			ContinueOnError="true"
 			StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
-			
-			<!-- CI systems may checkout the specific commit, rather than the branch, so we need to fallback -->
-		<Exec Command='$(GitExe) name-rev --name-only $(GitNameRevOptions) HEAD'
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
+
+    <!-- CI systems may checkout the specific commit, rather than the branch, so we need to fallback -->
+    <Exec Command='$(GitExe) name-rev --name-only $(GitNameRevOptions) HEAD'
 			  Condition=" '$(GitBranch)' == '' "
 			  EchoOff='true'
 			  StandardErrorImportance="low"
@@ -491,22 +492,22 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
+    </Exec>
 
-		<PropertyGroup Condition="'$(GitRoot)' == ''">
-			<GitBranch>$(GitDefaultBranch)</GitBranch>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(GitRoot)' == ''">
+      <GitBranch>$(GitDefaultBranch)</GitBranch>
+    </PropertyGroup>
 
-	</Target>
+  </Target>
 
-	<Target Name="_GitCommit" Returns="$(GitCommit)"
+  <Target Name="_GitCommit" Returns="$(GitCommit)"
 			DependsOnTargets="_GitRoot"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 			Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
 
-		<Exec Command='$(GitExe) -c log.showSignature=false log --format=format:$(_ShortShaFormat) -n 1'
+    <Exec Command='$(GitExe) -c log.showSignature=false log --format=format:$(_ShortShaFormat) -n 1'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -514,15 +515,15 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommit"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommit"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
-			<GitCommit>$(GitDefaultCommit)</GitCommit>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
+      <GitCommit>$(GitDefaultCommit)</GitCommit>
+    </PropertyGroup>
 
-		<Exec Command='$(GitExe) -c log.showSignature=false log --format=format:$(_LongShaFormat) -n 1'
+    <Exec Command='$(GitExe) -c log.showSignature=false log --format=format:$(_LongShaFormat) -n 1'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -530,72 +531,72 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitSha"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitSha"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
-			<GitSha>$(GitDefaultCommit)</GitSha>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
+      <GitSha>$(GitDefaultCommit)</GitSha>
+    </PropertyGroup>
 
-	</Target>
+  </Target>
 
-	<Target Name="_GitPopulateInfo">
-		<ItemGroup>
-			<GitInfo Include="GitInfo">
-				<GitRepositoryUrl>$(GitRepositoryUrl)</GitRepositoryUrl>
-				<GitRoot>$(GitRoot)</GitRoot>
-				<GitBranch>$(GitBranch)</GitBranch>
-				<GitCommit>$(GitCommit)</GitCommit>
-				<GitSha>$(GitSha)</GitSha>
-				<GitCommitDate>$(GitCommitDate)</GitCommitDate>
-			</GitInfo>
-		</ItemGroup>
-	</Target>
+  <Target Name="_GitPopulateInfo">
+    <ItemGroup>
+      <GitInfo Include="GitInfo">
+        <GitRepositoryUrl>$(GitRepositoryUrl)</GitRepositoryUrl>
+        <GitRoot>$(GitRoot)</GitRoot>
+        <GitBranch>$(GitBranch)</GitBranch>
+        <GitCommit>$(GitCommit)</GitCommit>
+        <GitSha>$(GitSha)</GitSha>
+        <GitCommitDate>$(GitCommitDate)</GitCommitDate>
+      </GitInfo>
+    </ItemGroup>
+  </Target>
 
-	<PropertyGroup>
-		<GitVersionDependsOn>
-			GitInfo;
-			_GitBaseVersionBranch;
-			_GitBaseVersionTagExists;
-			_GitBaseVersionTag;
-			_GitBaseVersionFile;
-			_GitBaseVersionFallback;
-			_GitValidateBaseVersion;
-			_GitPopulateVersionInfo;
-			_GitWriteCache
-		</GitVersionDependsOn>
-	</PropertyGroup>
+  <PropertyGroup>
+    <GitVersionDependsOn>
+      GitInfo;
+      _GitBaseVersionBranch;
+      _GitBaseVersionTagExists;
+      _GitBaseVersionTag;
+      _GitBaseVersionFile;
+      _GitBaseVersionFallback;
+      _GitValidateBaseVersion;
+      _GitPopulateVersionInfo;
+      _GitWriteCache
+    </GitVersionDependsOn>
+  </PropertyGroup>
 
-	<Target Name="GitVersion" DependsOnTargets="$(GitVersionDependsOn)" Returns="@(GitInfo)" />
+  <Target Name="GitVersion" DependsOnTargets="$(GitVersionDependsOn)" Returns="@(GitInfo)" />
 
-	<Target Name="_GitBaseVersionFile" Returns="$(GitBaseVersion)"
+  <Target Name="_GitBaseVersionFile" Returns="$(GitBaseVersion)"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 			Condition="'$(GitBaseVersion)' == '' And Exists('$(GitVersionFile)')">
 
-		<PropertyGroup>
-			<GitBaseVersion>$([System.IO.File]::ReadAllText('$(GitVersionFile)'))</GitBaseVersion>
-			<GitBaseVersion>$(GitBaseVersion.Trim())</GitBaseVersion>
-			<IsValidGitBaseVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseVersion), $(GitBaseVersionRegex)))
-			</IsValidGitBaseVersion>
-			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
-		</PropertyGroup>
+    <PropertyGroup>
+      <GitBaseVersion>$([System.IO.File]::ReadAllText('$(GitVersionFile)'))</GitBaseVersion>
+      <GitBaseVersion>$(GitBaseVersion.Trim())</GitBaseVersion>
+      <IsValidGitBaseVersion>
+        $([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseVersion), $(GitBaseVersionRegex)))
+      </IsValidGitBaseVersion>
+      <IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
+    </PropertyGroup>
 
-		<Error Text="$(GitVersionFile) does not contain a valid base version (found '$(GitBaseVersion)', regex: $(GitBaseVersionRegex))."
+    <Error Text="$(GitVersionFile) does not contain a valid base version (found '$(GitBaseVersion)', regex: $(GitBaseVersionRegex))."
 						 Condition="'$(IsValidGitBaseVersion)' == 'False'" />
 
-		<PropertyGroup>
-			<_GitVersionFile>$(GitVersionFile)</_GitVersionFile>
-			<GitBaseVersionSource>$(GitVersionFile)</GitBaseVersionSource>
-			<GitSemVerSource>File</GitSemVerSource>
-		</PropertyGroup>
+    <PropertyGroup>
+      <_GitVersionFile>$(GitVersionFile)</_GitVersionFile>
+      <GitBaseVersionSource>$(GitVersionFile)</GitBaseVersionSource>
+      <GitSemVerSource>File</GitSemVerSource>
+    </PropertyGroup>
 
-		<Message Text="Using base version from version file $(GitVersionFile)'" Importance="normal" />
+    <Message Text="Using base version from version file $(GitVersionFile)'" Importance="normal" />
 
-		<!-- Account for cygwin/WSL separately -->
-		<Exec Command='"$(CygPathExe)" -u "$(_GitVersionFile)"'
+    <!-- Account for cygwin/WSL separately -->
+    <Exec Command='"$(CygPathExe)" -u "$(_GitVersionFile)"'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitRoot)"
 			  StandardErrorImportance='high'
@@ -603,11 +604,11 @@
 			  ConsoleToMSBuild='true'
 			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != ''"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitVersionFile" />
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitVersionFile" />
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<Exec Command='$(GitExe) -c log.showSignature=false log -n 1 --format=format:$(_ShortShaFormat) "$(_GitVersionFile)"'
+    <Exec Command='$(GitExe) -c log.showSignature=false log -n 1 --format=format:$(_ShortShaFormat) "$(_GitVersionFile)"'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -615,29 +616,29 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitLastBump"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitLastBump"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<Warning Text="Could not retrieve last commit for $(GitVersionFile). Defaulting to its declared version '$(GitBaseVersion)' and no additional commits."
+    <Warning Text="Could not retrieve last commit for $(GitVersionFile). Defaulting to its declared version '$(GitBaseVersion)' and no additional commits."
 				 Code="GI003"
 				 Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''" />
 
-		<PropertyGroup>
-			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''">0</GitCommits>
-			<_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
-			<_DirectoryNameOfVersionFile>$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))</_DirectoryNameOfVersionFile>
-			<_DirectoryNameOfVersionFile>$([MSBuild]::NormalizeDirectory($(_DirectoryNameOfVersionFile)))</_DirectoryNameOfVersionFile>
-			<_GitCommitsRelativeTo>$(GitCommitsRelativeTo)</_GitCommitsRelativeTo>
-			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' == '' And '$(_DirectoryNameOfVersionFile)' != '$(GitRoot)'">$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))</_GitCommitsRelativeTo>
-			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">$([MSBuild]::NormalizeDirectory($(_GitCommitsRelativeTo)))</_GitCommitsRelativeTo>
-			<!-- Ensure the path is quoted if not empty, remove trailing directory separator from NormalizeDirectory -->
-			<_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">"$(_GitCommitsRelativeTo.Trim('"').TrimEnd('\').TrimEnd('/'))"</_GitCommitsRelativeTo>
-			<_GitCommitsIgnoreMerges Condition=" '$(GitCommitsIgnoreMerges)' == 'true' ">--no-merges</_GitCommitsIgnoreMerges>
-		</PropertyGroup>
+    <PropertyGroup>
+      <GitCommits Condition="'$(MSBuildLastExitCode)' != '0' Or '$(_GitLastBump)' == ''">0</GitCommits>
+      <_GitLastBump>$(_GitLastBump.Trim())</_GitLastBump>
+      <_DirectoryNameOfVersionFile>$([System.IO.Path]::GetDirectoryName($(GitVersionFile)))</_DirectoryNameOfVersionFile>
+      <_DirectoryNameOfVersionFile>$([MSBuild]::NormalizeDirectory($(_DirectoryNameOfVersionFile)))</_DirectoryNameOfVersionFile>
+      <_GitCommitsRelativeTo>$(GitCommitsRelativeTo)</_GitCommitsRelativeTo>
+      <_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' == '' And '$(_DirectoryNameOfVersionFile)' != '$(GitRoot)'">$([System.IO.Path]::GetDirectoryName("$(GitVersionFile)"))</_GitCommitsRelativeTo>
+      <_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">$([MSBuild]::NormalizeDirectory($(_GitCommitsRelativeTo)))</_GitCommitsRelativeTo>
+      <!-- Ensure the path is quoted if not empty, remove trailing directory separator from NormalizeDirectory -->
+      <_GitCommitsRelativeTo Condition=" '$(_GitCommitsRelativeTo)' != '' ">"$(_GitCommitsRelativeTo.Trim('"').TrimEnd('\').TrimEnd('/'))"</_GitCommitsRelativeTo>
+      <_GitCommitsIgnoreMerges Condition=" '$(GitCommitsIgnoreMerges)' == 'true' ">--no-merges</_GitCommitsIgnoreMerges>
+    </PropertyGroup>
 
-		<!-- Account for cygwin/WSL separately -->
-		<Exec Command='"$(CygPathExe)" -u $(_GitCommitsRelativeTo)'
+    <!-- Account for cygwin/WSL separately -->
+    <Exec Command='"$(CygPathExe)" -u $(_GitCommitsRelativeTo)'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitRoot)"
 			  StandardErrorImportance='high'
@@ -645,11 +646,11 @@
 			  ConsoleToMSBuild='true'
 			  Condition="'$(MSBuildLastExitCode)' == '0' And '$(CygPathExe)' != '' And '$(_GitCommitsRelativeTo)' != ''"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitCommitsRelativeTo" />
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitCommitsRelativeTo" />
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<Exec Command='$(GitExe) rev-list --count --full-history $(_GitCommitsIgnoreMerges) "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
+    <Exec Command='$(GitExe) rev-list --count --full-history $(_GitCommitsIgnoreMerges) "$(_GitLastBump)"..HEAD $(_GitCommitsRelativeTo)'
 			  Condition="$(MSBuildLastExitCode) == '0' And '$(_GitLastBump)' != ''"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
@@ -658,48 +659,48 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<Warning Text="Could not retrieve commits since '$(_GitLastBump)'. Defaulting to zero."
+    <Warning Text="Could not retrieve commits since '$(_GitLastBump)'. Defaulting to zero."
 				 Code="GI004"
 				 Condition="'$(MSBuildLastExitCode)' != '0'" />
 
-		<PropertyGroup>
-			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0'">0</GitCommits>
-		</PropertyGroup>
+    <PropertyGroup>
+      <GitCommits Condition="'$(MSBuildLastExitCode)' != '0'">0</GitCommits>
+    </PropertyGroup>
 
-	</Target>
+  </Target>
 
-	<Target Name="_GitBaseVersionBranch" Returns="$(GitBaseVersion)"
+  <Target Name="_GitBaseVersionBranch" Returns="$(GitBaseVersion)"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 			DependsOnTargets="_GitBranch"
 			Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreBranchVersion)' != 'true' ">
 
-		<PropertyGroup>
-			<_CandidateValue>$(GitBranch)</_CandidateValue>
-			<_IndexOfSlash>$(_CandidateValue.LastIndexOf('/'))</_IndexOfSlash>
-			<_IndexOfSlash Condition="'$(_IndexOfSlash)' == '-1'">$(_CandidateValue.LastIndexOf('\'))</_IndexOfSlash>
-			<_CandidateValue Condition="'$(_GitBranchIndexOfSlash)' != '-1'">$(_CandidateValue.Substring($([MSBuild]::Add($(_IndexOfSlash), 1))))</_CandidateValue>
-			<IsValidGitBaseVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(_CandidateValue), $(GitBaseVersionRegex)))
-			</IsValidGitBaseVersion>
-			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
-		</PropertyGroup>
+    <PropertyGroup>
+      <_CandidateValue>$(GitBranch)</_CandidateValue>
+      <_IndexOfSlash>$(_CandidateValue.LastIndexOf('/'))</_IndexOfSlash>
+      <_IndexOfSlash Condition="'$(_IndexOfSlash)' == '-1'">$(_CandidateValue.LastIndexOf('\'))</_IndexOfSlash>
+      <_CandidateValue Condition="'$(_GitBranchIndexOfSlash)' != '-1'">$(_CandidateValue.Substring($([MSBuild]::Add($(_IndexOfSlash), 1))))</_CandidateValue>
+      <IsValidGitBaseVersion>
+        $([System.Text.RegularExpressions.Regex]::IsMatch($(_CandidateValue), $(GitBaseVersionRegex)))
+      </IsValidGitBaseVersion>
+      <IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
+    </PropertyGroup>
 
-		<Message Text="Git branch '$(GitBranch)' cannot be used as a version specifier. Skipping branch-based version processing."
+    <Message Text="Git branch '$(GitBranch)' cannot be used as a version specifier. Skipping branch-based version processing."
 				 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
 
-		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
-			<GitBaseVersion>$(_CandidateValue)</GitBaseVersion>
-			<GitBaseVersionSource>GitBranch</GitBaseVersionSource>
-			<GitSemVerSource>Branch</GitSemVerSource>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'">
+      <GitBaseVersion>$(_CandidateValue)</GitBaseVersion>
+      <GitBaseVersionSource>GitBranch</GitBaseVersionSource>
+      <GitSemVerSource>Branch</GitSemVerSource>
+    </PropertyGroup>
 
-		<!-- Get the initial commit when the current branch departed from the default branch -->
-		<Exec Command='$(GitExe) merge-base --fork-point "$(GitDefaultBranch)"'
+    <!-- Get the initial commit when the current branch departed from the default branch -->
+    <Exec Command='$(GitExe) merge-base --fork-point "$(GitDefaultBranch)"'
 			  Condition="'$(IsValidGitBaseVersion)' == 'true'"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
@@ -708,20 +709,20 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitForkPoint"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitForkPoint"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<Warning Text="Could not retrieve first commit where branch $(GitBranch) forked from $(GitDefaultBranch). Defaulting to zero commits."
+    <Warning Text="Could not retrieve first commit where branch $(GitBranch) forked from $(GitDefaultBranch). Defaulting to zero commits."
 				 Code="GI005"
 				 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
 
-		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'">
-			<GitCommits>0</GitCommits>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'">
+      <GitCommits>0</GitCommits>
+    </PropertyGroup>
 
-		<!-- Get the commit count from the fork point to the current branch head -->
-		<Exec Command='$(GitExe) rev-list --count "$(_GitForkPoint)"..HEAD'
+    <!-- Get the commit count from the fork point to the current branch head -->
+    <Exec Command='$(GitExe) rev-list --count "$(_GitForkPoint)"..HEAD'
 			  Condition="'$(IsValidGitBaseVersion)' == 'true' and '$(MSBuildLastExitCode)' == '0'"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
@@ -730,19 +731,19 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-	</Target>
+  </Target>
 
-	<Target Name="_GitBaseVersionTagExists" Returns="$(GitBaseTag)"
+  <Target Name="_GitBaseVersionTagExists" Returns="$(GitBaseTag)"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 			DependsOnTargets="_GitBranch;_GitCommit"
 			Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' ">
 
-		<Exec Command='$(GitExe) describe --tags --match=$(GitTagRegex) --abbrev=0'
+    <Exec Command='$(GitExe) describe --tags --match=$(GitTagRegex) --abbrev=0'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -751,28 +752,28 @@
 			  ContinueOnError="true"
 			  IgnoreExitCode="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitBaseTag"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitBaseTag"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
-			<GitCommits>0</GitCommits>
-			<GitBaseTag></GitBaseTag>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' != '0'">
+      <GitCommits>0</GitCommits>
+      <GitBaseTag></GitBaseTag>
+    </PropertyGroup>
 
-		<Message Text="No git tags exist. Skipping tag processing."
+    <Message Text="No git tags exist. Skipping tag processing."
 				 Importance="low" Condition="'$(GitBaseTag)' == ''" />
 
-	</Target>
+  </Target>
 
-	<Target Name="_GitBaseVersionTag" Returns="$(GitBaseVersion)"
+  <Target Name="_GitBaseVersionTag" Returns="$(GitBaseVersion)"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 			DependsOnTargets="_GitBaseVersionTagExists"
 			Condition="'$(GitBaseVersion)' == '' And '$(GitIgnoreTagVersion)' != 'true' And '$(GitBaseTag)' != ''">
 
-		<!-- At this point, we now there is a base tag already we can leverage -->
-		<Exec Command='$(GitExe) describe --match=$(GitTagRegex) --tags'
+    <!-- At this point, we now there is a base tag already we can leverage -->
+    <Exec Command='$(GitExe) describe --match=$(GitTagRegex) --tags'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -780,29 +781,29 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitTag"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitTag"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup>
-			<IsValidGitBaseVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseTag), $(GitBaseVersionRegex)))
-			</IsValidGitBaseVersion>
-			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
+    <PropertyGroup>
+      <IsValidGitBaseVersion>
+        $([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseTag), $(GitBaseVersionRegex)))
+      </IsValidGitBaseVersion>
+      <IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
 
-			<GitBaseVersion Condition="'$(IsValidGitBaseVersion)' == 'true'">$(GitBaseTag)</GitBaseVersion>
-		</PropertyGroup>
+      <GitBaseVersion Condition="'$(IsValidGitBaseVersion)' == 'true'">$(GitBaseTag)</GitBaseVersion>
+    </PropertyGroup>
 
-		<Message Text="Current tag '$(GitBaseTag)' cannot be used as a version specifier. Skipping tag-based version processing."
+    <Message Text="Current tag '$(GitBaseTag)' cannot be used as a version specifier. Skipping tag-based version processing."
 				 Importance="low" Condition="'$(IsValidGitBaseVersion)' == 'false'" />
 
-		<PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'" >
-			<GitBaseVersionSource>GitBaseTag</GitBaseVersionSource>
-			<GitSemVerSource>Tag</GitSemVerSource>
-			<GitCommits>0</GitCommits>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(IsValidGitBaseVersion)' == 'true'" >
+      <GitBaseVersionSource>GitBaseTag</GitBaseVersionSource>
+      <GitSemVerSource>Tag</GitSemVerSource>
+      <GitCommits>0</GitCommits>
+    </PropertyGroup>
 
-		<Exec Command='$(GitExe) rev-list "$(GitBaseTag)" -n 1'
+    <Exec Command='$(GitExe) rev-list "$(GitBaseTag)" -n 1'
 			  Condition="'$(IsValidGitBaseVersion)' == 'true'"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
@@ -811,11 +812,11 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="_GitBaseTagCommit"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitBaseTagCommit"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<Exec Command='$(GitExe) rev-list --count "$(_GitBaseTagCommit)".."$(GitCommit)"'
+    <Exec Command='$(GitExe) rev-list --count "$(_GitBaseTagCommit)".."$(GitCommit)"'
 			  Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(_GitBaseTagCommit)' != '' And '$(GitCommit)' != '' And '$(GitCommit)' != '$(GitDefaultCommit)'"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
@@ -824,38 +825,38 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<Warning Text="Failed to retrieve commit count from tag '$(GitBaseTag)' to tip $(GitCommit). Defaulting to zero commits."
+    <Warning Text="Failed to retrieve commit count from tag '$(GitBaseTag)' to tip $(GitCommit). Defaulting to zero commits."
 				 Code="GI006"
 				 Condition="'$(IsValidGitBaseVersion)' == 'true' And '$(MSBuildLastExitCode)' != '0'" />
 
-		<PropertyGroup>
-			<GitCommits Condition="'$(MSBuildLastExitCode)' != '0'">0</GitCommits>
-		</PropertyGroup>
+    <PropertyGroup>
+      <GitCommits Condition="'$(MSBuildLastExitCode)' != '0'">0</GitCommits>
+    </PropertyGroup>
 
-	</Target>
+  </Target>
 
-	<Target Name="_GitBaseVersionFallback" Returns="$(GitBaseVersion)"
+  <Target Name="_GitBaseVersionFallback" Returns="$(GitBaseVersion)"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)"
 			Condition="'$(GitBaseVersion)' == '' And '$(GitDefaultVersion)' != ''">
 
-		<PropertyGroup>
-			<IsValidGitDefaultVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitDefaultVersion), $(GitBaseVersionRegex)))
-			</IsValidGitDefaultVersion>
-			<IsValidGitDefaultVersion>$(IsValidGitDefaultVersion.Trim())</IsValidGitDefaultVersion>
-			<GitCommits>0</GitCommits>
-		</PropertyGroup>
+    <PropertyGroup>
+      <IsValidGitDefaultVersion>
+        $([System.Text.RegularExpressions.Regex]::IsMatch($(GitDefaultVersion), $(GitBaseVersionRegex)))
+      </IsValidGitDefaultVersion>
+      <IsValidGitDefaultVersion>$(IsValidGitDefaultVersion.Trim())</IsValidGitDefaultVersion>
+      <GitCommits>0</GitCommits>
+    </PropertyGroup>
 
-		<!-- If $(GitBaseVersion) == '' And $(IsValidGitBaseVersion) == ''  -->
-		<Error Text="Fallback version %24(GitDefaultVersion) value of '$(GitDefaultVersion)' is not a valid SemVer 2.0 string."
+    <!-- If $(GitBaseVersion) == '' And $(IsValidGitBaseVersion) == ''  -->
+    <Error Text="Fallback version %24(GitDefaultVersion) value of '$(GitDefaultVersion)' is not a valid SemVer 2.0 string."
 			   Condition="'$(IsValidGitDefaultVersion)' == 'false'" />
 
-		<Exec Command='$(GitExe) rev-list --count $(GitCommit)'
+    <Exec Command='$(GitExe) rev-list --count $(GitCommit)'
 			  Condition="'$(IsValidGitDefaultVersion)' == 'true' And '$(GitCommit)' != '' And '$(GitCommit)' != '$(GitDefaultCommit)'"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
@@ -864,205 +865,205 @@
 			  WorkingDirectory="$(GitRoot)"
 			  ContinueOnError="true"
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommits"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
 
-		<PropertyGroup>
-			<GitBaseVersion>$(GitDefaultVersion)</GitBaseVersion>
-			<GitSemVerSource>Default</GitSemVerSource>
-		</PropertyGroup>
+    <PropertyGroup>
+      <GitBaseVersion>$(GitDefaultVersion)</GitBaseVersion>
+      <GitSemVerSource>Default</GitSemVerSource>
+    </PropertyGroup>
 
-	</Target>
+  </Target>
 
-	<Target Name="_GitValidateBaseVersion"
+  <Target Name="_GitValidateBaseVersion"
 			Inputs="@(_GitInput)"
 			Outputs="$(_GitInfoFile)">
 
-		<!-- If $(GitBaseVersion) == '', it means we couldn't determine a base version by any probing mechanism -->
-		<Error Text="Failed to find a valid base version to use. Please make sure you have a %24(GitVersionFile) file (defaults to '$(GitVersionFile)'), branch, tag or %24(GitDefaultVersion) property with a valid SemVer 2.0 string."
+    <!-- If $(GitBaseVersion) == '', it means we couldn't determine a base version by any probing mechanism -->
+    <Error Text="Failed to find a valid base version to use. Please make sure you have a %24(GitVersionFile) file (defaults to '$(GitVersionFile)'), branch, tag or %24(GitDefaultVersion) property with a valid SemVer 2.0 string."
 			   Condition="'$(GitBaseVersion)' == ''" />
 
-		<PropertyGroup>
-			<IsValidGitBaseVersion>
-				$([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseVersion), $(GitBaseVersionRegex)))
-			</IsValidGitBaseVersion>
-			<IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
-		</PropertyGroup>
+    <PropertyGroup>
+      <IsValidGitBaseVersion>
+        $([System.Text.RegularExpressions.Regex]::IsMatch($(GitBaseVersion), $(GitBaseVersionRegex)))
+      </IsValidGitBaseVersion>
+      <IsValidGitBaseVersion>$(IsValidGitBaseVersion.Trim())</IsValidGitBaseVersion>
+    </PropertyGroup>
 
-		<Error Text="Current %24(GitBaseVersion) value of '$(GitBaseVersion)' is not a valid SemVer 2.0 string."
+    <Error Text="Current %24(GitBaseVersion) value of '$(GitBaseVersion)' is not a valid SemVer 2.0 string."
 			   Condition="'$(IsValidGitBaseVersion)' == 'false'" />
 
-	</Target>
+  </Target>
 
-	<Target Name="_GitPopulateVersionInfo">
+  <Target Name="_GitPopulateVersionInfo">
 
-		<PropertyGroup>
-			<!-- Remove the initial optional 'v' or 'V' from the base version. -->
-			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('v'))">$(GitBaseVersion.TrimStart('v'))</GitBaseVersion>
-			<GitBaseVersion Condition="$(GitBaseVersion.StartsWith('V'))">$(GitBaseVersion.TrimStart('V'))</GitBaseVersion>
-			<GitBaseVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionRegex)).Groups['MAJOR'].Value)</GitBaseVersionMajor>
-			<GitBaseVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionRegex)).Groups['MINOR'].Value)</GitBaseVersionMinor>
-			<GitBaseVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionRegex)).Groups['PATCH'].Value)</GitBaseVersionPatch>
-			<GitBaseVersionPatch Condition="'$(GitBaseVersionPatch)' == ''">0</GitBaseVersionPatch>
-			<GitSemVerMajor>$(GitBaseVersionMajor)</GitSemVerMajor>
-			<GitSemVerMinor>$(GitBaseVersionMinor)</GitSemVerMinor>
-			<GitSemVerPatch>$([MSBuild]::Add('$(GitBaseVersionPatch)', '$(GitCommits)'))</GitSemVerPatch>
-			<GitSemVerLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionRegex)).Groups['LABEL'].Value)</GitSemVerLabel>
-			<GitSemVerDashLabel Condition="'$(GitSemVerLabel)' != ''" >-$(GitSemVerLabel)</GitSemVerDashLabel>
-		</PropertyGroup>
+    <PropertyGroup>
+      <!-- Remove the initial optional 'v' or 'V' from the base version. -->
+      <GitBaseVersion Condition="$(GitBaseVersion.StartsWith('v'))">$(GitBaseVersion.TrimStart('v'))</GitBaseVersion>
+      <GitBaseVersion Condition="$(GitBaseVersion.StartsWith('V'))">$(GitBaseVersion.TrimStart('V'))</GitBaseVersion>
+      <GitBaseVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionRegex)).Groups['MAJOR'].Value)</GitBaseVersionMajor>
+      <GitBaseVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionRegex)).Groups['MINOR'].Value)</GitBaseVersionMinor>
+      <GitBaseVersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionRegex)).Groups['PATCH'].Value)</GitBaseVersionPatch>
+      <GitBaseVersionPatch Condition="'$(GitBaseVersionPatch)' == ''">0</GitBaseVersionPatch>
+      <GitSemVerMajor>$(GitBaseVersionMajor)</GitSemVerMajor>
+      <GitSemVerMinor>$(GitBaseVersionMinor)</GitSemVerMinor>
+      <GitSemVerPatch>$([MSBuild]::Add('$(GitBaseVersionPatch)', '$(GitCommits)'))</GitSemVerPatch>
+      <GitSemVerLabel>$([System.Text.RegularExpressions.Regex]::Match($(GitBaseVersion), $(GitBaseVersionRegex)).Groups['LABEL'].Value)</GitSemVerLabel>
+      <GitSemVerDashLabel Condition="'$(GitSemVerLabel)' != ''" >-$(GitSemVerLabel)</GitSemVerDashLabel>
+    </PropertyGroup>
 
 
-		<ItemGroup>
-			<_GitInfo Include="@(GitInfo -> Distinct())">
-				<GitBaseVersion>$(GitBaseVersion)</GitBaseVersion>
-				<GitBaseVersionSource>$(GitBaseVersionSource)</GitBaseVersionSource>
-				<GitBaseVersionMajor>$(GitBaseVersionMajor)</GitBaseVersionMajor>
-				<GitBaseVersionMinor>$(GitBaseVersionMinor)</GitBaseVersionMinor>
-				<GitBaseVersionPatch>$(GitBaseVersionPatch)</GitBaseVersionPatch>
-				<GitCommits>$(GitCommits)</GitCommits>
-				<GitTag>$(GitTag)</GitTag>
-				<GitBaseTag>$(GitBaseTag)</GitBaseTag>
-				<GitSemVerMajor>$(GitSemVerMajor)</GitSemVerMajor>
-				<GitSemVerMinor>$(GitSemVerMinor)</GitSemVerMinor>
-				<GitSemVerPatch>$(GitSemVerPatch)</GitSemVerPatch>
-				<GitSemVerLabel>$(GitSemVerLabel)</GitSemVerLabel>
-				<GitSemVerDashLabel>$(GitSemVerDashLabel)</GitSemVerDashLabel>
-				<GitSemVerSource>$(GitSemVerSource)</GitSemVerSource>
-			</_GitInfo>
-			<GitInfo Remove="@(GitInfo)" />
-			<GitInfo Include="@(_GitInfo)" />
-	    </ItemGroup>
+    <ItemGroup>
+      <_GitInfo Include="@(GitInfo -> Distinct())">
+        <GitBaseVersion>$(GitBaseVersion)</GitBaseVersion>
+        <GitBaseVersionSource>$(GitBaseVersionSource)</GitBaseVersionSource>
+        <GitBaseVersionMajor>$(GitBaseVersionMajor)</GitBaseVersionMajor>
+        <GitBaseVersionMinor>$(GitBaseVersionMinor)</GitBaseVersionMinor>
+        <GitBaseVersionPatch>$(GitBaseVersionPatch)</GitBaseVersionPatch>
+        <GitCommits>$(GitCommits)</GitCommits>
+        <GitTag>$(GitTag)</GitTag>
+        <GitBaseTag>$(GitBaseTag)</GitBaseTag>
+        <GitSemVerMajor>$(GitSemVerMajor)</GitSemVerMajor>
+        <GitSemVerMinor>$(GitSemVerMinor)</GitSemVerMinor>
+        <GitSemVerPatch>$(GitSemVerPatch)</GitSemVerPatch>
+        <GitSemVerLabel>$(GitSemVerLabel)</GitSemVerLabel>
+        <GitSemVerDashLabel>$(GitSemVerDashLabel)</GitSemVerDashLabel>
+        <GitSemVerSource>$(GitSemVerSource)</GitSemVerSource>
+      </_GitInfo>
+      <GitInfo Remove="@(GitInfo)" />
+      <GitInfo Include="@(_GitInfo)" />
+    </ItemGroup>
 
-	</Target>
+  </Target>
 
-	<Target Name="_GitWriteCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="'$(SkipWriteGitCache)' != 'true'">
+  <Target Name="_GitWriteCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="'$(SkipWriteGitCache)' != 'true'">
 
-		<PropertyGroup>
-			<_GitInfoContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cache.pp'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitRepositoryUrl$', '$(GitRepositoryUrl)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBranch$', '$(GitBranch)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommits$', '$(GitCommits)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommit$', '$(GitCommit)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitCommitDate$', '$(GitCommitDate)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitSha$', '$(GitSha)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionMinor$', '$(GitBaseVersionMinor)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionPatch$', '$(GitBaseVersionPatch)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitTag$', '$(GitTag)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseTag$', '$(GitBaseTag)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerMajor$', '$(GitSemVerMajor)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerMinor$', '$(GitSemVerMinor)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerPatch$', '$(GitSemVerPatch)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerLabel$', '$(GitSemVerLabel)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerDashLabel$', '$(GitSemVerDashLabel)'))</_GitInfoContent>
-			<_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerSource$', '$(GitSemVerSource)'))</_GitInfoContent>
-		</PropertyGroup>
+    <PropertyGroup>
+      <_GitInfoContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo.cache.pp'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitRepositoryUrl$', '$(GitRepositoryUrl)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitBranch$', '$(GitBranch)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitCommits$', '$(GitCommits)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitCommit$', '$(GitCommit)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitCommitDate$', '$(GitCommitDate)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitSha$', '$(GitSha)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionMinor$', '$(GitBaseVersionMinor)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseVersionPatch$', '$(GitBaseVersionPatch)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitTag$', '$(GitTag)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitBaseTag$', '$(GitBaseTag)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerMajor$', '$(GitSemVerMajor)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerMinor$', '$(GitSemVerMinor)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerPatch$', '$(GitSemVerPatch)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerLabel$', '$(GitSemVerLabel)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerDashLabel$', '$(GitSemVerDashLabel)'))</_GitInfoContent>
+      <_GitInfoContent>$(_GitInfoContent.Replace('$GitSemVerSource$', '$(GitSemVerSource)'))</_GitInfoContent>
+    </PropertyGroup>
 
-		<PropertyGroup>
-			<_GitInfoFileDir>$([System.IO.Path]::GetDirectoryName('$(_GitInfoFile)'))</_GitInfoFileDir>
-		</PropertyGroup>
+    <PropertyGroup>
+      <_GitInfoFileDir>$([System.IO.Path]::GetDirectoryName('$(_GitInfoFile)'))</_GitInfoFileDir>
+    </PropertyGroup>
 
-		<MakeDir Directories="$(_GitInfoFileDir)" Condition="!Exists('$(_GitInfoFileDir)')" />
+    <MakeDir Directories="$(_GitInfoFileDir)" Condition="!Exists('$(_GitInfoFileDir)')" />
 
-		<WriteLinesToFile File="$(_GitInfoFile)" Lines="$(_GitInfoContent)" Overwrite="true" />
+    <WriteLinesToFile File="$(_GitInfoFile)" Lines="$(_GitInfoContent)" Overwrite="true" />
 
-		<ItemGroup>
-			<FileWrites Include="$(_GitInfoFile)" />
-		</ItemGroup>
+    <ItemGroup>
+      <FileWrites Include="$(_GitInfoFile)" />
+    </ItemGroup>
 
-	</Target>
+  </Target>
 
-	<PropertyGroup>
-		<GitThisAssemblyDependsOn>
-			GitInfo;
-			GitVersion;
-			_GitInputs;
-			_GitGenerateThisAssembly
-		</GitThisAssemblyDependsOn>
-	</PropertyGroup>
+  <PropertyGroup>
+    <GitThisAssemblyDependsOn>
+      GitInfo;
+      GitVersion;
+      _GitInputs;
+      _GitGenerateThisAssembly
+    </GitThisAssemblyDependsOn>
+  </PropertyGroup>
 
-	<Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
+  <Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
 			BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssembly)' == 'true'">
 
-		<ItemGroup Condition="'$(Language)' != 'F#'">
-			<Compile Remove="$(GitInfoThisAssemblyFile)" />
-			<Compile Include="$(GitInfoThisAssemblyFile)" />
-		</ItemGroup>
+    <ItemGroup Condition="'$(Language)' != 'F#'">
+      <Compile Remove="$(GitInfoThisAssemblyFile)" />
+      <Compile Include="$(GitInfoThisAssemblyFile)" />
+    </ItemGroup>
 
-		<ItemGroup Condition="'$(Language)' == 'F#'">
-			<CompileBefore Remove="$(GitInfoThisAssemblyFile)" />
-			<CompileBefore Include="$(GitInfoThisAssemblyFile)" />
-		</ItemGroup>
+    <ItemGroup Condition="'$(Language)' == 'F#'">
+      <CompileBefore Remove="$(GitInfoThisAssemblyFile)" />
+      <CompileBefore Include="$(GitInfoThisAssemblyFile)" />
+    </ItemGroup>
 
-		<ItemGroup>
-			<!-- For the double compilation happening with XAML projects. -->
-      		<_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
-		</ItemGroup>
-	</Target>
+    <ItemGroup>
+      <!-- For the double compilation happening with XAML projects. -->
+      <_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
+    </ItemGroup>
+  </Target>
 
-	<Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'"
+  <Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'"
 			Inputs="@(_GitInput)" Outputs="$(GitInfoThisAssemblyFile)">
 
-		<PropertyGroup>
-			<_ThisAssemblyContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo$(DefaultLanguageSourceExtension).pp'))</_ThisAssemblyContent>
+    <PropertyGroup>
+      <_ThisAssemblyContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo$(DefaultLanguageSourceExtension).pp'))</_ThisAssemblyContent>
 
-			<!-- The $NamespaceDefine$ replacement is turned into the GLOBALNAMESPACE define if the ThisAssemblyNamespace isn't empty.  -->
-			<_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'LOCALNAMESPACE'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'GLOBALNAMESPACE'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$MetadataDefine$', '$(GitThisAssemblyMetadataDefine)'))</_ThisAssemblyContent>
+      <!-- The $NamespaceDefine$ replacement is turned into the GLOBALNAMESPACE define if the ThisAssemblyNamespace isn't empty.  -->
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'LOCALNAMESPACE'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'GLOBALNAMESPACE'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$MetadataDefine$', '$(GitThisAssemblyMetadataDefine)'))</_ThisAssemblyContent>
 
-			<_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('RootNamespace.', '$(ThisAssemblyNamespace).'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('RootNamespace.', ''))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('RootNamespace.', '$(ThisAssemblyNamespace).'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('RootNamespace.', ''))</_ThisAssemblyContent>
 
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('_RootNamespace_', '$(ThisAssemblyNamespace)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('_RootNamespace_', '$(ThisAssemblyNamespace)'))</_ThisAssemblyContent>
 
-			<!-- no git repository -->
-			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' != '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
-			<!-- no git repository -->
-			<_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitIsDirty)' != '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
-			<!-- no git repository -->
-			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' != '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'True'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
+      <!-- no git repository -->
+      <_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' != '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+      <!-- no git repository -->
+      <_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitIsDirty)' != '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+      <!-- no git repository -->
+      <_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' != '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'True'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
 
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitRepositoryUrl$', '$(GitRepositoryUrl)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBranch$', '$(GitBranch)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommits$', '$(GitCommits)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommit$', '$(GitCommit)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommitDate$', '$(GitCommitDate)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSha$', '$(GitSha)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionMinor$', '$(GitBaseVersionMinor)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionPatch$', '$(GitBaseVersionPatch)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitTag$', '$(GitTag)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseTag$', '$(GitBaseTag)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerMajor$', '$(GitSemVerMajor)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerMinor$', '$(GitSemVerMinor)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerPatch$', '$(GitSemVerPatch)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerLabel$', '$(GitSemVerLabel)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerDashLabel$', '$(GitSemVerDashLabel)'))</_ThisAssemblyContent>
-			<_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerSource$', '$(GitSemVerSource)'))</_ThisAssemblyContent>
-		</PropertyGroup>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitRepositoryUrl$', '$(GitRepositoryUrl)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBranch$', '$(GitBranch)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommits$', '$(GitCommits)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommit$', '$(GitCommit)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommitDate$', '$(GitCommitDate)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSha$', '$(GitSha)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionMinor$', '$(GitBaseVersionMinor)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionPatch$', '$(GitBaseVersionPatch)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitTag$', '$(GitTag)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseTag$', '$(GitBaseTag)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerMajor$', '$(GitSemVerMajor)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerMinor$', '$(GitSemVerMinor)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerPatch$', '$(GitSemVerPatch)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerLabel$', '$(GitSemVerLabel)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerDashLabel$', '$(GitSemVerDashLabel)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerSource$', '$(GitSemVerSource)'))</_ThisAssemblyContent>
+    </PropertyGroup>
 
-		<PropertyGroup>
-			<GitInfoThisAssemblyDir>$([System.IO.Path]::GetDirectoryName('$(GitInfoThisAssemblyFile)'))</GitInfoThisAssemblyDir>
-		</PropertyGroup>
+    <PropertyGroup>
+      <GitInfoThisAssemblyDir>$([System.IO.Path]::GetDirectoryName('$(GitInfoThisAssemblyFile)'))</GitInfoThisAssemblyDir>
+    </PropertyGroup>
 
-		<MakeDir Directories="$(GitInfoThisAssemblyDir)" Condition="!Exists('$(GitInfoThisAssemblyDir)')" />
+    <MakeDir Directories="$(GitInfoThisAssemblyDir)" Condition="!Exists('$(GitInfoThisAssemblyDir)')" />
 
-		<WriteLinesToFile File='$(GitInfoThisAssemblyFile)' Lines='$(_ThisAssemblyContent)' Overwrite='true' />
-	</Target>
+    <WriteLinesToFile File='$(GitInfoThisAssemblyFile)' Lines='$(_ThisAssemblyContent)' Overwrite='true' />
+  </Target>
 
-	<!--
+  <!--
     ============================================================
               GitExe Property
 
@@ -1070,55 +1071,55 @@
 	version of git, msysgit, WSL git or cygwin git.
 	============================================================
 	-->
-	<PropertyGroup Condition="'$(GitExe)' == '' And '$(OS)' != 'Windows_NT'">
-		<GitExe Condition="Exists('/usr/bin/git')">/usr/bin/git</GitExe>
-		<GitExe Condition="Exists('/usr/local/bin/git')">/usr/local/bin/git</GitExe>
-		<GitExe Condition="$(GitExe) == ''">git</GitExe>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(GitExe)' == '' And '$(OS)' != 'Windows_NT'">
+    <GitExe Condition="Exists('/usr/bin/git')">/usr/bin/git</GitExe>
+    <GitExe Condition="Exists('/usr/local/bin/git')">/usr/local/bin/git</GitExe>
+    <GitExe Condition="$(GitExe) == ''">git</GitExe>
+  </PropertyGroup>
 
-	<Target Name="SetGitExe" Condition="'$(GitExe)' == '' And '$(OS)' == 'Windows_NT'">
-		<!-- If git from %PATH% works, just use that -->
-		<Exec Command='git --version'
+  <Target Name="SetGitExe" Condition="'$(GitExe)' == '' And '$(OS)' == 'Windows_NT'">
+    <!-- If git from %PATH% works, just use that -->
+    <Exec Command='git --version'
 			  EchoOff='true'
 			  ContinueOnError='true'
 			  IgnoreExitCode='true'
 			  StandardErrorImportance='low'
 			  StandardOutputImportance='low'>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
-		<PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
-			<GitExe>git</GitExe>
-		</PropertyGroup>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
+    <PropertyGroup Condition="'$(MSBuildLastExitCode)' == '0'">
+      <GitExe>git</GitExe>
+    </PropertyGroup>
 
-		<PropertyGroup Condition="'$(GitExe)' == ''">
-			<!-- We probe multiple places, with the first matching one winning -->
-			<GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files\Git\bin\git.exe')">"C:\Program Files\Git\bin\git.exe"</GitExe>
-			<GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files (x86)\Git\bin\git.exe')">"C:\Program Files (x86)\Git\bin\git.exe"</GitExe>
-			<GitExe Condition="'$(GitExe)' == '' And Exists('C:\msysgit\bin\git.exe')">C:\msysgit\bin\git.exe</GitExe>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(GitExe)' == ''">
+      <!-- We probe multiple places, with the first matching one winning -->
+      <GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files\Git\bin\git.exe')">"C:\Program Files\Git\bin\git.exe"</GitExe>
+      <GitExe Condition="'$(GitExe)' == '' And Exists('C:\Program Files (x86)\Git\bin\git.exe')">"C:\Program Files (x86)\Git\bin\git.exe"</GitExe>
+      <GitExe Condition="'$(GitExe)' == '' And Exists('C:\msysgit\bin\git.exe')">C:\msysgit\bin\git.exe</GitExe>
+    </PropertyGroup>
 
-		<!-- If we didn't find it in the PATH nor the above locations, check for git installed in WSL -->
-		<Exec Condition="'$(GitExe)' == ''"
+    <!-- If we didn't find it in the PATH nor the above locations, check for git installed in WSL -->
+    <Exec Condition="'$(GitExe)' == ''"
 			  Command="$(MSBuildThisFileDirectory)wslrun.cmd git --version"
 			  EchoOff='true'
 			  ContinueOnError='true'
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'
 			  StdOutEncoding='utf-8'>
-			<Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
-		</Exec>
-		<PropertyGroup Condition="'$(GitExe)' == '' And '$(MSBuildLastExitCode)' == '0'">
-			<GitExe>$(MSBuildThisFileDirectory)wslrun.cmd git</GitExe>
-			<CygPathExe>$(MSBuildThisFileDirectory)wslpath.cmd</CygPathExe>
-		</PropertyGroup>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
+    <PropertyGroup Condition="'$(GitExe)' == '' And '$(MSBuildLastExitCode)' == '0'">
+      <GitExe>$(MSBuildThisFileDirectory)wslrun.cmd git</GitExe>
+      <CygPathExe>$(MSBuildThisFileDirectory)wslpath.cmd</CygPathExe>
+    </PropertyGroup>
 
-		<PropertyGroup Condition="'$(GitExe)' == ''">
-			<!-- Only consider cygwin as a last resort, as it tends to be slower -->
-			<GitExe Condition="'$(GitExe)' == '' And Exists('C:\cygwin\bin\git.exe')">C:\cygwin\bin\git.exe</GitExe>
-			<GitExe Condition="'$(GitExe)' == '' And Exists('C:\cygwin64\bin\git.exe')">C:\cygwin64\bin\git.exe</GitExe>
-		</PropertyGroup>
+    <PropertyGroup Condition="'$(GitExe)' == ''">
+      <!-- Only consider cygwin as a last resort, as it tends to be slower -->
+      <GitExe Condition="'$(GitExe)' == '' And Exists('C:\cygwin\bin\git.exe')">C:\cygwin\bin\git.exe</GitExe>
+      <GitExe Condition="'$(GitExe)' == '' And Exists('C:\cygwin64\bin\git.exe')">C:\cygwin64\bin\git.exe</GitExe>
+    </PropertyGroup>
 
-		<!--
+    <!--
 		============================================================
 				CygPathExe Property
 
@@ -1127,13 +1128,13 @@
 		already a Windows path, it will be returned unchanged.
 		============================================================
 		-->
-		<PropertyGroup>
-			<CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin\bin\cygpath.exe') And $(GitExe.Contains('cygwin'))">C:\cygwin\bin\cygpath.exe</CygPathExe>
-			<CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin64\bin\cygpath.exe') And $(GitExe.Contains('cygwin64'))">C:\cygwin64\bin\cygpath.exe</CygPathExe>
-		</PropertyGroup>
-	</Target>
+    <PropertyGroup>
+      <CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin\bin\cygpath.exe') And $(GitExe.Contains('cygwin'))">C:\cygwin\bin\cygpath.exe</CygPathExe>
+      <CygPathExe Condition="'$(CygPathExe)' == '' And Exists('C:\cygwin64\bin\cygpath.exe') And $(GitExe.Contains('cygwin64'))">C:\cygwin64\bin\cygpath.exe</CygPathExe>
+    </PropertyGroup>
+  </Target>
 
-	<PropertyGroup>
-		<GitInfoImported>true</GitInfoImported>
-	</PropertyGroup>
+  <PropertyGroup>
+    <GitInfoImported>true</GitInfoImported>
+  </PropertyGroup>
 </Project>

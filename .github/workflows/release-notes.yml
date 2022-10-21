@@ -42,13 +42,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $id = iwr "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/releases/tags/$env:CURRENT_TAG" | 
+          $headers = @{ 'Accept'='application/vnd.github.v3+json;charset=utf-8'; 'Authorization' = "bearer $env:GITHUB_TOKEN" }
+          $id = iwr "$env:GITHUB_API_URL/repos/$env:GITHUB_REPOSITORY/releases/tags/$env:CURRENT_TAG" -Headers $headers | 
             select -ExpandProperty Content | 
             ConvertFrom-Json | 
             select -ExpandProperty id
             
           $notes = (Get-Content .\changelog.md | where { !($_ -like '\*') } | %{ $_.replace('\', '\\').replace('"', "'").replace('undefined', 'un-defined') }) -join '\n'
-          $headers = @{ 'Accept'='application/vnd.github.v3+json;charset=utf-8'; 'Authorization' = "bearer $env:GITHUB_TOKEN" }
           $body = '{ "body":"' + $notes + '" }'
 
           # ensure we can convert to json

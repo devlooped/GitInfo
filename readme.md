@@ -82,6 +82,23 @@ VB:
     ThisAssembly.Git.Commit)>
 ```
 
+MSBuild:
+
+```
+<!-- Just edit .csproj file -->  
+<ItemGroup>
+  <PackageReference Include="GitInfo" PrivateAssets="all" />
+</ItemGroup>
+
+<Target Name="PopulateInfo" DependsOnTargets="GitInfo" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <RepositoryBranch>$(GitBranch)</RepositoryBranch>
+      <RepositoryCommit>$(GitCommit)</RepositoryCommit>
+      <SourceRevisionId>$(GitBranch) $(GitCommit)</SourceRevisionId>
+    </PropertyGroup>
+</Target>
+```
+
 Because this information is readily available whenever you build the project, you 
 never depend on CI build scripts that generate versions for you, and you can 
 always compile locally exactly the same version of an assembly that was built by 
@@ -89,6 +106,22 @@ a CI server.
 
 You can read more about this project at the 
 [GitInfo announcement blog post](http://www.cazzulino.com/git-info-from-msbuild-and-code.html).
+
+### MSBuild
+
+If you want to set other properties in your project, such as `$(Version)` or `$(PackageVersion)` 
+based on the populated values from GitInfo, you must do so from a target, such as:
+
+```xml
+<Target Name="_SetVersion" BeforeTargets="GetAssemblyVersion;GenerateNuspec;GetPackageContents">
+    <PropertyGroup>
+        <Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)</Version>
+        <PackageVersion>$(Version)</PackageVersion>
+    </PropertyGroup>
+</Target>
+```
+
+In this case, we're setting the version and package version.
 
 ## Details
 
@@ -160,7 +193,7 @@ The available constants from code are:
   ThisAssembly.Git.IsDirty
 ```
 
-Available MSBuild customizations:
+Available [MSBuild properties](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-properties):
 
 ```
   $(GitThisAssembly): set to 'false' to prevent assembly 
@@ -242,44 +275,25 @@ Available MSBuild customizations:
 - 100% incremental build-friendly and high-performing (all proper Inputs/Outputs in place, smart caching of Git info, etc.)
 
 
-<!-- include docs/footer.md -->
+<!-- include https://github.com/devlooped/sponsors/raw/main/footer.md -->
 # Sponsors 
 
 <!-- sponsors.md -->
-<!-- sponsors -->
+[![Clarius Org](https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/clarius.png "Clarius Org")](https://github.com/clarius)
+[![Christian Findlay](https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/MelbourneDeveloper.png "Christian Findlay")](https://github.com/MelbourneDeveloper)
+[![C. Augusto Proiete](https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/augustoproiete.png "C. Augusto Proiete")](https://github.com/augustoproiete)
+[![Kirill Osenkov](https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/KirillOsenkov.png "Kirill Osenkov")](https://github.com/KirillOsenkov)
+[![MFB Technologies, Inc.](https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/MFB-Technologies-Inc.png "MFB Technologies, Inc.")](https://github.com/MFB-Technologies-Inc)
+[![SandRock](https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/sandrock.png "SandRock")](https://github.com/sandrock)
+[![Andy Gocke](https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/agocke.png "Andy Gocke")](https://github.com/agocke)
+[![Shahzad Huq](https://raw.githubusercontent.com/devlooped/sponsors/main/.github/avatars/shahzadhuq.png "Shahzad Huq")](https://github.com/shahzadhuq)
 
-<a href='https://github.com/KirillOsenkov'>
-  <img src='https://github.com/devlooped/sponsors/raw/main/.github/avatars/KirillOsenkov.svg' alt='Kirill Osenkov' title='Kirill Osenkov'>
-</a>
-<a href='https://github.com/augustoproiete'>
-  <img src='https://github.com/devlooped/sponsors/raw/main/.github/avatars/augustoproiete.svg' alt='C. Augusto Proiete' title='C. Augusto Proiete'>
-</a>
-<a href='https://github.com/sandrock'>
-  <img src='https://github.com/devlooped/sponsors/raw/main/.github/avatars/sandrock.svg' alt='SandRock' title='SandRock'>
-</a>
-<a href='https://github.com/aws'>
-  <img src='https://github.com/devlooped/sponsors/raw/main/.github/avatars/aws.svg' alt='Amazon Web Services' title='Amazon Web Services'>
-</a>
-<a href='https://github.com/MelbourneDeveloper'>
-  <img src='https://github.com/devlooped/sponsors/raw/main/.github/avatars/MelbourneDeveloper.svg' alt='Christian Findlay' title='Christian Findlay'>
-</a>
-<a href='https://github.com/clarius'>
-  <img src='https://github.com/devlooped/sponsors/raw/main/.github/avatars/clarius.svg' alt='Clarius Org' title='Clarius Org'>
-</a>
-<a href='https://github.com/MFB-Technologies-Inc'>
-  <img src='https://github.com/devlooped/sponsors/raw/main/.github/avatars/MFB-Technologies-Inc.svg' alt='MFB Technologies, Inc.' title='MFB Technologies, Inc.'>
-</a>
-
-<!-- sponsors -->
 
 <!-- sponsors.md -->
 
-<br>&nbsp;
-<a href="https://github.com/sponsors/devlooped" title="Sponsor this project">
-  <img src="https://github.com/devlooped/sponsors/blob/main/sponsor.png" />
-</a>
-<br>
+[![Sponsor this project](https://raw.githubusercontent.com/devlooped/sponsors/main/sponsor.png "Sponsor this project")](https://github.com/sponsors/devlooped)
+&nbsp;
 
 [Learn more about GitHub Sponsors](https://github.com/sponsors)
 
-<!-- docs/footer.md -->
+<!-- https://github.com/devlooped/sponsors/raw/main/footer.md -->
