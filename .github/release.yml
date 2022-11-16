@@ -12,6 +12,7 @@ changelog:
     authors:
       - devlooped-bot
       - dependabot
+      - github-actions
   categories:
     - title: ✨ Implemented enhancements
       labels: 
