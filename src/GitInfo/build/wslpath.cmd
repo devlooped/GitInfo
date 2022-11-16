@@ -17,10 +17,10 @@ if "%1" == "-u" shift /1
 REM Convert path to Linux
 if exist "%1\*" (pushd %1) else (pushd %~dp1)
 if ERRORLEVEL 1 goto :eof
-%WSLRUN% pwd
+"%WSLRUN%" pwd
 popd
 goto :eof
 
 :towindows
 REM Convert path to Windows
-%WSLRUN% cd "'%2'" ^&^& cmd.exe /c cd
+"%WSLRUN%" cd "'%2'" ^&^& cmd.exe /c cd

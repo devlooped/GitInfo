@@ -247,7 +247,7 @@
     </PropertyGroup>
 
     <!-- Account for cygwin/WSL separately -->
-    <Exec Command='"$(CygPathExe)" -w "$(_GitOutput)"'
+    <Exec Command='$(CygPathExe) -w "$(_GitOutput)"'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitInfoBaseDir)"
 			  StandardErrorImportance='high'
@@ -305,7 +305,7 @@
     </Exec>
 
     <!-- Account for cygwin/WSL separately -->
-    <Exec Command='"$(CygPathExe)" -w "$(_GitCommonDir)"'
+    <Exec Command='$(CygPathExe) -w "$(_GitCommonDir)"'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitInfoBaseDir)"
 			  StandardErrorImportance='high'
@@ -596,7 +596,7 @@
     <Message Text="Using base version from version file $(GitVersionFile)'" Importance="normal" />
 
     <!-- Account for cygwin/WSL separately -->
-    <Exec Command='"$(CygPathExe)" -u "$(_GitVersionFile)"'
+    <Exec Command='$(CygPathExe) -u "$(_GitVersionFile)"'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitRoot)"
 			  StandardErrorImportance='high'
@@ -638,7 +638,7 @@
     </PropertyGroup>
 
     <!-- Account for cygwin/WSL separately -->
-    <Exec Command='"$(CygPathExe)" -u $(_GitCommitsRelativeTo)'
+    <Exec Command='$(CygPathExe) -u $(_GitCommitsRelativeTo)'
 			  EchoOff='true'
 			  WorkingDirectory="$(GitRoot)"
 			  StandardErrorImportance='high'
@@ -1100,7 +1100,7 @@
 
     <!-- If we didn't find it in the PATH nor the above locations, check for git installed in WSL -->
     <Exec Condition="'$(GitExe)' == ''"
-			  Command="$(MSBuildThisFileDirectory)wslrun.cmd git --version"
+			  Command='"$(MSBuildThisFileDirectory)wslrun.cmd" git --version'
 			  EchoOff='true'
 			  ContinueOnError='true'
 			  StandardErrorImportance='high'
@@ -1109,8 +1109,8 @@
       <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
     </Exec>
     <PropertyGroup Condition="'$(GitExe)' == '' And '$(MSBuildLastExitCode)' == '0'">
-      <GitExe>$(MSBuildThisFileDirectory)wslrun.cmd git</GitExe>
-      <CygPathExe>$(MSBuildThisFileDirectory)wslpath.cmd</CygPathExe>
+      <GitExe>"$(MSBuildThisFileDirectory)wslrun.cmd" git</GitExe>
+      <CygPathExe>"$(MSBuildThisFileDirectory)wslpath.cmd"</CygPathExe>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(GitExe)' == ''">
