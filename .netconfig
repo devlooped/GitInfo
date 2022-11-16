@@ -1,6 +1,5 @@
 [file]
 	url = https://github.com/devlooped/oss
-	url = https://github.com/devlooped/.github
 
 # don't sync the .netconfig itself, to avoid a loop
 [file ".netconfig"]
