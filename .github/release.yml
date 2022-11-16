@@ -1,0 +1,24 @@
+changelog:
+  exclude:
+    labels:
+      - bydesign
+      - dependencies
+      - duplicate
+      - question
+      - invalid
+      - wontfix
+      - need info
+      - docs
+    authors:
+      - devlooped-bot
+      - dependabot
+  categories:
+    - title: :sparkles: Implemented enhancements:
+      labels: 
+        - enhancement
+    - title: :bug: Fixed bugs:
+      labels: 
+        - bug        
+    - title: :twisted_rightwards_arrows: Other:
+      labels: 
+        - '*'
