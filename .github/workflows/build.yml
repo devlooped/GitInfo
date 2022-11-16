@@ -5,7 +5,7 @@ name: build
 on: 
   workflow_dispatch:
   push:
-    branches: [ main, dev, 'feature/*', 'rel/*' ]
+    branches: [ main, dev, 'dev/*', 'feature/*', 'rel/*' ]
     paths-ignore:
       - changelog.md
       - code-of-conduct.md
@@ -37,7 +37,7 @@ jobs:
         run: |
           $path = './.github/workflows/os-matrix.json'
           $os = if (test-path $path) { cat $path } else { '["ubuntu-latest"]' }
-          echo "::set-output name=matrix::$os"
+          echo "matrix=$os" >> $env:GITHUB_OUTPUT
 
   build:
     needs: os-matrix
@@ -52,12 +52,6 @@ jobs:
         with: 
           submodules: recursive
           fetch-depth: 0
-
-      - name: ⚙ dotnet
-        uses: actions/setup-dotnet@v1
-        if: matrix.os != 'windows-latest'
-        with:
-          dotnet-version: '6.0.x'
 
       - name: 🙏 build
         run: dotnet build -m:1 -p:VersionLabel="$GITHUB_REF.$GITHUB_RUN_NUMBER"
@@ -92,11 +86,6 @@ jobs:
         with: 
           submodules: recursive
           fetch-depth: 0
-
-      - name: ⚙ dotnet
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
 
       - name: ✓ ensure format
         run: dotnet format --verify-no-changes -v:diag --exclude ~/.nuget

@@ -31,7 +31,7 @@ jobs:
       - name: ⚙ changelog
         run: |
           gem install github_changelog_generator 
-          github_changelog_generator --user ${GITHUB_REPOSITORY%/*} --project ${GITHUB_REPOSITORY##*/} --token $GH_TOKEN --o changelog.md --config-file .github/.github_changelog_generator
+          github_changelog_generator --user ${GITHUB_REPOSITORY%/*} --project ${GITHUB_REPOSITORY##*/} --token $GH_TOKEN --o changelog.md --config-file .github/workflows/changelog.config
 
       - name: 🚀 changelog
         run: |

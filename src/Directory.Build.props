@@ -38,7 +38,6 @@
 
     <!-- Use Directory.Packages.props if possible. NOTE: other MSBuild SDKs (i.e. NoTargets/Traversal) do not support central packages -->
     <ManagePackageVersionsCentrally Condition="Exists('$(MSBuildThisFileDirectory)Directory.Packages.props') AND ('$(MSBuildProjectExtension)' == '.csproj' OR '$(MSBuildProjectExtension)' == '.vbproj')">true</ManagePackageVersionsCentrally>
-    <RestoreSources>https://api.nuget.org/v3/index.json;https://pkg.kzu.io/index.json;$(RestoreSources)</RestoreSources>
 
     <!-- Ensure MSBuild tooling can access package artifacts always via PKG_[PackageId] -->
     <GeneratePathProperty>true</GeneratePathProperty>
@@ -56,7 +55,9 @@
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Nullable>enable</Nullable>
-
+    <!-- See https://www.meziantou.net/csharp-compiler-strict-mode.htm -->
+    <Features>strict</Features>
+    
     <!-- Simplify namespaces by defaulting to the single root name -->
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <RootNamespaceDot>$(MSBuildProjectName.IndexOf('.'))</RootNamespaceDot>
