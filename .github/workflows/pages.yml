@@ -1,3 +1,13 @@
+# Workflow to cross-post a jekyll site (or GitHub Pages)
+# to another org/repo. 
+# Required secrets in repository consuming this workflow:
+#   - PAGES_ORGANIZATION: the target organization to publish 
+#     pages to. 
+#   - PAGES_ACCESS_TOKEN: a token that is valid in the target 
+#     org/repo for pushing the resulting site
+#   - PAGES_REPOSITORY: optional repository name under the 
+#     target organization. Defaults to source repo name.
+
 name: pages
 on:
   workflow_dispatch:
@@ -5,6 +15,7 @@ on:
     branches:
       - main
       - pages
+      - docs
 
 env:
   PAGES_ORGANIZATION: ${{ secrets.PAGES_ORGANIZATION }}
@@ -13,7 +24,23 @@ env:
 jobs:
   gh-pages:
     runs-on: ubuntu-latest
+    env:
+      PAGES_ORGANIZATION: ${{ secrets.PAGES_ORGANIZATION }}
+      PAGES_REPOSITORY: ${{ secrets.PAGES_REPOSITORY }}
+      PAGES_ACCESS_TOKEN: ${{ secrets.PAGES_ACCESS_TOKEN }}
     steps:
+      - name: ✅ organization
+        if: env.PAGES_ORGANIZATION == ''
+        run: |
+          echo "::error title=PAGES_ORGANIZATION secret is required."
+          exit 1
+
+      - name: ✅ token
+        if: env.PAGES_ACCESS_TOKEN == ''
+        run: |
+          echo "::error title=PAGES_ACCESS_TOKEN secret is required."
+          exit 1
+
       - name: 🤘 checkout
         uses: actions/checkout@v2
 
@@ -21,14 +48,6 @@ jobs:
         run: |
           sudo gem install bundler
           bundle install
-
-      - name: 🖉 default env
-        env:
-          PAGES_ORGANIZATION: ${{ secrets.PAGES_ORGANIZATION }}
-          PAGES_REPOSITORY: ${{ secrets.PAGES_REPOSITORY }}
-        run: |
-          echo "PAGES_ORGANIZATION=${PAGES_ORGANIZATION}" >> $GITHUB_ENV
-          echo "PAGES_REPOSITORY=${PAGES_REPOSITORY}" >> $GITHUB_ENV
 
       - name: 🖉 default repo
         if: env.PAGES_REPOSITORY == ''
@@ -44,14 +63,14 @@ jobs:
           cd _site
           git init
           git add -A
-          git config --local user.email "bot@devlooped.com"
-          git config --local user.name "bot@devlooped.com"
+          git config --local user.email "bot@clarius.org"
+          git config --local user.name "bot@clarius.org"
           git commit -m "Publish pages from ${GITHUB_REPOSITORY}@${GITHUB_SHA:0:9}"
 
       - name: 🚀 push
         uses: ad-m/github-push-action@v0.6.0
         with:
-          github_token: ${{ secrets.PAGES_ACCESS_TOKEN }}
+          github_token: ${{ env.PAGES_ACCESS_TOKEN }}
           repository: ${{ env.PAGES_ORGANIZATION }}/${{ env.PAGES_REPOSITORY }}
           branch: gh-pages
           force: true
