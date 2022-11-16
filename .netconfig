@@ -1,5 +1,6 @@
 [file]
 	url = https://github.com/devlooped/oss
+	url = https://github.com/clarius/pages
 
 # don't sync the .netconfig itself, to avoid a loop
 [file ".netconfig"]
@@ -172,9 +173,7 @@
 	etag = 8712d863c15c2534170cbe97c0e7d1b1167f725197fab567f8ac18fbea38034c
 	weak
 [file ".github/workflows/sponsor.yml"]
-	url = https://github.com/devlooped/.github/blob/main/.github/workflows/sponsor.yml
-	sha = e347e5c7b91aaeb11eff95037c2c0b54206cc976
-	etag = 06319ff741c03cf4cd5113926d490ec09999a85b5a0e0480ce44222db026341a
+	url = https://github.com/devlooped/oss/blob/main/.github/workflows/sponsor.yml
 	weak
 [file ".github/workflows/combine-prs.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/combine-prs.yml
