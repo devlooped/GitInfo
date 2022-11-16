@@ -13,12 +13,12 @@ changelog:
       - devlooped-bot
       - dependabot
   categories:
-    - title: :sparkles: Implemented enhancements:
+    - title: ✨ Implemented enhancements:
       labels: 
         - enhancement
-    - title: :bug: Fixed bugs:
+    - title: 🐛 Fixed bugs:
       labels: 
         - bug        
-    - title: :twisted_rightwards_arrows: Other:
+    - title: 🔨 Other:
       labels: 
         - '*'
