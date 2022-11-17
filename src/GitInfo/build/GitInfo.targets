@@ -445,7 +445,7 @@
 			Outputs="$(_GitInfoFile)"
 			Condition="'$(GitRoot)' != '' And '$(GitCommitDate)' == ''">
 
-    <Exec Command='$(GitExe) show --format=$(GitCommitDateFormat) -s'
+    <Exec Command='$(GitExe) -c log.showSignature=false show --format=$(GitCommitDateFormat) -s'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"

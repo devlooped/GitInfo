@@ -1,0 +1,25 @@
+changelog:
+  exclude:
+    labels:
+      - bydesign
+      - dependencies
+      - duplicate
+      - question
+      - invalid
+      - wontfix
+      - need info
+      - docs
+    authors:
+      - devlooped-bot
+      - dependabot
+      - github-actions
+  categories:
+    - title: ✨ Implemented enhancements
+      labels: 
+        - enhancement
+    - title: 🐛 Fixed bugs
+      labels: 
+        - bug        
+    - title: 🔨 Other
+      labels: 
+        - '*'

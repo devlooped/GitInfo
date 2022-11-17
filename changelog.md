@@ -1,4 +1,40 @@
+# Changelog
 
+## [v2.2.1](https://github.com/devlooped/GitInfo/tree/v2.2.1) (2022-11-16)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v2.2.0...v2.2.1)
+
+:sparkles: Implemented enhancements:
+
+- maybe: show better error msg if windows visual studio git outputs linux paths [\#131](https://github.com/devlooped/GitInfo/issues/131)
+- Add release notes [\#89](https://github.com/devlooped/GitInfo/issues/89)
+- Can the same be used for managed C++? If not create it? [\#67](https://github.com/devlooped/GitInfo/issues/67)
+- Cake: Use within Cake [\#48](https://github.com/devlooped/GitInfo/issues/48)
+- Doesn't work with projects on SMB shares [\#8](https://github.com/devlooped/GitInfo/issues/8)
+- Add section on how to set versions from MSBuild [\#211](https://github.com/devlooped/GitInfo/pull/211) (@kzu)
+- Fix "MSBuild customizations" misnomer & add link to documentation [\#206](https://github.com/devlooped/GitInfo/pull/206) (@JimmyCushnie)
+- fix bug Branch name is wrong when compiling from a git worktree [\#197](https://github.com/devlooped/GitInfo/pull/197) (@li-zhixin)
+- Properly escape GitExe and CygPathExe for WSL [\#195](https://github.com/devlooped/GitInfo/pull/195) (@socram8888)
+- Update "dirty" file only when `GitIsDirty` changes [\#184](https://github.com/devlooped/GitInfo/pull/184) (@AmoreCadenza)
+- Fix of buildTransitive feature of package [\#182](https://github.com/devlooped/GitInfo/pull/182) (@PadreSVK)
+
+:bug: Fixed bugs:
+
+- MSBuild variables don't work for MAUI projects [\#203](https://github.com/devlooped/GitInfo/issues/203)
+- Execution fails if using WSL and username contains spaces [\#194](https://github.com/devlooped/GitInfo/issues/194)
+- delete [\#193](https://github.com/devlooped/GitInfo/issues/193)
+- \[Question\] Commit Message [\#185](https://github.com/devlooped/GitInfo/issues/185)
+- Build fails if `git config log.showSignature true` [\#180](https://github.com/devlooped/GitInfo/issues/180)
+- Disable signatures when obtaining commit date - fixes \#180 [\#213](https://github.com/devlooped/GitInfo/pull/213) (@socram8888)
+
+:hammer: Other:
+
+- Deleted [\#181](https://github.com/devlooped/GitInfo/issues/181)
+- Publish new version to nuget.org [\#159](https://github.com/devlooped/GitInfo/issues/159)
+
+:twisted_rightwards_arrows: Merged:
+
+- +M▼ includes [\#200](https://github.com/devlooped/GitInfo/pull/200) (@github-actions[bot])
 
 ## [v2.2.0](https://github.com/devlooped/GitInfo/tree/v2.2.0) (2021-08-25)
 
@@ -21,14 +57,13 @@
 :hammer: Other:
 
 - Project URL should be devlooped.github.io/GitInfo [\#149](https://github.com/devlooped/GitInfo/issues/149)
-- "ThisAssembly.Git.Branch" returns "undefined" in Linux system [\#139](https://github.com/devlooped/GitInfo/issues/139)
 
 :twisted_rightwards_arrows: Merged:
 
 - 🖆 Apply devlooped/oss template, nugetize and modernize [\#168](https://github.com/devlooped/GitInfo/pull/168) (@kzu)
 - Is dirty always check [\#165](https://github.com/devlooped/GitInfo/pull/165) (@freza-tm)
 - Add support for nuget transitive dependecy for .targets [\#155](https://github.com/devlooped/GitInfo/pull/155) (@PadreSVK)
-- Updating content readme.txt for issue \#152 [\#153](https://github.com/devlooped/GitInfo/pull/153) (@Jehoel)
+- Updating content readme.txt for issue \#152 [\#153](https://github.com/devlooped/GitInfo/pull/153) (@daiplusplus)
 - Allowed git commit date format to be configured through GitCommitDateFormat property [\#145](https://github.com/devlooped/GitInfo/pull/145) (@tomcurran)
 - Add --always to default name-rev args, so a commit hash is used instead of 'undefined' [\#132](https://github.com/devlooped/GitInfo/pull/132) (@andersforsgren)
 
@@ -60,7 +95,6 @@
 - Change ThisAssembly access to Public [\#107](https://github.com/devlooped/GitInfo/issues/107)
 - Include origin in git info [\#103](https://github.com/devlooped/GitInfo/issues/103)
 - Can't Get BaseVersion.Patch+1 [\#99](https://github.com/devlooped/GitInfo/issues/99)
-- Issues because ThisAssembly is not public [\#92](https://github.com/devlooped/GitInfo/issues/92)
 - Build fails if `git config log.showSignature true` [\#86](https://github.com/devlooped/GitInfo/issues/86)
 - Emit assembly attributes [\#85](https://github.com/devlooped/GitInfo/issues/85)
 - Conflicts when using InternalsVisibleTo [\#84](https://github.com/devlooped/GitInfo/issues/84)
