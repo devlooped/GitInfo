@@ -1,5 +1,17 @@
 # Changelog
 
+## [v2.3.0](https://github.com/devlooped/GitInfo/tree/v2.3.0) (2022-11-18)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v2.2.1...v2.3.0)
+
+:bug: Fixed bugs:
+
+- make the gitinfo caches location configurable to be able to reuse the same information over several projects that are built [\#190](https://github.com/devlooped/GitInfo/issues/190)
+
+:twisted_rightwards_arrows: Merged:
+
+- Feature/use git info cache for all solution projects [\#191](https://github.com/devlooped/GitInfo/pull/191) (@tisis2)
+
 ## [v2.2.1](https://github.com/devlooped/GitInfo/tree/v2.2.1) (2022-11-16)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v2.2.0...v2.2.1)
