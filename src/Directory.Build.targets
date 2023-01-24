@@ -96,7 +96,7 @@
 
   <ItemGroup>
     <!-- Consider the project out of date if any of these files changes -->
-    <UpToDateCheck Include="@(PackageFile);@(None);@(Content);@(EmbeddedResource)" />
+    <UpToDateCheck Include="@(None);@(Content);@(EmbeddedResource)" />
     <!-- We'll typically use ThisAssembly.Strings instead of the built-in resource manager codegen -->
     <EmbeddedResource Update="@(EmbeddedResource)"  Generator="" Condition="'$(EnableRexCodeGenerator)' != 'true'" />
   </ItemGroup>
