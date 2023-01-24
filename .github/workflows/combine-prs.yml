@@ -1,3 +1,6 @@
+# Source: https://github.com/hrvey/combine-prs-workflow
+# Tweaks: regex support for branch
+
 name: '⛙ combine-prs'
 
 on:
@@ -45,7 +48,7 @@ jobs:
               const branch = pull['head']['ref'];
               console.log('Pull for branch: ' + branch);
               if (branchRegExp.test(branch)) {
-                console.log('Branch matched prefix: ' + branch);
+                console.log('Branch matched: ' + branch);
                 let statusOK = true;
                 if(${{ github.event.inputs.mustBeGreen }}) {
                   console.log('Checking green status: ' + branch);

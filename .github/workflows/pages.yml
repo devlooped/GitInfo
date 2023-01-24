@@ -47,7 +47,7 @@ jobs:
       - name: ⚙ jekyll
         run: |
           sudo gem install bundler
-          bundle install
+          sudo bundle install
 
       - name: 🖉 default repo
         if: env.PAGES_REPOSITORY == ''
