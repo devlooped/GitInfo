@@ -969,6 +969,27 @@
 
   </Target>
 
+  <!-- This combination of prop/item/target fix incremental builds after HEAD changes. -->
+  <PropertyGroup>
+    <_GitCacheFullPath>$([System.IO.Path]::Combine($(MSBuildProjectDirectory), $(GitCachePath)))</_GitCacheFullPath>
+    <!-- We read the path to the HEAD file, written in a previously run _GitWriteHeadPath target -->
+    <_GitHeadPath Condition="Exists('$(_GitCacheFullPath)GitHead.cache')">$([System.IO.File]::ReadAllText('$(_GitCacheFullPath)GitHead.cache').Trim())</_GitHeadPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- And if the HEAD path exists, we add it as an input for the fast up-to-date check VS performs -->
+    <UpToDateCheckInput Condition="'$(_GitHeadPath)' != '' and Exists('$(_GitHeadPath)')" Include="$(_GitHeadPath)" />
+  </ItemGroup>
+
+  <!-- NOTE: we write the path to HEAD after first calculating a version, since we can be anywhere in 
+       the solution structure. This file will only be written if there's a change in the git root, 
+       which should never happen. -->
+  <Target Name="_GitWriteHeadPath" AfterTargets="GitVersion">
+    <WriteLinesToFile Lines="$(GitRoot).git\HEAD"
+						  File="$(GitCachePath)GitHead.cache"
+						  Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+
   <!--
     ============================================================
               GitExe Property
