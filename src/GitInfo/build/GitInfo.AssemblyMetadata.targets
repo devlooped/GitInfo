@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  ==============================================================
+              Provides assembly-level metadata
+              for Git information.
+
+	$(GitThisAssemblyMetadata): set to 'false' to prevent assembly
+  								metadata generation. Defaults to 'false'.           
+	==============================================================
+	-->
+
+  <PropertyGroup>
+    <GitThisAssemblyMetadata Condition="'$(GitThisAssemblyMetadata)' == ''">false</GitThisAssemblyMetadata>
+  </PropertyGroup>
+
+  <Target Name="GitAssemblyMetadata" DependsOnTargets="GitInfo;GitVersion"
+          BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssemblyMetadata)' == 'true'">
+
+    <ItemGroup Condition="'$(Language)' != 'VB'">
+      <AssemblyMetadata Include="GitInfo.IsDirty"
+                        Condition="'$(GitRoot)' == ''"
+                        Value="false" />
+      <AssemblyMetadata Include="GitInfo.IsDirty"
+                        Condition="'$(GitIsDirty)' != '0'"
+                        Value="true" />
+      <AssemblyMetadata Include="GitInfo.IsDirty"
+                        Condition="'$(GitIsDirty)' == '0'"
+                        Value="false" />
+    </ItemGroup>
+
+    <!-- For backwards-compatibility reasons, we keep the VB casing on these -->
+    <ItemGroup Condition="'$(Language)' == 'VB'">
+      <AssemblyMetadata Include="GitInfo.IsDirty"
+                        Condition="'$(GitRoot)' == ''"
+                        Value="False" />
+      <AssemblyMetadata Include="GitInfo.IsDirty"
+                        Condition="'$(GitIsDirty)' != '0'"
+                        Value="True" />
+      <AssemblyMetadata Include="GitInfo.IsDirty"
+                        Condition="'$(GitIsDirty)' == '0'"
+                        Value="False" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AssemblyMetadata Include="GitInfo.RepositoryUrl" Value="$(GitRepositoryUrl)" />
+      <AssemblyMetadata Include="GitInfo.Branch" Value="$(GitBranch)" />
+      <AssemblyMetadata Include="GitInfo.Commit" Value="$(GitCommit)" />
+      <AssemblyMetadata Include="GitInfo.Commits" Value="$(GitCommits)" />
+      <AssemblyMetadata Include="GitInfo.CommitDate" Value="$(GitCommitDate)" />
+      <AssemblyMetadata Include="GitInfo.Sha" Value="$(GitSha)" />
+      <AssemblyMetadata Include="GitInfo.BaseVersion" Value="$(GitBaseVersion)" />
+      <AssemblyMetadata Include="GitInfo.BaseVersion.Major" Value="$(GitBaseVersionMajor)" />
+      <AssemblyMetadata Include="GitInfo.BaseVersion.Minor" Value="$(GitBaseVersionMinor)" />
+      <AssemblyMetadata Include="GitInfo.BaseVersion.Patch" Value="$(GitBaseVersionPatch)" />
+      <AssemblyMetadata Include="GitInfo.Tag" Value="$(GitTag)" />
+      <AssemblyMetadata Include="GitInfo.BaseTag" Value="$(GitBaseTag)" />
+      <AssemblyMetadata Include="GitInfo.SemVer.Major" Value="$(GitSemVerMajor)" />
+      <AssemblyMetadata Include="GitInfo.SemVer.Minor" Value="$(GitSemVerMinor)" />
+      <AssemblyMetadata Include="GitInfo.SemVer.Patch" Value="$(GitSemVerPatch)" />
+      <AssemblyMetadata Include="GitInfo.SemVer.Label" Value="$(GitSemVerLabel)" />
+      <AssemblyMetadata Include="GitInfo.SemVer.DashLabel" Value="$(GitSemVerDashLabel)" />
+      <AssemblyMetadata Include="GitInfo.SemVer.Source" Value="$(GitSemVerSource)" />
+    </ItemGroup>
+  </Target>
+
+</Project>
