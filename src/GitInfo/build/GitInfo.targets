@@ -1134,6 +1134,7 @@
     </PropertyGroup>
   </Target>
 
+  <Import Project="GitInfo.AssemblyMetadata.targets"/>
   <PropertyGroup>
     <GitInfoImported>true</GitInfoImported>
   </PropertyGroup>
