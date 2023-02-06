@@ -258,10 +258,10 @@ Available [MSBuild properties](https://learn.microsoft.com/en-us/visualstudio/ms
 - No compiled code or tools -> 100% transparency
 - Trivially added/installed via [a NuGet package](https://www.nuget.org/packages/GitInfo)
 - No format strings or settings to learn
-- Single well-structured [.targets file](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.targets) 
+- Simple well-structured [.targets file](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.targets) 
   with plain MSBuild and no custom tasks
-- [Optional embedding](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.targets#L51) 
-  of Git info in assembly [as metadata](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.cs.pp#L4)
+- [Optional embedding](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.AssemblyMetadata.targets) 
+  of Git info in assembly metadata
 - Optional use of Git info to build arbitrary assembly/file version information, both 
   [in C#](https://github.com/kzu/GitInfoDemo/blob/main/GitInfoDemo/Properties/AssemblyInfo.cs#L10) as well 
   [as VB](https://github.com/kzu/GitInfoDemo/blob/main/GitInfoDemoVB/My%20Project/AssemblyInfo.vb#L8).
@@ -270,8 +270,6 @@ Available [MSBuild properties](https://learn.microsoft.com/en-us/visualstudio/ms
   [F#](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.fs.pp) or 
   [VB](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.vb.pp) template 
   included in the [NuGet package](https://www.nuget.org/packages/GitInfo)
-- Easily modified/improved by just adjusting a 
-  [single .targets file](https://github.com/kzu/GitInfo/blob/main/src/GitInfo/build/GitInfo.targets) 
 - 100% incremental build-friendly and high-performing (all proper Inputs/Outputs in place, smart caching of Git info, etc.)
 
 
