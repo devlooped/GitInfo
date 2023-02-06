@@ -235,6 +235,13 @@ Available [MSBuild properties](https://learn.microsoft.com/en-us/visualstudio/ms
            performance reasons.
            Defaults to empty value (no ignoring).
 
+  $(GitCachePath): where to cache the determined Git information
+				   gives the chance to use a shared location
+				   for different projects. this can improve
+				   the overall build time.
+				   has to end with a path seperator
+				   Defaults to empty value ('$(IntermediateOutputPath)').
+
   $(GitNameRevOptions): Options passed to git name-rev when finding
               a branch name for the current commit (Detached head). The default is
               '--refs=refs/heads/* --no-undefined --alwas'
