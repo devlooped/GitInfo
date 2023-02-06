@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  ==============================================================
+              Provides ThisAssembly generation
+
+	$(GitThisAssembly): set to 'false' to prevent assembly
+						metadata and constants generation.
+
+	$(ThisAssemblyNamespace): allows overriding the namespace
+							  for the ThisAssembly class.
+							  Defaults to the global namespace.
+
+	==============================================================
+	-->
+
+  <PropertyGroup>
+    <GitInfoThisAssemblyFile Condition="'$(GitInfoThisAssemblyFile)' == '' And '$(DefaultLanguageSourceExtension)' != ''">$(IntermediateOutputPath)ThisAssembly.GitInfo.g$(DefaultLanguageSourceExtension)</GitInfoThisAssemblyFile>
+    <GitThisAssembly Condition="'$(Language)' != 'C#' And '$(Language)' != 'F#' And '$(Language)' != 'VB'">false</GitThisAssembly>
+    <GitThisAssembly Condition="'$(GitThisAssembly)' == '' And '$(GitInfoThisAssemblyFile)' != ''">true</GitThisAssembly>
+  </PropertyGroup>
+
+  <!-- Private properties -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GitInfo;
+      GitVersion;
+      GitThisAssembly;
+      GitInfoReport;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GitThisAssemblyDependsOn>
+      GitInfo;
+      GitVersion;
+      _GitInputs;
+      _GitGenerateThisAssembly
+    </GitThisAssemblyDependsOn>
+  </PropertyGroup>
+
+  <Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
+			BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssembly)' == 'true'">
+
+    <ItemGroup Condition="'$(Language)' != 'F#'">
+      <Compile Remove="$(GitInfoThisAssemblyFile)" />
+      <Compile Include="$(GitInfoThisAssemblyFile)" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Language)' == 'F#'">
+      <CompileBefore Remove="$(GitInfoThisAssemblyFile)" />
+      <CompileBefore Include="$(GitInfoThisAssemblyFile)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <!-- For the double compilation happening with XAML projects. -->
+      <_GeneratedCodeFiles Include="$(GitInfoThisAssemblyFile)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_GitGenerateThisAssembly" Condition="'$(GitThisAssembly)' == 'true'"
+			Inputs="@(_GitInput)" Outputs="$(GitInfoThisAssemblyFile)">
+
+    <PropertyGroup>
+      <_ThisAssemblyContent>$([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)GitInfo$(DefaultLanguageSourceExtension).pp'))</_ThisAssemblyContent>
+
+      <!-- The $NamespaceDefine$ replacement is turned into the GLOBALNAMESPACE define if the ThisAssemblyNamespace isn't empty.  -->
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'LOCALNAMESPACE'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('$NamespaceDefine$', 'GLOBALNAMESPACE'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$MetadataDefine$', '$(GitThisAssemblyMetadataDefine)'))</_ThisAssemblyContent>
+
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' != ''">$(_ThisAssemblyContent.Replace('RootNamespace.', '$(ThisAssemblyNamespace).'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(ThisAssemblyNamespace)' == ''">$(_ThisAssemblyContent.Replace('RootNamespace.', ''))</_ThisAssemblyContent>
+
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('_RootNamespace_', '$(ThisAssemblyNamespace)'))</_ThisAssemblyContent>
+
+      <!-- no git repository -->
+      <_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' != '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'C#' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+      <!-- no git repository -->
+      <_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitIsDirty)' != '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'true'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'F#' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'false'))</_ThisAssemblyContent>
+      <!-- no git repository -->
+      <_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitRoot)' == ''">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' != '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'True'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent Condition="'$(Language)' == 'VB' And '$(GitIsDirty)' == '0'">$(_ThisAssemblyContent.Replace('$GitIsDirty$', 'False'))</_ThisAssemblyContent>
+
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitRepositoryUrl$', '$(GitRepositoryUrl)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBranch$', '$(GitBranch)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommits$', '$(GitCommits)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommit$', '$(GitCommit)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitCommitDate$', '$(GitCommitDate)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSha$', '$(GitSha)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersion$', '$(GitBaseVersion)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionSource$', '$(GitBaseVersionSource)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionMajor$', '$(GitBaseVersionMajor)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionMinor$', '$(GitBaseVersionMinor)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseVersionPatch$', '$(GitBaseVersionPatch)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitTag$', '$(GitTag)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitBaseTag$', '$(GitBaseTag)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerMajor$', '$(GitSemVerMajor)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerMinor$', '$(GitSemVerMinor)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerPatch$', '$(GitSemVerPatch)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerLabel$', '$(GitSemVerLabel)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerDashLabel$', '$(GitSemVerDashLabel)'))</_ThisAssemblyContent>
+      <_ThisAssemblyContent>$(_ThisAssemblyContent.Replace('$GitSemVerSource$', '$(GitSemVerSource)'))</_ThisAssemblyContent>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <GitInfoThisAssemblyDir>$([System.IO.Path]::GetDirectoryName('$(GitInfoThisAssemblyFile)'))</GitInfoThisAssemblyDir>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(GitInfoThisAssemblyDir)" Condition="!Exists('$(GitInfoThisAssemblyDir)')" />
+
+    <WriteLinesToFile File='$(GitInfoThisAssemblyFile)' Lines='$(_ThisAssemblyContent)' Overwrite='true' />
+  </Target>
+
+</Project>
