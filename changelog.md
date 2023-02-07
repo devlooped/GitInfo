@@ -1,5 +1,35 @@
 # Changelog
 
+## [v3.0.0-alpha](https://github.com/devlooped/GitInfo/tree/v3.0.0-alpha) (2023-02-07)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v2.3.0...v3.0.0-alpha)
+
+:sparkles: Implemented enhancements:
+
+- Stale info on unrelated changes [\#186](https://github.com/devlooped/GitInfo/issues/186)
+- Should `$(GitDefaultBranch)` now default to `main` rather than `master` [\#167](https://github.com/devlooped/GitInfo/issues/167)
+- Integrate better with SourceLink and built-in support in the SDK [\#128](https://github.com/devlooped/GitInfo/issues/128)
+- Switch to ThisAssembly.Constants for C\# [\#229](https://github.com/devlooped/GitInfo/pull/229) (@kzu)
+- Properly detect HEAD changes for incremental builds [\#226](https://github.com/devlooped/GitInfo/pull/226) (@kzu)
+- Change GitDefaultBranch to `main` instead of `master` [\#225](https://github.com/devlooped/GitInfo/pull/225) (@kzu)
+- Improve targets organization by moving ThisAssembly to another targets [\#219](https://github.com/devlooped/GitInfo/pull/219) (@kzu)
+- Switch to built-in .NET SDK AssemblyMetadata support [\#218](https://github.com/devlooped/GitInfo/pull/218) (@kzu)
+
+:bug: Fixed bugs:
+
+- Missing Git Information with Docker build [\#216](https://github.com/devlooped/GitInfo/issues/216)
+- Version issue with Multi-target projects [\#202](https://github.com/devlooped/GitInfo/issues/202)
+- Git isDirty triggers rebuilds [\#183](https://github.com/devlooped/GitInfo/issues/183)
+- GitInfo.cache collects warnings which leads to build errors [\#91](https://github.com/devlooped/GitInfo/issues/91)
+
+:hammer: Other:
+
+- $\(GitBranch\) prop value is empty in .csproj file [\#178](https://github.com/devlooped/GitInfo/issues/178)
+
+:twisted_rightwards_arrows: Merged:
+
+- Delete removed define for assembly metadata [\#220](https://github.com/devlooped/GitInfo/pull/220) (@kzu)
+
 ## [v2.3.0](https://github.com/devlooped/GitInfo/tree/v2.3.0) (2022-11-18)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v2.2.1...v2.3.0)
