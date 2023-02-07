@@ -1062,7 +1062,8 @@
   </Target>
 
   <Import Project="GitInfo.AssemblyInfo.targets"/>
-  <Import Project="GitInfo.AssemblyMetadata.targets"/>
+  <Import Project="GitInfo.AssemblyMetadata.targets" Condition="'$(Language)' != 'C#' or '$(ThisAssemblyNamespace)' != ''"/>
+  <Import Project="GitInfo.ThisAssembly.targets" Condition="'$(Language)' == 'C#'"/>
 
   <PropertyGroup>
     <GitInfoImported>true</GitInfoImported>

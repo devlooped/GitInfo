@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  ==============================================================
+              Leverages ThisAssembly.Constants generator
+              to expose assembly info constants
+
+	$(GitThisAssembly): set to 'false' to prevent assembly
+						metadata and constants generation.
+
+	==============================================================
+	-->
+
+  <PropertyGroup>
+    <GitThisAssembly Condition="'$(GitThisAssembly)' == ''">true</GitThisAssembly>
+  </PropertyGroup>
+
+  <!-- Private properties -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>
+      GitInfo;
+      GitVersion;
+      GitThisAssembly;
+      GitInfoReport;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GitThisAssemblyDependsOn>
+      GitInfo;
+      GitVersion;
+    </GitThisAssemblyDependsOn>
+  </PropertyGroup>
+
+  <Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
+			    BeforeTargets="PrepareConstants" Condition="'$(GitThisAssembly)' == 'true'">
+
+    <ItemGroup>
+      <Constant Include="IsDirty" Value="$(IsDirty)" Root="Git" />
+      <Constant Include="IsDirtyString" Value="$(IsDirtyString)" Root="Git" />
+      <Constant Include="RepositoryUrl" Value="$(GitRepositoryUrl)" Root="Git" />
+      
+      <Constant Include="Branch" Value="$(GitBranch)" Root="Git" />
+      <Constant Include="Commit" Value="$(GitCommit)" Root="Git" />
+      <Constant Include="Sha" Value="$(GitSha)" Root="Git" />
+      <Constant Include="CommitDate" Value="$(GitCommitDate)" Root="Git" />
+      <Constant Include="Commits" Value="$(GitCommits)" Root="Git" />
+      
+      <Constant Include="Tag" Value="$(GitTag)" Root="Git" />
+      <Constant Include="BaseTag" Value="$(GitBaseTag)" Root="Git" />
+      <Constant Include="BaseVersion.Major" Value="$(GitBaseVersionMajor)" Root="Git" />
+      <Constant Include="BaseVersion.Minor" Value="$(GitBaseVersionMinor)" Root="Git" />
+      <Constant Include="BaseVersion.Patch" Value="$(GitBaseVersionPatch)" Root="Git" />
+      <Constant Include="SemVer.Major" Value="$(GitSemVerMajor)" Root="Git" />
+      <Constant Include="SemVer.Minor" Value="$(GitSemVerMinor)" Root="Git" />
+      <Constant Include="SemVer.Patch" Value="$(GitSemVerPatch)" Root="Git" />
+      <Constant Include="SemVer.Label" Value="$(GitSemVerLabel)" Root="Git" />
+      <Constant Include="SemVer.DashLabel" Value="$(GitSemVerDashLabel)" Root="Git" />
+      <Constant Include="SemVer.Source" Value="$(GitSemVerSource)" Root="Git" />
+    </ItemGroup>    
+    
+  </Target>
+
+</Project>

@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.Build.NoTargets/3.0.4">
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.7.0">
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>GitInfo</PackageId>
     <Description>Access commit information from MSBuild and C#/F#/VB code, and infer SemVer from branch, tag or version file in Git repository.</Description>
     <PackageTags>MSBuild Git Versioning GitVersion GitFlowVersion GitFlow GitHubFlow SemVer</PackageTags>
@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="NuGetizer" Version="0.9.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
+    <PackageReference Include="ThisAssembly.Constants" Version="1.2.5" Pack="true" TargetFramework="netstandard2.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="build/**/*.*" />
