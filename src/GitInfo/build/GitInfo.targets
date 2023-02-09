@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" InitialTargets="SetGitExe" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" InitialTargets="SetGitExe;GitSetVersion" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!--
   ==============================================================
               Retrieves and exposes Git information
@@ -12,12 +12,18 @@
 
 	Customization:
 
+  $(GitVersion): set to 'false' to avoid setting Version and PackageVersion 
+                 to a default version with format: 
+                 $(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)
+
 	$(GitThisAssembly): set to 'false' to prevent assembly
 						metadata and constants generation.
 
-	$(GitThisAssemblyMetadata): set to 'false' to prevent assembly
-  								metadata generation only. Defaults
-								to 'false'.
+  $(GitThisAssemblyMetadata): set to 'false' to prevent assembly 
+                              metadata generation only. Defaults 
+                              to 'false'. If 'true', it will also 
+                              provide assembly metadata attributes 
+                              for each of the populated values.
 
 	$(ThisAssemblyNamespace): allows overriding the namespace
 							  for the ThisAssembly class.
@@ -562,6 +568,13 @@
   </PropertyGroup>
 
   <Target Name="GitVersion" DependsOnTargets="$(GitVersionDependsOn)" Returns="@(GitInfo)" />
+
+  <Target Name="GitSetVersion" DependsOnTargets="GitVersion" Condition="'$(GitVersion)' != 'false'">
+      <PropertyGroup>
+          <Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)</Version>
+          <PackageVersion>$(Version)</PackageVersion>
+      </PropertyGroup>
+  </Target>  
 
   <Target Name="_GitBaseVersionFile" Returns="$(GitBaseVersion)"
 			Inputs="@(_GitInput)"
