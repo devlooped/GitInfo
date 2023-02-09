@@ -17,22 +17,34 @@ After installing via [NuGet](https://www.nuget.org/packages/GitInfo):
 
 	PM> Install-Package GitInfo
 
-By default, if the containing project is a C#, F# or VB project, a compile-time generated source file will contain 
-all the git information and can be accessed from anywhere within the assembly, as constants in a 
-`ThisAssembly` (partial) class and its nested `Git` static class:
+By default, if the containing project is a C#, F# or VB project, a compile-time generated 
+source file will contain all the git information and can be accessed from anywhere within 
+the assembly, as constants in a `ThisAssembly` (partial) class and its nested `Git` static class:
 
 	Console.WriteLine(ThisAssembly.Git.Commit);
-
-All generated constants also have a Summary documentation tag that shows the current 
-value in the intellisense tooltip, making it easier to see what the different values contain:
-
-![](https://raw.githubusercontent.com/devlooped/GitInfo/main/assets/images/tooltip.png)
 
 > NOTE: you may need to close and reopen the solution in order 
 > for Visual Studio to refresh intellisense and show the 
 > ThisAssembly type the first time after installing the package.
 
-With this information at your fingertips, you can build any versioning attributes you want, 
+By default, GitInfo will also set `$(Version)` and `$(PackageVersion)` which the .NET 
+SDK uses for deriving the AssemblyInfo, FileVersion and InformationalVersion values, 
+as well as for packing. This default version is formatted from the following populated 
+MSBuild properties: `$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)`. 
+
+So, straight after install and build/pack, you will get some versioning in place :).
+
+Alternatively, you can opt-out of this default versioning by setting `GitVersion=false` 
+in your project file, if you want to just leverage the Git information and/or version 
+properties/constants yourself:
+
+```xml
+<PropertyGroup>
+    <GitVersion>false</GitVersion>
+</PropertyGroup>
+```
+
+This allows you to use the provided constants to build any versioning attributes you want, 
 with whatever information you want, without resorting to settings, format strings or anything, 
 just plain code:
 
@@ -82,22 +94,41 @@ VB:
     ThisAssembly.Git.Commit)>
 ```
 
+> NOTE: when generating your own assembly version attributes, you will need to turn off
+> the corresponding assembly version attribute generation from the .NET SDK, by setting 
+> the relevant properties to false: `GenerateAssemblyVersionAttribute`, 
+> `GenerateAssemblyFileVersionAttribute` and `GenerateAssemblyInformationalVersionAttribute`.
+
+
 MSBuild:
 
 ```
 <!-- Just edit .csproj file -->  
+<PropertyGroup>
+    <!-- We'll do our own versioning -->
+    <GitVersion>false</GitVersion>
+</PropertyGroup>
 <ItemGroup>
   <PackageReference Include="GitInfo" PrivateAssets="all" />
 </ItemGroup>
 
-<Target Name="PopulateInfo" DependsOnTargets="GitInfo" BeforeTargets="PrepareForBuild">
+<Target Name="PopulateInfo" DependsOnTargets="GitVersion" BeforeTargets="GetAssemblyVersion;GenerateNuspec;GetPackageContents">
     <PropertyGroup>
+      <Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)</Version>
+      <PackageVersion>$(Version)</PackageVersion>
+      
       <RepositoryBranch>$(GitBranch)</RepositoryBranch>
       <RepositoryCommit>$(GitCommit)</RepositoryCommit>
       <SourceRevisionId>$(GitBranch) $(GitCommit)</SourceRevisionId>
     </PropertyGroup>
 </Target>
 ```
+
+> NOTE: because the provided properties are populated via targets that need to run
+> before they are available, you cannot use the GitInfo-provided properties in a 
+> PropertyGroup at the project level. You can only use them from within a target that 
+> in turn depends on the relevant target from GitInfo (typically, `GitVersion` as 
+> shown above, if you consume the SemVer properties).
 
 Because this information is readily available whenever you build the project, you 
 never depend on CI build scripts that generate versions for you, and you can 
@@ -106,22 +137,6 @@ a CI server.
 
 You can read more about this project at the 
 [GitInfo announcement blog post](http://www.cazzulino.com/git-info-from-msbuild-and-code.html).
-
-### MSBuild
-
-If you want to set other properties in your project, such as `$(Version)` or `$(PackageVersion)` 
-based on the populated values from GitInfo, you must do so from a target, such as:
-
-```xml
-<Target Name="_SetVersion" BeforeTargets="GetAssemblyVersion;GenerateNuspec;GetPackageContents">
-    <PropertyGroup>
-        <Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)</Version>
-        <PackageVersion>$(Version)</PackageVersion>
-    </PropertyGroup>
-</Target>
-```
-
-In this case, we're setting the version and package version.
 
 ## Details
 
@@ -148,31 +163,8 @@ target that depends on the GitInfo target:
   $(GitIsDirty)
 ```
 
-From C#, F# and VB, by default code is generated too so that the same 
-information can be accessed from code, to construct your own 
-assembly/file version attributes with whatever format you want:
-
-```csharp
-[assembly: AssemblyVersion (ThisAssembly.Git.SemVer.Major + "." + ThisAssembly.Git.SemVer.Minor + "." + ThisAssembly.Git.SemVer.Patch)]
-[assembly: AssemblyInformationalVersion (
-  ThisAssembly.Git.SemVer.Major + "." +
-  ThisAssembly.Git.SemVer.Minor + "." +
-  ThisAssembly.Git.SemVer.Patch + "-" +
-  ThisAssembly.Git.Branch + "+" +
-  ThisAssembly.Git.Commit)]
-// i..e ^: 1.0.2-main+c218617
-```
-
-> NOTE: you may need to close and reopen the solution in order 
-> for Visual Studio to refresh intellisense and show the 
-> ThisAssembly type right after package installation for 
-> the first time.
-
-All generated constants also have a Summary documentation tag 
-that shows the current value in the intellisense tooltip, making 
-it very easy to see what the different values contain.
-
-The available constants from code are:
+For C#, F# and VB, constants are generated too so that the same information can be 
+accessed from code:
 
 ```
   ThisAssembly.Git.RepositoryUrl
@@ -193,15 +185,21 @@ The available constants from code are:
   ThisAssembly.Git.IsDirty
 ```
 
-Available [MSBuild properties](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-properties):
+Available [MSBuild properties](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-properties) 
+to customize the behavior:
 
 ```
+  $(GitVersion): set to 'false' to prevent setting Version 
+                 and PackageVersion.
+
   $(GitThisAssembly): set to 'false' to prevent assembly 
                       metadata and constants generation.
 
   $(GitThisAssemblyMetadata): set to 'false' to prevent assembly 
                               metadata generation only. Defaults 
-                              to 'false'.
+                              to 'false'. If 'true', it will also 
+                              provide assembly metadata attributes 
+                              for each of the populated values.
 
   $(ThisAssemblyNamespace): allows overriding the namespace
                             for the ThisAssembly class.
