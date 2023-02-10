@@ -1,5 +1,13 @@
 # Changelog
 
+## [v3.0.0-rc](https://github.com/devlooped/GitInfo/tree/v3.0.0-rc) (2023-02-09)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.0-alpha...v3.0.0-rc)
+
+:sparkles: Implemented enhancements:
+
+- Set Version and PackageVersion to a default value [\#232](https://github.com/devlooped/GitInfo/pull/232) (@kzu)
+
 ## [v3.0.0-alpha](https://github.com/devlooped/GitInfo/tree/v3.0.0-alpha) (2023-02-07)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v2.3.0...v3.0.0-alpha)
