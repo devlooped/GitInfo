@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "GitInfo", "src\GitInfo\GitInfo.msbuildproj", "{1D5D9080-CF62-49E1-87AC-F2EDA58A824E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyzer", "src\Analyzer\Analyzer.csproj", "{B96EB399-A569-4C4B-A702-99D6050B1FAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis", "src\Analyzer\CodeAnalysis.csproj", "{B96EB399-A569-4C4B-A702-99D6050B1FAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

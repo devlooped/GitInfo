@@ -21,6 +21,6 @@
     <None Include="..\..\readme.md" PackagePath="readme.md" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Analyzer\Analyzer.csproj" />
+    <ProjectReference Include="..\Analyzer\CodeAnalysis.csproj" />
   </ItemGroup>
 </Project>

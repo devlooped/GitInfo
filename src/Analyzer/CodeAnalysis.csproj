@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AssemblyName>GitInfo.CodeAnalysis</AssemblyName>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackFolder>analyzers/dotnet</PackFolder>
   </PropertyGroup>

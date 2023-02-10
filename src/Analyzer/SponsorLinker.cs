@@ -11,6 +11,7 @@ class SponsorLinker : SponsorLink
 {
     public SponsorLinker() : base(SponsorLinkSettings.Create(
         "devlooped", "GitInfo",
+        packageId: "GitInfo",
         version: new Version(ThisAssembly.Info.Version).ToString(2)
 #if DEBUG
         , quietDays: 0
