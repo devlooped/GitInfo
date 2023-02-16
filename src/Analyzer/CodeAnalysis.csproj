@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="NuGetizer" Version="0.9.1" />
-    <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.2.5" PrivateAssets="all" />
+    <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.2.7" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" Pack="false" />
     <PackageReference Include="Devlooped.SponsorLink" Version="0.9.5" />
   </ItemGroup>  
