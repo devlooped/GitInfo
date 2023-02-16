@@ -1,5 +1,13 @@
 # Changelog
 
+## [v3.0.0](https://github.com/devlooped/GitInfo/tree/v3.0.0) (2023-02-16)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.0-rc...v3.0.0)
+
+:twisted_rightwards_arrows: Merged:
+
+- Rename Analyzer \> GitInfo.CodeAnalysis [\#233](https://github.com/devlooped/GitInfo/pull/233) (@kzu)
+
 ## [v3.0.0-rc](https://github.com/devlooped/GitInfo/tree/v3.0.0-rc) (2023-02-09)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.0-alpha...v3.0.0-rc)
