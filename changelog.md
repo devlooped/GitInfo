@@ -1,5 +1,17 @@
 # Changelog
 
+## [v3.0.1](https://github.com/devlooped/GitInfo/tree/v3.0.1) (2023-02-17)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.0...v3.0.1)
+
+:sparkles: Implemented enhancements:
+
+- Make sure we don't surface SponsorLink as an API [\#241](https://github.com/devlooped/GitInfo/pull/241) (@kzu)
+
+:bug: Fixed bugs:
+
+- Migration from v2 -\> v3 [\#240](https://github.com/devlooped/GitInfo/issues/240)
+
 ## [v3.0.0](https://github.com/devlooped/GitInfo/tree/v3.0.0) (2023-02-16)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.0-rc...v3.0.0)
