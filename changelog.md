@@ -1,5 +1,13 @@
 # Changelog
 
+## [v3.0.2](https://github.com/devlooped/GitInfo/tree/v3.0.2) (2023-02-18)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.1...v3.0.2)
+
+:sparkles: Implemented enhancements:
+
+- 💜 Bump SponsorLink for better privacy [\#242](https://github.com/devlooped/GitInfo/pull/242) (@kzu)
+
 ## [v3.0.1](https://github.com/devlooped/GitInfo/tree/v3.0.1) (2023-02-17)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.0...v3.0.1)
