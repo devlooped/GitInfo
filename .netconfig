@@ -43,9 +43,9 @@
 	sha = 4f070a477b4162a280f02722ae666376ae4fcc71
 [file ".github/workflows/build.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/build.yml
-	etag = bea8f881a2c7a02de70a201806edb432f7185d39df762f76efdefe392ea019a5
+	etag = 8a28f50655857cd25e97709354943b9665fb5efe05cf637860f2c45315c5f5e7
 	weak
-	sha = 7e3288c3c7746354edc2836e4fb71f11e17db83c
+	sha = 1ec63850f943894e4b032cfc8721ff1aaffda7e0
 [file ".gitignore"]
 	url = https://github.com/devlooped/oss/blob/main/.gitignore
 	etag = 1c1705a3f0ed65e33c9133996ebaa100aa445a8b968b2904ad48fef938702006
@@ -73,9 +73,9 @@
 	sha = 0683ee777d7d878d4bf013d7deea352685135a05
 [file "src/Directory.Build.props"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.props
-	etag = 1d5ec6bdb8b12c13635a11364dcfe54aefb82cc171f332a8d536aa35476222d5
+	etag = a5cfa7374ce9141e98426583688be558d08a35b1c9be0c8150e7c4a0a5cfde1b
 	weak
-	sha = ef8e7fa7593ded91d871d30eeebd0dc79f679159
+	sha = 28a27ba9594b5df731460864038593f568f6d64e
 [file "src/Directory.Build.targets"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.targets
 	etag = a495854b35fb101774cdfd2b2c2875ed3dd85ada5d04cbdd3b7a90c9afdbe36f
