@@ -1,5 +1,17 @@
 # Changelog
 
+## [v3.0.3](https://github.com/devlooped/GitInfo/tree/v3.0.3) (2023-02-22)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.2...v3.0.3)
+
+:bug: Fixed bugs:
+
+- Branch Names with '/' generate invalid versions [\#244](https://github.com/devlooped/GitInfo/issues/244)
+- V3 IsDirty is a string [\#243](https://github.com/devlooped/GitInfo/issues/243)
+- Migration from v2 -\> v3 [\#240](https://github.com/devlooped/GitInfo/issues/240)
+- Reintroduce IsDirty boolean property from 2.3 [\#249](https://github.com/devlooped/GitInfo/pull/249) (@kzu)
+- Replace / and \ in branches with dashes when setting default Version [\#248](https://github.com/devlooped/GitInfo/pull/248) (@kzu)
+
 ## [v3.0.2](https://github.com/devlooped/GitInfo/tree/v3.0.2) (2023-02-18)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.1...v3.0.2)
@@ -15,10 +27,6 @@
 :sparkles: Implemented enhancements:
 
 - Make sure we don't surface SponsorLink as an API [\#241](https://github.com/devlooped/GitInfo/pull/241) (@kzu)
-
-:bug: Fixed bugs:
-
-- Migration from v2 -\> v3 [\#240](https://github.com/devlooped/GitInfo/issues/240)
 
 ## [v3.0.0](https://github.com/devlooped/GitInfo/tree/v3.0.0) (2023-02-16)
 
