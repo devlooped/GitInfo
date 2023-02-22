@@ -1,8 +1,8 @@
 # Changelog
 
-## [v3.0.3](https://github.com/devlooped/GitInfo/tree/v3.0.3) (2023-02-22)
+## [v3.0.4](https://github.com/devlooped/GitInfo/tree/v3.0.4) (2023-02-22)
 
-[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.2...v3.0.3)
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.2...v3.0.4)
 
 :bug: Fixed bugs:
 
