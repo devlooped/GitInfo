@@ -37,7 +37,6 @@
 			    BeforeTargets="PrepareConstants" Condition="'$(GitThisAssembly)' == 'true'">
 
     <ItemGroup>
-      <Constant Include="IsDirty" Value="$(IsDirty)" Root="Git" />
       <Constant Include="IsDirtyString" Value="$(IsDirtyString)" Root="Git" />
       <Constant Include="RepositoryUrl" Value="$(GitRepositoryUrl)" Root="Git" />
       
