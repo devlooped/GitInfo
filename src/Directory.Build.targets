@@ -69,6 +69,7 @@
     <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(GITHUB_REF)' != '' and $(GITHUB_REF.Contains('refs/pull/'))">pr$(GITHUB_REF.Replace('refs/pull/', '').Replace('/merge', ''))</RepositoryBranch>
     <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(GITHUB_REF)' != ''">$(GITHUB_REF.Replace('refs/heads/', '').Replace('refs/tags/', ''))</RepositoryBranch>
     <!-- Azure DevOps: https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables -->
+    <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(BUILD_SOURCEBRANCHNAME)' == 'merge' and '$(SYSTEM_PULLREQUEST_SOURCEBRANCH)' != ''">$(SYSTEM_PULLREQUEST_SOURCEBRANCH.Replace('refs/heads/', '').Replace('refs/tags/', ''))</RepositoryBranch>
     <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(BUILD_SOURCEBRANCH)' != ''">$(BUILD_SOURCEBRANCH.Replace('refs/heads/', '').Replace('refs/tags/', ''))</RepositoryBranch>
     <!-- AppVeyor: https://www.appveyor.com/docs/environment-variables/ -->
     <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(APPVEYOR_PULL_REQUEST_NUMBER)' != ''">pr$(APPVEYOR_PULL_REQUEST_NUMBER)</RepositoryBranch>
