@@ -242,7 +242,7 @@ to customize the behavior:
 
   $(GitNameRevOptions): Options passed to git name-rev when finding
               a branch name for the current commit (Detached head). The default is
-              '--refs=refs/heads/* --no-undefined --alwas'
+              '--refs=refs/heads/* --no-undefined --always'
               meaning branch names only, falling back to commit hash.
               For legacy behavior where $(GitBranch) for detached head
               can also be a tag name, use '--refs=refs/*'.
