@@ -159,5 +159,6 @@
 
   <!-- Import before UsingTask because first to declare tasks wins -->
   <Import Project="Directory.targets" Condition="Exists('Directory.targets')"/>
+  <Import Project="Directory.targets.user" Condition="Exists('Directory.targets.user')" />
 
 </Project>
