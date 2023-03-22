@@ -1,5 +1,21 @@
 # Changelog
 
+## [v3.0.5](https://github.com/devlooped/GitInfo/tree/v3.0.5) (2023-03-22)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.4...v3.0.5)
+
+:bug: Fixed bugs:
+
+- ThisAssemblyNamespace is ignored when updating from 2.3.0 to 3.0.4 [\#258](https://github.com/devlooped/GitInfo/issues/258)
+- Bump to ThisAssembly version that doesn't run so early [\#268](https://github.com/devlooped/GitInfo/pull/268) (@kzu)
+- Fix IsDirty generator when using a custom namespace [\#267](https://github.com/devlooped/GitInfo/pull/267) (@kzu)
+- Fix backs-compat generation when custom namespace in use [\#266](https://github.com/devlooped/GitInfo/pull/266) (@kzu)
+
+:twisted_rightwards_arrows: Merged:
+
+- fix typo 'alwas' with 'always' [\#257](https://github.com/devlooped/GitInfo/pull/257) (@codingdave)
+- Set AzureDevOps branch name also for PR [\#256](https://github.com/devlooped/GitInfo/pull/256) (@trejjam)
+
 ## [v3.0.4](https://github.com/devlooped/GitInfo/tree/v3.0.4) (2023-02-22)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.2...v3.0.4)
