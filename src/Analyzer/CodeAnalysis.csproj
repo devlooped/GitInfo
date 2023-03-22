@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NuGetizer" Version="0.9.5" />
+    <PackageReference Include="NuGetizer" Version="1.0.0" />
     <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.2.9" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" Pack="false" />
     <PackageReference Include="Devlooped.SponsorLink" Version="0.9.9" PackInclude="build,analyzers" PackExclude="compile,native,runtime" />
