@@ -5,6 +5,7 @@ pack
 TestResults
 .vs
 .vscode
+.idea
 
 *.suo
 *.sdf

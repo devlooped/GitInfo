@@ -58,6 +58,12 @@ dotnet_style_require_accessibility_modifiers = omit_if_default:error
 dotnet_diagnostic.IDE0040.severity = error
 
 [*.cs]
+# Top-level files are definitely OK
+csharp_using_directive_placement = outside_namespace:silent
+csharp_style_namespace_declarations = block_scoped:silent
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_prefer_braces = true:silent
+
 # Prefer "var" everywhere
 csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
@@ -92,6 +98,9 @@ csharp_new_line_before_members_in_anonymous_types = true
 [**/*Tests*/*{.cs,.vb}]
 # xUnit1013: Public method should be marked as test. Allows using records as test classes
 dotnet_diagnostic.xUnit1013.severity = none
+
+# Default severity for analyzer diagnostics with category 'Style'
+dotnet_analyzer_diagnostic.category-Style.severity = none
 
 # VSTHRD200: Use "Async" suffix for async methods
 dotnet_diagnostic.VSTHRD200.severity = none
