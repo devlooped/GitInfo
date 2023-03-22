@@ -10,9 +10,9 @@
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NuGetizer" Version="0.9.3" PrivateAssets="all" />
+    <PackageReference Include="NuGetizer" Version="1.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
-    <PackageReference Include="ThisAssembly.Constants" Version="1.2.9" Pack="true" TargetFramework="netstandard2.0" />
+    <PackageReference Include="ThisAssembly.Constants" Version="1.2.11" Pack="true" TargetFramework="netstandard2.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="build/**/*.*" />

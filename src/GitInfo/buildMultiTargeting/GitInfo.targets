@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <!-- Make sure we're always private to the referencing project. 
+         Prevents analyzers from "flowing out" of the referencing project. -->
+    <PackageReference Update="GitInfo" PrivateAssets="all" PackTransitive="false" />
+
+    <!-- This makes sure we don't enforce SponsorLink transitively, but only when 
+         consumers are directly referencing our package. -->
+    <SponsorablePackageId Include="GitInfo" />
+  </ItemGroup>
+
 	<Import Project="..\build\GitInfo.targets"/>
 </Project>
