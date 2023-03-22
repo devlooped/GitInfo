@@ -5,13 +5,17 @@ class GitInfoGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        context.RegisterSourceOutput(
-            context.AdditionalTextsProvider
-                .Combine(context.AnalyzerConfigOptionsProvider)
-                .Combine(context.ParseOptionsProvider)
-                .Collect(),
-            (c, _) =>
+        var ns = context.AnalyzerConfigOptionsProvider
+            .Select((c, _) => c.GlobalOptions.TryGetValue("build_property.ThisAssemblyNamespace", out var ns)
+                && !string.IsNullOrEmpty(ns) ? ns : null);
+
+        context.RegisterSourceOutput(ns,
+            (c, ns) =>
             {
+                // Legacy codegen used for this scenario, emit nothing.
+                if (!string.IsNullOrEmpty(ns))
+                    return;
+
                 c.AddSource("ThisAssembly.Git.IsDirty.g",
                     $$"""
                     //------------------------------------------------------------------------------
@@ -24,6 +28,7 @@ class GitInfoGenerator : IIncrementalGenerator
                     //     the code is regenerated.
                     // </auto-generated>
                     //------------------------------------------------------------------------------
+
                     partial class ThisAssembly
                     {
                         partial class Git
