@@ -1074,9 +1074,12 @@
     </PropertyGroup>
   </Target>
 
-  <Import Project="GitInfo.AssemblyInfo.targets"/>
-  <Import Project="GitInfo.AssemblyMetadata.targets" Condition="'$(Language)' != 'C#' or '$(ThisAssemblyNamespace)' != ''"/>
-  <Import Project="GitInfo.ThisAssembly.targets" Condition="'$(Language)' == 'C#'"/>
+  <Import Project="GitInfo.AssemblyMetadata.targets" Condition="'$(GitThisAssemblyMetadata)' == 'true'"/>
+
+  <!-- Legacy generation in place for non-C# or when the unsupported ThisAssemblyNamespace is in use -->
+  <Import Project="GitInfo.AssemblyInfo.targets" Condition="'$(Language)' != 'C#' or '$(ThisAssemblyNamespace)' != ''"/>
+  <!-- Otherwise, for C# we always use ThisAssembly instead. -->
+  <Import Project="GitInfo.ThisAssembly.targets" Condition="'$(Language)' == 'C#' and '$(ThisAssemblyNamespace)' == ''"/>
 
   <PropertyGroup>
     <GitInfoImported>true</GitInfoImported>

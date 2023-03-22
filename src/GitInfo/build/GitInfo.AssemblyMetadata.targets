@@ -10,12 +10,7 @@
 	==============================================================
 	-->
 
-  <PropertyGroup>
-    <GitThisAssemblyMetadata Condition="'$(GitThisAssemblyMetadata)' == ''">false</GitThisAssemblyMetadata>
-  </PropertyGroup>
-
-  <Target Name="GitAssemblyMetadata" DependsOnTargets="GitInfo;GitVersion"
-          BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssemblyMetadata)' == 'true'">
+  <Target Name="GitAssemblyMetadata" DependsOnTargets="GitInfo;GitVersion" BeforeTargets="BuildOnlySettings">
 
     <ItemGroup Condition="'$(Language)' != 'VB'">
       <AssemblyMetadata Include="GitInfo.IsDirty"
