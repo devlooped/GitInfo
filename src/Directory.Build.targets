@@ -69,7 +69,6 @@
     <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(GITHUB_REF)' != '' and $(GITHUB_REF.Contains('refs/pull/'))">pr$(GITHUB_REF.Replace('refs/pull/', '').Replace('/merge', ''))</RepositoryBranch>
     <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(GITHUB_REF)' != ''">$(GITHUB_REF.Replace('refs/heads/', '').Replace('refs/tags/', ''))</RepositoryBranch>
     <!-- Azure DevOps: https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables -->
-    <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(BUILD_SOURCEBRANCHNAME)' == 'merge' and '$(SYSTEM_PULLREQUEST_SOURCEBRANCH)' != ''">$(SYSTEM_PULLREQUEST_SOURCEBRANCH.Replace('refs/heads/', '').Replace('refs/tags/', ''))</RepositoryBranch>
     <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(BUILD_SOURCEBRANCH)' != ''">$(BUILD_SOURCEBRANCH.Replace('refs/heads/', '').Replace('refs/tags/', ''))</RepositoryBranch>
     <!-- AppVeyor: https://www.appveyor.com/docs/environment-variables/ -->
     <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(APPVEYOR_PULL_REQUEST_NUMBER)' != ''">pr$(APPVEYOR_PULL_REQUEST_NUMBER)</RepositoryBranch>
@@ -95,11 +94,25 @@
     <RepositoryBranch Condition="'$(RepositoryBranch)' == '' and '$(BUDDY_EXECUTION_BRANCH)' != ''">$(BUDDY_EXECUTION_BRANCH)</RepositoryBranch>
   </PropertyGroup>  
 
+  <PropertyGroup Condition="'$(EnableRexCodeGenerator)' == 'true'">
+    <!-- VSCode/Razor compatibility -->
+    <CoreCompileDependsOn>PrepareResources;$(CoreCompileDependsOn)</CoreCompileDependsOn>
+  </PropertyGroup>
+  
   <ItemGroup>
     <!-- Consider the project out of date if any of these files changes -->
     <UpToDateCheck Include="@(None);@(Content);@(EmbeddedResource)" />
     <!-- We'll typically use ThisAssembly.Strings instead of the built-in resource manager codegen -->
     <EmbeddedResource Update="@(EmbeddedResource)"  Generator="" Condition="'$(EnableRexCodeGenerator)' != 'true'" />
+    <EmbeddedResource Update="@(EmbeddedResource)" Condition="'$(EnableRexCodeGenerator)' == 'true'">
+      <!-- Default to Just Works resources generation. See https://www.cazzulino.com/resources.html -->
+      <Generator>MSBuild:Compile</Generator>
+      <StronglyTypedFileName>$(IntermediateOutputPath)\$([MSBuild]::ValueOrDefault('%(RelativeDir)', '').Replace('\', '.').Replace('/', '.'))%(Filename).g$(DefaultLanguageSourceExtension)</StronglyTypedFileName>
+      <StronglyTypedLanguage>$(Language)</StronglyTypedLanguage>
+      <StronglyTypedNamespace Condition="'%(RelativeDir)' == ''">$(RootNamespace)</StronglyTypedNamespace>
+      <StronglyTypedNamespace Condition="'%(RelativeDir)' != ''">$(RootNamespace).$([MSBuild]::ValueOrDefault('%(RelativeDir)', '').Replace('\', '.').Replace('/', '.').TrimEnd('.'))</StronglyTypedNamespace>
+      <StronglyTypedClassName>%(Filename)</StronglyTypedClassName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <Target Name="IsPackable" Returns="@(IsPackable)">
