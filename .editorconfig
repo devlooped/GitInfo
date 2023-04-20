@@ -95,9 +95,12 @@ csharp_new_line_before_members_in_object_initializers = true
 csharp_new_line_before_members_in_anonymous_types = true
 
 # Test settings
-[**/*Tests*/*{.cs,.vb}]
+[**/*Tests*/**{.cs,.vb}]
 # xUnit1013: Public method should be marked as test. Allows using records as test classes
 dotnet_diagnostic.xUnit1013.severity = none
+
+# CS9113: Parameter is unread (usually, ITestOutputHelper)
+dotnet_diagnostic.CS9113.severity = none
 
 # Default severity for analyzer diagnostics with category 'Style'
 dotnet_analyzer_diagnostic.category-Style.severity = none
