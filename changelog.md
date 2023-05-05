@@ -1,5 +1,24 @@
 # Changelog
 
+## [v3.0.6](https://github.com/devlooped/GitInfo/tree/v3.0.6) (2023-05-05)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.5...v3.0.6)
+
+:sparkles: Implemented enhancements:
+
+- Allow forcing templated code gen for C\# [\#269](https://github.com/devlooped/GitInfo/pull/269) (@kzu)
+
+:bug: Fixed bugs:
+
+- The name 'IsDirtyString' does not exist in the current context [\#281](https://github.com/devlooped/GitInfo/issues/281)
+- Update to version 3.x breaks Avalonia projects [\#260](https://github.com/devlooped/GitInfo/issues/260)
+- CSC : error SL01: SponsorLink has been incorrectly configured [\#251](https://github.com/devlooped/GitInfo/issues/251)
+- Fix missing code from missing dependency [\#282](https://github.com/devlooped/GitInfo/pull/282) (@kzu)
+
+:twisted_rightwards_arrows: Merged:
+
+- Additional bump to get complete fix [\#283](https://github.com/devlooped/GitInfo/pull/283) (@kzu)
+
 ## [v3.0.5](https://github.com/devlooped/GitInfo/tree/v3.0.5) (2023-03-22)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.4...v3.0.5)
