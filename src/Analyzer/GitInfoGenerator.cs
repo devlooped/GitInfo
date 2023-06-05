@@ -6,14 +6,19 @@ class GitInfoGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var ns = context.AnalyzerConfigOptionsProvider
-            .Select((c, _) => c.GlobalOptions.TryGetValue("build_property.ThisAssemblyNamespace", out var ns)
-                && !string.IsNullOrEmpty(ns) ? ns : null);
+            .Select((c, _) => new
+            {
+                Namespace = c.GlobalOptions.TryGetValue("build_property.ThisAssemblyNamespace", out var ns)
+                    && !string.IsNullOrEmpty(ns) ? ns : null,
+                IsDirty = c.GlobalOptions.TryGetValue("build_property.GitIsDirty", out var dirty)
+                    && dirty == "1" ? true : false
+            });
 
         context.RegisterSourceOutput(ns,
-            (c, ns) =>
+            (c, state) =>
             {
                 // Legacy codegen used for this scenario, emit nothing.
-                if (!string.IsNullOrEmpty(ns))
+                if (!string.IsNullOrEmpty(state.Namespace))
                     return;
 
                 c.AddSource("ThisAssembly.Git.IsDirty.g",
@@ -36,7 +41,7 @@ class GitInfoGenerator : IIncrementalGenerator
                             /// <summary>
                             /// Gets whether the current repository is dirty.
                             /// </summary>
-                            public static bool IsDirty => bool.TryParse(IsDirtyString, out var dirty) && dirty;
+                            public const bool IsDirty = {{(state.IsDirty ? "true" : "false")}};
                         }
                     }
                     """);

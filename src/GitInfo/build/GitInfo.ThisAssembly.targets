@@ -34,10 +34,14 @@
   </PropertyGroup>
 
   <Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
-			    BeforeTargets="PrepareConstants" Condition="'$(GitThisAssembly)' == 'true'">
+			    BeforeTargets="PrepareConstants;GenerateMSBuildEditorConfigFileShouldRun" Condition="'$(GitThisAssembly)' == 'true'">
 
     <ItemGroup>
-      <Constant Include="IsDirtyString" Value="$(IsDirtyString)" Root="Git" />
+      <CompilerVisibleProperty Include="GitIsDirty" />
+
+      <Constant Include="IsDirtyString" Value="true" Root="Git" Condition="$(GitIsDirty) == '1'" />
+      <Constant Include="IsDirtyString" Value="false" Root="Git" Condition="$(GitIsDirty) == '0'" />
+
       <Constant Include="RepositoryUrl" Value="$(GitRepositoryUrl)" Root="Git" />
       
       <Constant Include="Branch" Value="$(GitBranch)" Root="Git" />
