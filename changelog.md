@@ -1,5 +1,17 @@
 # Changelog
 
+## [v3.0.7](https://github.com/devlooped/GitInfo/tree/v3.0.7) (2023-06-05)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.6...v3.0.7)
+
+:sparkles: Implemented enhancements:
+
+- Branch name is wrong when compiling from a git worktree [\#189](https://github.com/devlooped/GitInfo/issues/189)
+
+:bug: Fixed bugs:
+
+- Version 3.0.5: Error 'ThisAssembly.Git' is inaccessible due to its protection level [\#273](https://github.com/devlooped/GitInfo/issues/273)
+
 ## [v3.0.6](https://github.com/devlooped/GitInfo/tree/v3.0.6) (2023-05-05)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.5...v3.0.6)
