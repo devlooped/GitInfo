@@ -1,5 +1,14 @@
 # Changelog
 
+## [v3.1.1](https://github.com/devlooped/GitInfo/tree/v3.1.1) (2023-07-07)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.1.0...v3.1.1)
+
+:bug: Fixed bugs:
+
+- IsDirty is no more constant [\#287](https://github.com/devlooped/GitInfo/issues/287)
+- IsDirty always false [\#285](https://github.com/devlooped/GitInfo/issues/285)
+
 ## [v3.1.0](https://github.com/devlooped/GitInfo/tree/v3.1.0) (2023-06-05)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.0.7...v3.1.0)
