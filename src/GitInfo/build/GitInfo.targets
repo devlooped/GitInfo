@@ -571,7 +571,7 @@
 
   <Target Name="GitSetVersion" DependsOnTargets="GitVersion" Condition="'$(GitVersion)' != 'false'">
       <PropertyGroup>
-          <Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch.Replace('/', '-').Replace('\', '-').Replace('_', '-').$(GitCommit)</Version>
+          <Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$([System.Text.RegularExpressions.Regex]::Replace($(GitBranch), "[^0-9A-Za-z-]", "-")).$(GitCommit)</Version>
           <PackageVersion>$(Version)</PackageVersion>
       </PropertyGroup>
   </Target>  
