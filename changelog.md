@@ -1,5 +1,13 @@
 # Changelog
 
+## [v3.1.2](https://github.com/devlooped/GitInfo/tree/v3.1.2) (2023-08-02)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.1.1...v3.1.2)
+
+:twisted_rightwards_arrows: Merged:
+
+- replace all invalid chars in semver string with "-" [\#295](https://github.com/devlooped/GitInfo/pull/295) (@smorokin)
+
 ## [v3.1.1](https://github.com/devlooped/GitInfo/tree/v3.1.1) (2023-07-07)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.1.0...v3.1.1)
