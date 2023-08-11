@@ -1,5 +1,9 @@
 # Changelog
 
+## [v3.2.0](https://github.com/devlooped/GitInfo/tree/v3.2.0) (2023-08-11)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.1.2...v3.2.0)
+
 ## [v3.1.2](https://github.com/devlooped/GitInfo/tree/v3.1.2) (2023-08-02)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.1.1...v3.1.2)
