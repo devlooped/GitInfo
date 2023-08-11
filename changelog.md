@@ -1,5 +1,13 @@
 # Changelog
 
+## [v3.3.1](https://github.com/devlooped/GitInfo/tree/v3.3.1) (2023-08-11)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.0...v3.3.1)
+
+:twisted_rightwards_arrows: Merged:
+
+- Bump to downstream ThisAssembly without SponsorLink [\#305](https://github.com/devlooped/GitInfo/pull/305) (@kzu)
+
 ## [v3.3.0](https://github.com/devlooped/GitInfo/tree/v3.3.0) (2023-08-11)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.2.0...v3.3.0)
