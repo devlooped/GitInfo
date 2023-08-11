@@ -1,5 +1,13 @@
 # Changelog
 
+## [v3.3.0](https://github.com/devlooped/GitInfo/tree/v3.3.0) (2023-08-11)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.2.0...v3.3.0)
+
+:twisted_rightwards_arrows: Merged:
+
+- Remove current implementation of SponsorLink for now [\#302](https://github.com/devlooped/GitInfo/pull/302) (@kzu)
+
 ## [v3.2.0](https://github.com/devlooped/GitInfo/tree/v3.2.0) (2023-08-11)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.1.2...v3.2.0)
