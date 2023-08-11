@@ -7,3 +7,28 @@ updates:
   directory: /
   schedule:
     interval: daily
+  groups:
+    Azure:
+      patterns:
+        - "Azure*"
+        - "Microsoft.Azure*"
+    System:
+      patterns:
+        - "System*"
+    Extensions:
+      patterns:
+        - "Microsoft.Extensions*"
+    Web:
+      patterns:
+        - "Microsoft.AspNetCore*"
+    Tests:
+      patterns:
+        - "Microsoft.NET.Tests*"
+        - "xunit*"
+        - "coverlet*"
+    ThisAssembly:
+      patterns:
+        - "ThisAssembly*"
+    ProtoBuf:
+      patterns:
+        - "protobuf-*"

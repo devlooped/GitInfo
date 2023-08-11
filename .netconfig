@@ -38,9 +38,9 @@
 	sha = 39f4c591716ff50dd035d2fade35e5822489ab7f
 [file ".github/dependabot.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/dependabot.yml
-	etag = 35f2134fff3b0235ff8dac8618a76198c8ef533ad2f29628bbb435cd1134d638
+	etag = fc84e2bb7a348609b75bb20145333306e2030083c6929edcc4f675907b8c52ad
 	weak
-	sha = 4f070a477b4162a280f02722ae666376ae4fcc71
+	sha = cba10bbf7bb08d841d2ddc990b67bc3f2c58fba0
 [file ".github/workflows/build.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/build.yml
 	etag = c616df0877fba60002ccfc0397e9f731ddb22acbbb195a0598fedd4cac5f3135
@@ -78,9 +78,9 @@
 	sha = 6ae80a175a8f926ac5d9ffb0f6afd55d85cc9320
 [file "src/Directory.Build.targets"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.targets
-	etag = 428f80b0786ff17b836c7a5b0640948724855d17933e958642b22849ac00dadb
+	etag = 8e0f43f00e0c29b408d4ce5c821b44a9bf7dbc8d4917895cfc39f2964d839bf6
 	weak
-	sha = 1514d15399a7d545ad92a0e9d57dc8295fdd6af8
+	sha = 5cec43dd514aeb9050ea2ccbc546f7afa428c5b5
 [file "src/kzu.snk"]
 	url = https://github.com/devlooped/oss/blob/main/src/kzu.snk
 	skip
@@ -119,8 +119,8 @@
 	weak
 [file "docs/sponsors.md"]
 	url = https://github.com/devlooped/sponsors/blob/main/sponsors.md
-	sha = 43d2bf2b70402912497ada42ba3f94b21cf0e734
-	etag = 236b53152928fae8cfaab1b47852505263f34f6867fa0489598d72d2f24b1bd5
+	sha = 957aaec0cd357d7094f1718f35b893326e44904e
+	etag = 63bf3f8c227ff2ee46c2047b82bbea48f8b883063cf5d267565f6d51e62f37a3
 	weak
 [file ".github/workflows/sponsor.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/sponsor.yml
