@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyName>GitInfo.CodeAnalysis</AssemblyName>
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NuGetizer" Version="1.0.5" PrivateAssets="all" />
+    <PackageReference Include="NuGetizer" Version="1.1.0" PrivateAssets="all" />
     <PackageReference Include="ThisAssembly.AssemblyInfo" Version="1.4.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" Pack="false" />
     <!--<PackageReference Include="Devlooped.SponsorLink" Version="1.1.0" />-->
