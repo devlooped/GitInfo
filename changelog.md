@@ -1,5 +1,14 @@
 # Changelog
 
+## [v3.3.3](https://github.com/devlooped/GitInfo/tree/v3.3.3) (2023-08-30)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.2...v3.3.3)
+
+:bug: Fixed bugs:
+
+- parse\(''\)" cannot be evaluated. version string portion was too short or too long [\#300](https://github.com/devlooped/GitInfo/issues/300)
+- Shield from invalid git version [\#313](https://github.com/devlooped/GitInfo/pull/313) (@kzu)
+
 ## [v3.3.2](https://github.com/devlooped/GitInfo/tree/v3.3.2) (2023-08-30)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.1...v3.3.2)
