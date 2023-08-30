@@ -223,8 +223,12 @@
       <_GitCurrentVersion>$([System.Text.RegularExpressions.Regex]::Match("$(_GitOutput)", "\d+\.\d+\.\d+").Value)</_GitCurrentVersion>
     </PropertyGroup>
 
-    <Error Condition="$([System.Version]::Parse('$(_GitCurrentVersion)').CompareTo($([System.Version]::Parse('$(GitMinVersion)')))) &lt; 0"
-			   Text="Required minimum git version is $(GitMinVersion) but found $(_GitCurrentVersion)." />
+    <Warning Condition="$(_GitCurrentVersion) == ''"
+             Code="GI007"
+             Text="Could not determine git version from output '$(_GitOutput)'. Required minimum git version is $(GitMinVersion)." />
+
+    <Error Condition="$(_GitCurrentVersion) != '' and $([System.Version]::Parse('$(_GitCurrentVersion)').CompareTo($([System.Version]::Parse('$(GitMinVersion)')))) &lt; 0"
+			     Text="Required minimum git version is $(GitMinVersion) but found $(_GitCurrentVersion)." />
   </Target>
 
   <Target Name="_GitRoot" Returns="$(GitRoot)" Condition="'$(GitRoot)' == ''">
