@@ -1,5 +1,16 @@
 # Changelog
 
+## [v3.3.2](https://github.com/devlooped/GitInfo/tree/v3.3.2) (2023-08-30)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.1...v3.3.2)
+
+:bug: Fixed bugs:
+
+- LangVersion latest and using 11.0 constants  [\#311](https://github.com/devlooped/GitInfo/issues/311)
+- Privacy about SponsorLink with GitInfo [\#299](https://github.com/devlooped/GitInfo/issues/299)
+- Linux compatibility issues? [\#298](https://github.com/devlooped/GitInfo/issues/298)
+- Bump ThisAssembly to get fix for C\#11 raw strings [\#312](https://github.com/devlooped/GitInfo/pull/312) (@kzu)
+
 ## [v3.3.1](https://github.com/devlooped/GitInfo/tree/v3.3.1) (2023-08-11)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.0...v3.3.1)
