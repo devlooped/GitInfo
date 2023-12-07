@@ -12,17 +12,17 @@
 
 	Customization:
 
-  $(GitVersion): set to 'false' to avoid setting Version and PackageVersion 
-                 to a default version with format: 
+  $(GitVersion): set to 'false' to avoid setting Version and PackageVersion
+                 to a default version with format:
                  $(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)
 
 	$(GitThisAssembly): set to 'false' to prevent assembly
 						metadata and constants generation.
 
-  $(GitThisAssemblyMetadata): set to 'false' to prevent assembly 
-                              metadata generation only. Defaults 
-                              to 'false'. If 'true', it will also 
-                              provide assembly metadata attributes 
+  $(GitThisAssemblyMetadata): set to 'false' to prevent assembly
+                              metadata generation only. Defaults
+                              to 'false'. If 'true', it will also
+                              provide assembly metadata attributes
                               for each of the populated values.
 
 	$(ThisAssemblyNamespace): allows overriding the namespace
@@ -70,7 +70,7 @@
 					 in a previous build in a GitInfo.cache for
 					 performance reasons.
 					 Defaults to empty value (no ignoring).
-					 
+
   $(GitCachePath): where to cache the determined Git information
 				   gives the chance to use a shared location
 				   for different projects. this can improve
@@ -78,19 +78,19 @@
 				   has to end with a path seperator
 				   Defaults to empty value ('$(IntermediateOutputPath)').
 
-	$(GitTagRegex): Regular expression used with git describe to filter the tags 
+	$(GitTagRegex): Regular expression used with git describe to filter the tags
 					to consider for base version lookup.
 					Defaults to * (all)
-           
+
 	$(GitBaseVersionRegex): Regular expression used to match and validate valid base versions
-							in branch, tag or file sources. By default, matches any string that 
+							in branch, tag or file sources. By default, matches any string that
 							*ends* in a valid SemVer2 string.
 							Defaults to 'v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)(?:\-(?<LABEL>[\dA-Za-z\-\.]+))?$|^(?<LABEL>[\dA-Za-z\-\.]+)\-v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)$'
-	
+
 	$(GitCommitDateFormat): The value passed as the format option when trying to retrieve
 							the git commit date
 							Defaults to %%cI (windows) or %cI (non windows)
-           
+
 	==============================================================
 	-->
 
@@ -414,9 +414,7 @@
   </Target>
 
   <Target Name="_GitRepositoryUrl" Returns="$(GitRepositoryUrl)" DependsOnTargets="_GitRoot"
-			Condition="'$(GitRoot)' != '' and '$(GitRepositoryUrl)' == ''"
-			Inputs="@(_GitInput)"
-			Outputs="$(_GitInfoFile)">
+			Condition="'$(GitRoot)' != '' and '$(GitRepositoryUrl)' == ''">
 
     <Exec Command="$(GitExe) config --get remote.$(GitRemote).url"
 			  Condition="'$(GitRepositoryUrl)' == ''"
@@ -444,8 +442,6 @@
 
   <Target Name="_GitCommitDate" Returns="$(GitCommitDate)"
 			DependsOnTargets="_GitRoot"
-			Inputs="@(_GitInput)"
-			Outputs="$(_GitInfoFile)"
 			Condition="'$(GitRoot)' != '' And '$(GitCommitDate)' == ''">
 
     <Exec Command='$(GitExe) -c log.showSignature=false show --format=$(GitCommitDateFormat) -s'
@@ -467,10 +463,8 @@
   </Target>
 
   <Target Name="_GitBranch" Returns="$(GitBranch)"
-					  DependsOnTargets="_GitInputs"
-			Condition="'$(GitBranch)' == ''"
-			Inputs="@(_GitInput)"
-			Outputs="$(_GitInfoFile)">
+			DependsOnTargets="_GitInputs"
+			Condition="'$(GitBranch)' == ''">
 
     <Exec Command='$(GitExe) rev-parse --abbrev-ref HEAD'
 			Condition="'$(GitRoot)' != ''"
@@ -487,7 +481,7 @@
 
     <!-- CI systems may checkout the specific commit, rather than the branch, so we need to fallback -->
     <Exec Command='$(GitExe) name-rev --name-only $(GitNameRevOptions) HEAD'
-			  Condition=" '$(GitBranch)' == '' "
+			  Condition="'$(GitRoot)' != '' and '$(GitBranch)' == ''"
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -506,8 +500,6 @@
 
   <Target Name="_GitCommit" Returns="$(GitCommit)"
 			DependsOnTargets="_GitRoot"
-			Inputs="@(_GitInput)"
-			Outputs="$(_GitInfoFile)"
 			Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
 
     <Exec Command='$(GitExe) -c log.showSignature=false log --format=format:$(_ShortShaFormat) -n 1'
@@ -578,7 +570,7 @@
           <Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$([System.Text.RegularExpressions.Regex]::Replace($(GitBranch), "[^0-9A-Za-z-]", "-")).$(GitCommit)</Version>
           <PackageVersion>$(Version)</PackageVersion>
       </PropertyGroup>
-  </Target>  
+  </Target>
 
   <Target Name="_GitBaseVersionFile" Returns="$(GitBaseVersion)"
 			Inputs="@(_GitInput)"
@@ -998,8 +990,8 @@
     <UpToDateCheckInput Condition="'$(_GitHeadPath)' != '' and Exists('$(_GitHeadPath)')" Include="$(_GitHeadPath)" />
   </ItemGroup>
 
-  <!-- NOTE: we write the path to HEAD after first calculating a version, since we can be anywhere in 
-       the solution structure. This file will only be written if there's a change in the git root, 
+  <!-- NOTE: we write the path to HEAD after first calculating a version, since we can be anywhere in
+       the solution structure. This file will only be written if there's a change in the git root,
        which should never happen. -->
   <Target Name="_GitWriteHeadPath" AfterTargets="GitVersion">
     <WriteLinesToFile Lines="$(GitRoot).git\HEAD"
