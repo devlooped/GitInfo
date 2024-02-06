@@ -354,7 +354,7 @@
       <GitIsDirty>0</GitIsDirty>
     </PropertyGroup>
 
-    <WriteLinesToFile File="$(_GitIsDirtyFile)" Lines="$(GitIsDirty)" Overwrite="true" WriteOnlyWhenDifferent="true"/>
+    <WriteLinesToFile File="$(_GitIsDirtyFile)" Lines="$(GitIsDirty)" Overwrite="true" WriteOnlyWhenDifferent="true" ContinueOnError="true" />
   </Target>
 
   <Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
