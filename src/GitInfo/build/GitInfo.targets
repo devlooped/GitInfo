@@ -384,12 +384,12 @@
     <Delete Files="$(_GitInfoFile)" />
   </Target>
 
-  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') And '$(SkipReadGitCache)' != 'true' ">
-    <PropertyGroup>
-      <_GitCachedInfo>$([System.IO.File]::ReadAllText('$(_GitInfoFile)'))</_GitCachedInfo>
-    </PropertyGroup>
+  <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') And '$(SkipReadGitCache)' != 'true'">
+    <ReadLinesFromFile File="$(_GitInfoFile)" ContinueOnError="true">
+      <Output TaskParameter="Lines" ItemName="_GitCachedInfo" />
+    </ReadLinesFromFile>
 
-    <CreateItem Include="GitInfo" AdditionalMetadata="$(_GitCachedInfo.Split(';'))">
+    <CreateItem Include="GitInfo" AdditionalMetadata="@(_GitCachedInfo -> TrimEnd(';'))">
       <Output TaskParameter="Include" ItemName="GitInfo" />
     </CreateItem>
 
