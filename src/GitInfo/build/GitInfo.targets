@@ -150,8 +150,11 @@
     <!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
     <_GitInfoFile>$(GitCachePath)GitInfo.cache</_GitInfoFile>
 
-    <!-- Stores value of GitIsDirty variable from last execution, file is changed when the value changes betwee runs. -->
+    <!-- Stores value of GitIsDirty variable from last execution. File is changed when the value changes between runs. -->
     <_GitIsDirtyFile>$(GitCachePath)GitIsDirty.cache</_GitIsDirtyFile>
+
+    <!-- Stores value of _GitHeadPath variable from last execution. Added as an input for the fast up-to-date check VS performs. -->
+    <_GitHeadFile>$(GitCachePath)GitHead.cache</_GitHeadFile>
   </PropertyGroup>
 
   <Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
@@ -978,25 +981,23 @@
 
   </Target>
 
-  <!-- This combination of prop/item/target fix incremental builds after HEAD changes. -->
-  <PropertyGroup>
-    <_GitCacheFullPath>$([System.IO.Path]::Combine($(MSBuildProjectDirectory), $(GitCachePath)))</_GitCacheFullPath>
-    <!-- We read the path to the HEAD file, written in a previously run _GitWriteHeadPath target -->
-    <_GitHeadPath Condition="Exists('$(_GitCacheFullPath)GitHead.cache')">$([System.IO.File]::ReadAllText('$(_GitCacheFullPath)GitHead.cache').Trim())</_GitHeadPath>
-  </PropertyGroup>
+  <!-- This combination of target/item/target fixes incremental builds after HEAD changes. -->
+  <Target Name="_GitReadHeadPath" AfterTargets="GitVersion">
+    <ReadLinesFromFile File="$(_GitHeadFile)" ContinueOnError="true">
+      <Output TaskParameter="Lines" ItemName="_GitHeadPath" />
+    </ReadLinesFromFile>
+  </Target>
 
   <ItemGroup>
     <!-- And if the HEAD path exists, we add it as an input for the fast up-to-date check VS performs -->
-    <UpToDateCheckInput Condition="'$(_GitHeadPath)' != '' and Exists('$(_GitHeadPath)')" Include="$(_GitHeadPath)" />
+    <UpToDateCheckInput Condition="'@(_GitHeadPath)' != '' and Exists('@(_GitHeadPath)')" Include="@(_GitHeadPath)" />
   </ItemGroup>
 
   <!-- NOTE: we write the path to HEAD after first calculating a version, since we can be anywhere in
        the solution structure. This file will only be written if there's a change in the git root,
        which should never happen. -->
   <Target Name="_GitWriteHeadPath" AfterTargets="GitVersion">
-    <WriteLinesToFile Lines="$(GitRoot).git\HEAD"
-						  File="$(GitCachePath)GitHead.cache"
-						  Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <WriteLinesToFile File="$(_GitHeadFile)" Lines="$(GitRoot).git\HEAD" Overwrite="true" WriteOnlyWhenDifferent="true" ContinueOnError="true" />
   </Target>
 
   <!--
