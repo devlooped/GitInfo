@@ -4,9 +4,12 @@ obj
 artifacts
 pack
 TestResults
+results
+BenchmarkDotNet.Artifacts
 .vs
 .vscode
 .idea
+local.settings.json
 
 *.suo
 *.sdf
@@ -31,5 +34,6 @@ node_modules
 _site
 .jekyll-metadata
 .jekyll-cache
+.sass-cache
 Gemfile.lock
 package-lock.json
