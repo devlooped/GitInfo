@@ -26,10 +26,10 @@
 
     <!-- Pick src-level readme+icon automatically -->
     <PackageIcon Condition="Exists('$(MSBuildThisFileDirectory)icon.png')">icon.png</PackageIcon>
-    <PackageReadmeFile Condition="Exists('$(MSBuildThisFileDirectory)readme.md')">readme.md</PackageReadmeFile>
+    <PackageReadmeFile Condition="'$(PackReadme)' != 'false' and Exists('$(MSBuildThisFileDirectory)readme.md')">readme.md</PackageReadmeFile>
     <!-- Pick project-level readme+icon overrides automatically -->
     <PackageIcon Condition="Exists('$(MSBuildProjectDirectory)\icon.png')">icon.png</PackageIcon>
-    <PackageReadmeFile Condition="Exists('$(MSBuildProjectDirectory)\readme.md')">readme.md</PackageReadmeFile>
+    <PackageReadmeFile Condition="'$(PackReadme)' != 'false' and Exists('$(MSBuildProjectDirectory)\readme.md')">readme.md</PackageReadmeFile>
 
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <GenerateRepositoryUrlAttribute>true</GenerateRepositoryUrlAttribute>
@@ -37,7 +37,8 @@
     <PackageOutputPath Condition="'$(PackageOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\bin'))</PackageOutputPath>
 
     <!-- Use Directory.Packages.props if possible. NOTE: other MSBuild SDKs (i.e. NoTargets/Traversal) do not support central packages -->
-    <ManagePackageVersionsCentrally Condition="Exists('$(MSBuildThisFileDirectory)Directory.Packages.props') AND ('$(MSBuildProjectExtension)' == '.csproj' OR '$(MSBuildProjectExtension)' == '.vbproj')">true</ManagePackageVersionsCentrally>
+    <ManagePackageVersionsCentrally Condition="Exists('$(MSBuildThisFileDirectory)Directory.Packages.props')">true</ManagePackageVersionsCentrally>
+    <CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
 
     <!-- Ensure MSBuild tooling can access package artifacts always via PKG_[PackageId] -->
     <GeneratePathProperty>true</GeneratePathProperty>

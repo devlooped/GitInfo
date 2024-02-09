@@ -19,7 +19,9 @@ env:
   DOTNET_NOLOGO: true
   VersionPrefix: 42.42.${{ github.run_number }}
   VersionLabel: ${{ github.ref }}
-
+  PackOnBuild: true
+  GeneratePackageOnBuild: true
+  
 defaults:
   run:
     shell: bash
@@ -66,9 +68,6 @@ jobs:
 
       - name: 🧪 test
         uses: ./.github/workflows/test
-
-      - name: 📦 pack
-        run: dotnet pack -m:1
 
       # Only push CI package to sleet feed if building on ubuntu (fastest)
       - name: 🚀 sleet
