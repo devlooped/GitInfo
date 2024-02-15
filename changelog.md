@@ -1,5 +1,18 @@
 # Changelog
 
+## [v3.3.4](https://github.com/devlooped/GitInfo/tree/v3.3.4) (2024-02-15)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.3...v3.3.4)
+
+:bug: Fixed bugs:
+
+- GetInfo 3.3.3 fails like \#273 \('ThisAssembly.Git' is inaccessible...\) on non-SDK style .csproj, 2.3.0 works fine [\#326](https://github.com/devlooped/GitInfo/issues/326)
+- Weird race condition with targets [\#321](https://github.com/devlooped/GitInfo/issues/321)
+
+:twisted_rightwards_arrows: Merged:
+
+- Fix race conditions [\#330](https://github.com/devlooped/GitInfo/pull/330) (@gitfool)
+
 ## [v3.3.3](https://github.com/devlooped/GitInfo/tree/v3.3.3) (2023-08-30)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.2...v3.3.3)
