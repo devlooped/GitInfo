@@ -12,6 +12,7 @@ env:
   Configuration: Release
   PackOnBuild: true
   GeneratePackageOnBuild: true
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
   
 jobs:
   publish:
@@ -24,10 +25,17 @@ jobs:
           fetch-depth: 0
 
       - name: 🙏 build
-        run: dotnet build -m:1 -p:version=${GITHUB_REF#refs/*/v}
+        run: dotnet build -m:1 -p:version=${GITHUB_REF#refs/*/v} -bl:build.binlog
 
       - name: 🧪 test
         uses: ./.github/workflows/test
+
+      - name: 🐛 logs
+        uses: actions/upload-artifact@v3
+        if: runner.debug && always()
+        with:
+          name: logs
+          path: '*.binlog'
 
       - name: 🚀 nuget
         run: dotnet nuget push ./bin/**/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
