@@ -142,6 +142,12 @@
     <ProjectProperty Include="PublicKeyToken" />
   </ItemGroup>
 
+  <ItemGroup Label="Throw">
+    <Using Include="System.ArgumentException" Static="true" />
+    <Using Include="System.ArgumentOutOfRangeException" Static="true" />
+    <Using Include="System.ArgumentNullException" Static="true" />
+  </ItemGroup>
+
   <Import Project="Directory.props" Condition="Exists('Directory.props')"/>
   <Import Project="Directory.props.user" Condition="Exists('Directory.props.user')" />
 </Project>
