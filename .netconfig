@@ -73,9 +73,9 @@
 	sha = 0683ee777d7d878d4bf013d7deea352685135a05
 [file "src/Directory.Build.props"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.props
-	etag = 33cd19e0f599f444c320406da3452e9e84d28c3bb13c09e9190d9d2e7f129545
+	etag = de7c6b643bac2fc6651fa08f69d628cbbe12e7050829b981ac771e1b9ccccd89
 	weak
-	sha = b1d14c6379e5820eb2c30e08bedbdf6e9c8e8cb2
+	sha = 6dfe21fbd4a8390448958c714f8e9006fc4ac3ca
 [file "src/Directory.Build.targets"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.targets
 	etag = 7cb1421f00d9f6f4c00f0ca98e485dcadb927cfa6b3f0b5d4fb212525d2ce9c0
@@ -91,8 +91,8 @@
 	weak
 [file ".github/workflows/dotnet-file.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/dotnet-file.yml
-	sha = f08c3f28e46e28eb31e70846d65e57aa9553ce56
-	etag = 567444486383d032c1c5fbc538f07e860f92b1d08c66ac6ffb1db64ca539251c
+	sha = 11a331d50be517c29df5ab1358ef354d8871d59a
+	etag = de115efac25b63d561d8b2ffcba3e7710bfef7bfefecb811ea943b6f2bd8de96
 	weak
 [file ".github/workflows/publish.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/publish.yml
@@ -116,8 +116,8 @@
 	weak
 [file "docs/sponsors.md"]
 	url = https://github.com/devlooped/sponsors/blob/main/sponsors.md
-	sha = 3940890e50b50d453568cf698bae398aa0856901
-	etag = 298700101fdb4abda37783fe23f7bc6bde3990715907af62f71d831bc03847e6
+	sha = 8fc98f84a9cfd63c60ababd81330c4b0643cef50
+	etag = c94835fceb559e129a9f3fe14bcb90d516809e596d6b2acd44c617ade15cf07a
 	weak
 [file ".github/workflows/sponsor.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/sponsor.yml
