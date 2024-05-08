@@ -11,7 +11,9 @@ class GitInfoGenerator : IIncrementalGenerator
                 Namespace = c.GlobalOptions.TryGetValue("build_property.ThisAssemblyNamespace", out var ns)
                     && !string.IsNullOrEmpty(ns) ? ns : null,
                 IsDirty = c.GlobalOptions.TryGetValue("build_property.GitIsDirty", out var dirty)
-                    && dirty == "1" ? true : false
+                    && dirty == "1" ? true : false,
+                NoThisAssembly = c.GlobalOptions.TryGetValue("build_property.GitThisAssembly", out var value)
+                    && bool.TryParse(value, out var thisassembly) && !thisassembly ? true : false
             });
 
         context.RegisterSourceOutput(ns,
@@ -19,6 +21,9 @@ class GitInfoGenerator : IIncrementalGenerator
             {
                 // Legacy codegen used for this scenario, emit nothing.
                 if (!string.IsNullOrEmpty(state.Namespace))
+                    return;
+
+                if (state.NoThisAssembly)
                     return;
 
                 c.AddSource("ThisAssembly.Git.IsDirty.g",
