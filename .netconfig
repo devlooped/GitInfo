@@ -111,13 +111,13 @@
 	skip
 [file ".github/workflows/includes.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/includes.yml
-	sha = ac753b791d03997eb655efb26ae141b51addd1c0
-	etag = fcd94a08ac9ebc0e8351deac4e7f085cf8ef67816cc50006e068f44166096eb8
+	sha = 11a8757c0012f0d454370823e1cda51398f4337e
+	etag = 73426a1361c9d298b5794c99d774043b8e9425bda759bb769fdaa025636d6e3c
 	weak
 [file "docs/sponsors.md"]
 	url = https://github.com/devlooped/sponsors/blob/main/sponsors.md
-	sha = 8fc98f84a9cfd63c60ababd81330c4b0643cef50
-	etag = c94835fceb559e129a9f3fe14bcb90d516809e596d6b2acd44c617ade15cf07a
+	sha = 98f4cfac88da9719e8d9a2a79780b0cbe76660df
+	etag = 057c099c768eeb5702a571fccced7a7b4842d601074881a54fcf25bdfb6d5773
 	weak
 [file ".github/workflows/sponsor.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/sponsor.yml
