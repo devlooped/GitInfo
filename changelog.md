@@ -1,5 +1,20 @@
 # Changelog
 
+## [v3.3.5](https://github.com/devlooped/GitInfo/tree/v3.3.5) (2024-05-13)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.4...v3.3.5)
+
+:sparkles: Implemented enhancements:
+
+- Can not find all git info when on branch with '.' in the name [\#328](https://github.com/devlooped/GitInfo/issues/328)
+
+:bug: Fixed bugs:
+
+- `ThisAssembly.Git.IsDirty` is included when `GitThisAssembly` is false [\#337](https://github.com/devlooped/GitInfo/issues/337)
+- Update to 3.3.4 via Nuget crashes [\#335](https://github.com/devlooped/GitInfo/issues/335)
+- Git.Branch always gives \[HEAD\] for detached HEAD commit. [\#333](https://github.com/devlooped/GitInfo/issues/333)
+- Do not emit ThisAssembly.Git.IsDirty when  GitThisAssembly is false [\#338](https://github.com/devlooped/GitInfo/pull/338) (@kzu)
+
 ## [v3.3.4](https://github.com/devlooped/GitInfo/tree/v3.3.4) (2024-02-15)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.3...v3.3.4)
