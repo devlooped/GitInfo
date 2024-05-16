@@ -420,7 +420,7 @@
 			Condition="'$(GitRoot)' != '' and '$(GitRepositoryUrl)' == ''">
 
     <Exec Command="$(GitExe) config --get remote.$(GitRemote).url"
-			  Condition="'$(GitRepositoryUrl)' == ''"
+			  EchoOff="true"
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
 			  ConsoleToMSBuild="true"
