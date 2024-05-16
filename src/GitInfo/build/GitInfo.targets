@@ -280,8 +280,8 @@
       <_IsGitFile>$([System.IO.File]::Exists('$(GitDir)'))</_IsGitFile>
     </PropertyGroup>
 
-    <Exec Condition="'$(_IsGitFile)' == 'true'"
-			  Command='$(GitExe) rev-parse --is-inside-work-tree'
+    <Exec Command='$(GitExe) rev-parse --is-inside-work-tree'
+			  Condition="'$(_IsGitFile)' == 'true'"
 			  EchoOff='true'
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'
@@ -297,8 +297,8 @@
       <_IsGitWorkTree>$(_GitIsWorkTree.Trim())</_IsGitWorkTree>
     </PropertyGroup>
 
-    <Exec Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true'"
-			  Command='$(GitExe) rev-parse --git-common-dir'
+    <Exec Command='$(GitExe) rev-parse --git-common-dir'
+			  Condition="'$(_IsGitFile)' == 'true' and '$(_IsGitWorkTree)' == 'true'"
 			  EchoOff='true'
 			  StandardErrorImportance='high'
 			  StandardOutputImportance='low'
@@ -1036,8 +1036,8 @@
     </PropertyGroup>
 
     <!-- If we didn't find it in the PATH nor the above locations, check for git installed in WSL -->
-    <Exec Condition="'$(GitExe)' == ''"
-			  Command='"$(MSBuildThisFileDirectory)wslrun.cmd" git --version'
+    <Exec Command='"$(MSBuildThisFileDirectory)wslrun.cmd" git --version'
+			  Condition="'$(GitExe)' == ''"
 			  EchoOff='true'
 			  ContinueOnError='true'
 			  StandardErrorImportance='high'
