@@ -145,9 +145,6 @@
 
     <!-- Stores value of GitIsDirty variable from last execution. File is changed when the value changes between runs. -->
     <_GitIsDirtyFile>$(GitCachePath)GitIsDirty.cache</_GitIsDirtyFile>
-
-    <!-- Stores value of _GitHeadPath variable from last execution. Added as an input for the fast up-to-date check VS performs. -->
-    <_GitHeadFile>$(GitCachePath)GitHead.cache</_GitHeadFile>
   </PropertyGroup>
 
   <Target Name="GitInfoReport" DependsOnTargets="GitVersion">
@@ -352,20 +349,21 @@
 
   <Target Name="_GitInputs" DependsOnTargets="_GitRoot" Returns="@(_GitInput)">
     <PropertyGroup>
+      <_GitHead>$([System.IO.Path]::Combine('$(GitDir)', 'HEAD'))</_GitHead>
+      <_GitLogsHead>$([System.IO.Path]::Combine('$(GitDir)', 'logs', 'HEAD'))</_GitLogsHead>
       <_GitPackedRefs>$([System.IO.Path]::Combine('$(GitDir)', 'packed-refs'))</_GitPackedRefs>
     </PropertyGroup>
     <ItemGroup>
-      <_GitInput Include="$([System.IO.Path]::Combine('$(GitDir)', 'HEAD'))" />
-      <_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" />
-      <_GitInput Include="$(_GitIsDirtyFile)" Condition="Exists('$(_GitIsDirtyFile)')" />
+      <_GitInput Include="$(GitVersionFile)" Condition="Exists('$(GitVersionFile)')" Utdc="true" />
+      <_GitInput Include="$(_GitIsDirtyFile)" Condition="Exists('$(_GitIsDirtyFile)')" Utdc="true" />
+      <_GitInput Include="$(_GitHead)" Condition="Exists('$(_GitHead)')" Utdc="true" />
+      <_GitInput Include="$(_GitLogsHead)" Condition="Exists('$(_GitLogsHead)')" Utdc="true" />
+      <_GitInput Include="$(_GitPackedRefs)" Condition="Exists('$(_GitPackedRefs)')" Utdc="true" />
     </ItemGroup>
-    <CreateItem Include="$(_GitPackedRefs)" Condition="Exists('$(_GitPackedRefs)')">
+    <CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '**'))">
       <Output ItemName="_GitInput" TaskParameter="Include" />
     </CreateItem>
-    <CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'heads', '**', '*.*'))">
-      <Output ItemName="_GitInput" TaskParameter="Include" />
-    </CreateItem>
-    <CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'tags', '*.*'))">
+    <CreateItem Include="$([System.IO.Path]::Combine('$(GitDir)', 'refs', 'tags', '**'))">
       <Output ItemName="_GitInput" TaskParameter="Include" />
     </CreateItem>
 
@@ -974,23 +972,18 @@
 
   </Target>
 
-  <!-- This combination of target/item/target fixes incremental builds after HEAD changes. -->
-  <Target Name="_GitReadHeadPath" AfterTargets="GitVersion">
-    <ReadLinesFromFile File="$(_GitHeadFile)" ContinueOnError="true">
-      <Output TaskParameter="Lines" ItemName="_GitHeadPath" />
-    </ReadLinesFromFile>
+  <!-- Add git info specific inputs and outputs used for incremental build to fast up-to-date-check group. -->
+  <!-- See https://github.com/dotnet/project-system/blob/main/docs/up-to-date-check.md for more details. -->
+  <Target Name="_GitUpToDateCheckInput" BeforeTargets="CollectUpToDateCheckInputDesignTime" DependsOnTargets="_GitInputs">
+    <ItemGroup>
+      <UpToDateCheckInput Include="@(_GitInput->WithMetadataValue('Utdc', 'true'))" Set="GitInfo" />
+    </ItemGroup>
   </Target>
 
-  <ItemGroup>
-    <!-- And if the HEAD path exists, we add it as an input for the fast up-to-date check VS performs -->
-    <UpToDateCheckInput Condition="'@(_GitHeadPath)' != '' and Exists('@(_GitHeadPath)')" Include="@(_GitHeadPath)" />
-  </ItemGroup>
-
-  <!-- NOTE: we write the path to HEAD after first calculating a version, since we can be anywhere in
-       the solution structure. This file will only be written if there's a change in the git root,
-       which should never happen. -->
-  <Target Name="_GitWriteHeadPath" AfterTargets="GitVersion">
-    <WriteLinesToFile File="$(_GitHeadFile)" Lines="$(GitRoot).git\HEAD" Overwrite="true" WriteOnlyWhenDifferent="true" ContinueOnError="true" />
+  <Target Name="_GitUpToDateCheckOutput" BeforeTargets="CollectUpToDateCheckOutputDesignTime">
+    <ItemGroup>
+      <UpToDateCheckOutput Include="$(_GitInfoFile)" Set="GitInfo" />
+    </ItemGroup>
   </Target>
 
   <!--
