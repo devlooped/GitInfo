@@ -136,16 +136,9 @@
     <GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' And '$(OS)' != 'Windows_NT'">%cI</GitCommitDateFormat>
   </PropertyGroup>
 
-
   <!-- Private properties -->
   <PropertyGroup>
-    <CoreCompileDependsOn>
-      GitInfo;
-      GitVersion;
-      GitThisAssembly;
-      GitInfoReport;
-      $(CoreCompileDependsOn)
-    </CoreCompileDependsOn>
+    <CoreCompileDependsOn>GitVersion;GitInfoReport;$(CoreCompileDependsOn)</CoreCompileDependsOn>
 
     <!-- Cache file used to avoid running all git commands. Only GitRoot will be retrieved to determine the path of this cache file. -->
     <_GitInfoFile>$(GitCachePath)GitInfo.cache</_GitInfoFile>
@@ -157,7 +150,7 @@
     <_GitHeadFile>$(GitCachePath)GitHead.cache</_GitHeadFile>
   </PropertyGroup>
 
-  <Target Name="GitInfoReport" DependsOnTargets="GitInfo;GitVersion">
+  <Target Name="GitInfoReport" DependsOnTargets="GitVersion">
     <Message Importance="$(GitInfoReportImportance)" Text="Git Info:
   GitInfoBaseDir:       $(GitInfoBaseDir)
   GitRoot:              $(GitRoot)
