@@ -17,20 +17,7 @@
 
   <!-- Private properties -->
   <PropertyGroup>
-    <CoreCompileDependsOn>
-      GitInfo;
-      GitVersion;
-      GitThisAssembly;
-      GitInfoReport;
-      $(CoreCompileDependsOn)
-    </CoreCompileDependsOn>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GitThisAssemblyDependsOn>
-      GitInfo;
-      GitVersion;
-    </GitThisAssemblyDependsOn>
+    <CoreCompileDependsOn Condition="'$(GitThisAssembly)' == 'true'">GitThisAssembly;$(CoreCompileDependsOn)</CoreCompileDependsOn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,7 +25,7 @@
     <CompilerVisibleProperty Include="GitThisAssembly" />
   </ItemGroup>
 
-  <Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
+  <Target Name="GitThisAssembly" DependsOnTargets="GitVersion"
 			    BeforeTargets="PrepareConstants;GenerateMSBuildEditorConfigFileShouldRun" Condition="'$(GitThisAssembly)' == 'true'">
 
     <ItemGroup>
@@ -46,13 +33,13 @@
       <Constant Include="IsDirtyString" Value="false" Root="Git" Condition="$(GitIsDirty) == '0'" />
 
       <Constant Include="RepositoryUrl" Value="$(GitRepositoryUrl)" Root="Git" />
-      
+
       <Constant Include="Branch" Value="$(GitBranch)" Root="Git" />
       <Constant Include="Commit" Value="$(GitCommit)" Root="Git" />
       <Constant Include="Sha" Value="$(GitSha)" Root="Git" />
       <Constant Include="CommitDate" Value="$(GitCommitDate)" Root="Git" />
       <Constant Include="Commits" Value="$(GitCommits)" Root="Git" />
-      
+
       <Constant Include="Tag" Value="$(GitTag)" Root="Git" />
       <Constant Include="BaseTag" Value="$(GitBaseTag)" Root="Git" />
       <Constant Include="BaseVersion.Major" Value="$(GitBaseVersionMajor)" Root="Git" />
@@ -64,8 +51,8 @@
       <Constant Include="SemVer.Label" Value="$(GitSemVerLabel)" Root="Git" />
       <Constant Include="SemVer.DashLabel" Value="$(GitSemVerDashLabel)" Root="Git" />
       <Constant Include="SemVer.Source" Value="$(GitSemVerSource)" Root="Git" />
-    </ItemGroup>    
-    
+    </ItemGroup>
+
   </Target>
 
 </Project>

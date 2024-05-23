@@ -22,25 +22,10 @@
 
   <!-- Private properties -->
   <PropertyGroup>
-    <CoreCompileDependsOn>
-      GitInfo;
-      GitVersion;
-      GitThisAssembly;
-      GitInfoReport;
-      $(CoreCompileDependsOn)
-    </CoreCompileDependsOn>
+    <CoreCompileDependsOn Condition="'$(GitThisAssembly)' == 'true'">GitThisAssembly;$(CoreCompileDependsOn)</CoreCompileDependsOn>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <GitThisAssemblyDependsOn>
-      GitInfo;
-      GitVersion;
-      _GitInputs;
-      _GitGenerateThisAssembly
-    </GitThisAssemblyDependsOn>
-  </PropertyGroup>
-
-  <Target Name="GitThisAssembly" DependsOnTargets="$(GitThisAssemblyDependsOn)"
+  <Target Name="GitThisAssembly" DependsOnTargets="GitVersion;_GitGenerateThisAssembly"
 			BeforeTargets="BuildOnlySettings" Condition="'$(GitThisAssembly)' == 'true'">
 
     <ItemGroup Condition="'$(Language)' != 'F#'">

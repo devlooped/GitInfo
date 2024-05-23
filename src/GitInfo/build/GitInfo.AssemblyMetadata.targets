@@ -6,11 +6,11 @@
               for Git information.
 
 	$(GitThisAssemblyMetadata): set to 'false' to prevent assembly
-  								metadata generation. Defaults to 'false'.           
+  								metadata generation. Defaults to 'false'.
 	==============================================================
 	-->
 
-  <Target Name="GitAssemblyMetadata" DependsOnTargets="GitInfo;GitVersion" BeforeTargets="BuildOnlySettings">
+  <Target Name="GitAssemblyMetadata" DependsOnTargets="GitVersion" BeforeTargets="BuildOnlySettings">
 
     <ItemGroup Condition="'$(Language)' != 'VB'">
       <AssemblyMetadata Include="GitInfo.IsDirty"
