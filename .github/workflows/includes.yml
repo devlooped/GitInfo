@@ -21,7 +21,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🤘 checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with: 
           token: ${{ env.GH_TOKEN }}
 
@@ -31,6 +31,7 @@ jobs:
       - name: ✍ pull request
         uses: peter-evans/create-pull-request@v6
         with:
+          add-paths: '**/*.md'
           base: main
           branch: markdown-includes
           delete-branch: true
