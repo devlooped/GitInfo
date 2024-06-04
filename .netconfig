@@ -78,9 +78,9 @@
 	sha = 6e96c592c7b44bfda10404b9f90e4b8fab299249
 [file "src/Directory.Build.targets"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.targets
-	etag = d44a194fd2bc6d564dea8c08245e20856f93ddf155f4acaf8dbfc9f088314737
+	etag = 7cb1421f00d9f6f4c00f0ca98e485dcadb927cfa6b3f0b5d4fb212525d2ce9c0
 	weak
-	sha = 0789bf0988ea61b8dfa601d5769e68dc885ffb71
+	sha = c618ea86d94402a12c7d7d10fe2b5cb8a21c3eea
 [file "src/kzu.snk"]
 	url = https://github.com/devlooped/oss/blob/main/src/kzu.snk
 	skip
@@ -116,8 +116,8 @@
 	weak
 [file "docs/sponsors.md"]
 	url = https://github.com/devlooped/sponsors/blob/main/sponsors.md
-	sha = 422d364474815e5d6bc0a59e45c7fb6655f1a947
-	etag = 01a0d42165de60b73a28c8d4227e34b8a3698a1c12e44a8929cbaef3a56f9d7d
+	sha = cec7e853923c72e2a7e61a4a850fa2f3975a4b5f
+	etag = b892f39a225ae1568f895817850dbdde99395687ef808ec4cb6bda4c97d7037c
 	weak
 [file ".github/workflows/sponsor.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/sponsor.yml
