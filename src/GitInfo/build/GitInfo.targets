@@ -496,7 +496,7 @@
 			DependsOnTargets="_GitRoot"
 			Condition="'$(GitRoot)' != '' And '$(GitCommit)' == ''">
 
-    <Exec Command='$(GitExe) -c log.showSignature=false log --format=format:$(_ShortShaFormat) -n 1'
+    <Exec Command='$(GitExe) rev-parse --short HEAD'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
@@ -512,7 +512,7 @@
       <GitCommit>$(GitDefaultCommit)</GitCommit>
     </PropertyGroup>
 
-    <Exec Command='$(GitExe) -c log.showSignature=false log --format=format:$(_LongShaFormat) -n 1'
+    <Exec Command='$(GitExe) rev-parse HEAD'
 			  EchoOff='true'
 			  StandardErrorImportance="low"
 			  StandardOutputImportance="low"
