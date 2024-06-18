@@ -2,39 +2,24 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!--
   ==============================================================
-              Provides assembly-level metadata
-              for Git information.
+  Provides assembly-level metadata for Git information.
 
-	$(GitThisAssemblyMetadata): set to 'false' to prevent assembly
-  								metadata generation. Defaults to 'false'.
-	==============================================================
-	-->
+  $(GitThisAssemblyMetadata): set to 'false' to prevent assembly metadata generation. Defaults to 'false'.
+  ==============================================================
+  -->
 
   <Target Name="GitAssemblyMetadata" DependsOnTargets="GitVersion" BeforeTargets="BuildOnlySettings">
-
     <ItemGroup Condition="'$(Language)' != 'VB'">
-      <AssemblyMetadata Include="GitInfo.IsDirty"
-                        Condition="'$(GitRoot)' == ''"
-                        Value="false" />
-      <AssemblyMetadata Include="GitInfo.IsDirty"
-                        Condition="'$(GitIsDirty)' != '0'"
-                        Value="true" />
-      <AssemblyMetadata Include="GitInfo.IsDirty"
-                        Condition="'$(GitIsDirty)' == '0'"
-                        Value="false" />
+      <AssemblyMetadata Include="GitInfo.IsDirty" Value="false" Condition="'$(GitRoot)' == ''" />
+      <AssemblyMetadata Include="GitInfo.IsDirty" Value="true" Condition="'$(GitIsDirty)' != '0'" />
+      <AssemblyMetadata Include="GitInfo.IsDirty" Value="false" Condition="'$(GitIsDirty)' == '0'" />
     </ItemGroup>
 
-    <!-- For backwards-compatibility reasons, we keep the VB casing on these -->
+    <!-- For backwards-compatibility reasons, we keep the VB casing on these. -->
     <ItemGroup Condition="'$(Language)' == 'VB'">
-      <AssemblyMetadata Include="GitInfo.IsDirty"
-                        Condition="'$(GitRoot)' == ''"
-                        Value="False" />
-      <AssemblyMetadata Include="GitInfo.IsDirty"
-                        Condition="'$(GitIsDirty)' != '0'"
-                        Value="True" />
-      <AssemblyMetadata Include="GitInfo.IsDirty"
-                        Condition="'$(GitIsDirty)' == '0'"
-                        Value="False" />
+      <AssemblyMetadata Include="GitInfo.IsDirty" Value="False" Condition="'$(GitRoot)' == ''" />
+      <AssemblyMetadata Include="GitInfo.IsDirty" Value="True" Condition="'$(GitIsDirty)' != '0'" />
+      <AssemblyMetadata Include="GitInfo.IsDirty" Value="False" Condition="'$(GitIsDirty)' == '0'" />
     </ItemGroup>
 
     <ItemGroup>
@@ -58,5 +43,4 @@
       <AssemblyMetadata Include="GitInfo.SemVer.Source" Value="$(GitSemVerSource)" />
     </ItemGroup>
   </Target>
-
 </Project>
