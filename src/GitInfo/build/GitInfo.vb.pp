@@ -44,12 +44,12 @@ Namespace Global
             Partial Public Class BaseVersion
                 ''' <summary>Major: $GitBaseVersionMajor$</summary>
                 Public Const Major As String = "$GitBaseVersionMajor$"
-           
-              ''' <summary>Minor $GitBaseVersionMinor$</summary>
-              Public Const Minor As String = "$GitBaseVersionMinor$"
-           
-              ''' <summary>Patch $GitBaseVersionPatch$</summary>
-              Public Const Patch As String = "$GitBaseVersionPatch$"
+
+                ''' <summary>Minor $GitBaseVersionMinor$</summary>
+                Public Const Minor As String = "$GitBaseVersionMinor$"
+
+                ''' <summary>Patch $GitBaseVersionPatch$</summary>
+                Public Const Patch As String = "$GitBaseVersionPatch$"
             End Class
 
             ''' <summary>Provides access to SemVer information for the current assembly.</summary>
