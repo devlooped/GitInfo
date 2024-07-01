@@ -435,7 +435,7 @@
   </Target>
 
   <Target Name="_GitCommit" DependsOnTargets="_GitRoot" Returns="$(GitCommit)" Condition="'$(GitRoot)' != '' and '$(GitCommit)' == ''">
-    <Exec Command="$(GitExe) -c log.showSignature=false log --format=format:$(_ShortShaFormat) -n 1"
+    <Exec Command="$(GitExe) rev-parse --short HEAD"
       EchoOff="true"
       ConsoleToMSBuild="true"
       ContinueOnError="true"
@@ -451,7 +451,7 @@
       <GitCommit>$(GitDefaultCommit)</GitCommit>
     </PropertyGroup>
 
-    <Exec Command="$(GitExe) -c log.showSignature=false log --format=format:$(_LongShaFormat) -n 1"
+    <Exec Command="$(GitExe) rev-parse HEAD"
       EchoOff="true"
       ConsoleToMSBuild="true"
       ContinueOnError="true"
