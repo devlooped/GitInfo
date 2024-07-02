@@ -17,10 +17,10 @@ on:
 
 env:
   DOTNET_NOLOGO: true
-  VersionPrefix: 42.42.${{ github.run_number }}
-  VersionLabel: ${{ github.ref }}
   PackOnBuild: true
   GeneratePackageOnBuild: true
+  VersionPrefix: 42.42.${{ github.run_number }}
+  VersionLabel: ${{ github.ref }}
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
   
 defaults:
