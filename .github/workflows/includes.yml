@@ -31,7 +31,7 @@ jobs:
       - name: ✍ pull request
         uses: peter-evans/create-pull-request@v6
         with:
-          add-paths: '**/*.md'
+          add-paths: '**.md'
           base: main
           branch: markdown-includes
           delete-branch: true

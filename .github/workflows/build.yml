@@ -4,25 +4,31 @@
 name: build
 on: 
   workflow_dispatch:
+    inputs:
+      configuration:
+        type: choice
+        description: Configuration
+        options: 
+        - Release
+        - Debug
   push:
     branches: [ main, dev, 'dev/*', 'feature/*', 'rel/*' ]
     paths-ignore:
       - changelog.md
-      - code-of-conduct.md
-      - security.md
-      - support.md
       - readme.md
   pull_request:
     types: [opened, synchronize, reopened]
 
 env:
   DOTNET_NOLOGO: true
-  VersionPrefix: 42.42.${{ github.run_number }}
-  VersionLabel: ${{ github.ref }}
   PackOnBuild: true
   GeneratePackageOnBuild: true
+  VersionPrefix: 42.42.${{ github.run_number }}
+  VersionLabel: ${{ github.ref }}
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
-  
+  MSBUILDTERMINALLOGGER: auto
+  Configuration: ${{ github.event.inputs.configuration || 'Release' }}
+
 defaults:
   run:
     shell: bash
@@ -61,14 +67,10 @@ jobs:
       - name: 🙏 build
         run: dotnet build -m:1 -bl:build.binlog
 
-      - name: ⚙ GNU grep
-        if: matrix.os == 'macOS-latest'
-        run: |
-          brew install grep
-          echo 'export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"' >> .bash_profile
-
       - name: 🧪 test
-        uses: ./.github/workflows/test
+        run: |
+          dotnet tool update -g dotnet-retest
+          dotnet retest -- --no-build
 
       - name: 🐛 logs
         uses: actions/upload-artifact@v3
@@ -77,7 +79,6 @@ jobs:
           name: logs
           path: '*.binlog'
 
-      # Only push CI package to sleet feed if building on ubuntu (fastest)
       - name: 🚀 sleet
         env:
           SLEET_CONNECTION: ${{ secrets.SLEET_CONNECTION }}
