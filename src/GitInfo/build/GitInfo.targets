@@ -104,6 +104,20 @@
     <_GitIsDirtyFile>$(GitCachePath)GitIsDirty.cache</_GitIsDirtyFile>
   </PropertyGroup>
 
+  <PropertyGroup Label="CI" Condition="'$(CI)' == ''">
+    <CI>false</CI>
+    <!-- GH, CircleCI, GitLab and BitBucket already use CI -->
+    <CI Condition="'$(TF_BUILD)' == 'true' or 
+                   '$(TEAMCITY_VERSION)' != '' or 
+                   '$(APPVEYOR)' != '' or 
+                   '$(BuildRunner)' == 'MyGet' or 
+                   '$(JENKINS_URL)' != '' or 
+                   '$(TRAVIS)' == 'true' or 
+                   '$(BUDDY)' == 'true'">true</CI>
+  </PropertyGroup>
+
+  <Import Project="GitInfo.CI.targets" Condition="$(CI)" />
+
   <Target Name="GitInfoReport" DependsOnTargets="GitVersion">
     <Message Importance="$(GitInfoReportImportance)" Text="Git Info:
   GitInfoBaseDir:       $(GitInfoBaseDir)

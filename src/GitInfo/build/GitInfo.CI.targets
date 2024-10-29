@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Condition="'$(GitBranch)' == ''">
+    <!-- GitHub Actions: https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables -->
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(GITHUB_REF)' != '' and $(GITHUB_REF.Contains('refs/pull/'))">pr$(GITHUB_REF.Replace('refs/pull/', '').Replace('/merge', ''))</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(GITHUB_REF)' != ''">$(GITHUB_REF.Replace('refs/heads/', '').Replace('refs/tags/', ''))</GitBranch>
+    <!-- Azure DevOps: https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables -->
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(BUILD_SOURCEBRANCH)' != ''">$(BUILD_SOURCEBRANCH.Replace('refs/heads/', '').Replace('refs/tags/', ''))</GitBranch>
+    <!-- AppVeyor: https://www.appveyor.com/docs/environment-variables/ -->
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(APPVEYOR_PULL_REQUEST_NUMBER)' != ''">pr$(APPVEYOR_PULL_REQUEST_NUMBER)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(APPVEYOR_REPO_TAG_NAME)' != ''">$(APPVEYOR_REPO_TAG_NAME)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(APPVEYOR_REPO_BRANCH)' != ''">$(APPVEYOR_REPO_BRANCH)</GitBranch>
+    <!-- TeamCity: https://www.jetbrains.com/help/teamcity/predefined-build-parameters.html#Branch-Related+Parameters -->
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(TEAMCITY_BUILD_BRANCH)' != ''">$(TEAMCITY_BUILD_BRANCH)</GitBranch>
+    <!--TravisCI: https://docs.travis-ci.com/user/environment-variables/ -->
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(TRAVIS_PULL_REQUEST)' != '' and '$(TRAVIS_PULL_REQUEST)' != 'false'">pr$(TRAVIS_PULL_REQUEST)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(TRAVIS_BRANCH)' != ''">$(TRAVIS_BRANCH)</GitBranch>
+    <!-- CircleCI: https://circleci.com/docs/2.0/env-vars/ -->
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(CIRCLE_PR_NUMBER)' != ''">pr$(CIRCLE_PR_NUMBER)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(CIRCLE_TAG)' != ''">$(CIRCLE_TAG)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(CIRCLE_BRANCH)' != ''">$(CIRCLE_BRANCH)</GitBranch>
+    <!-- GitLab: https://docs.gitlab.com/ee/ci/variables/predefined_variables.html -->
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(CI_COMMIT_TAG)' != ''">$(CI_COMMIT_TAG)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(CI_MERGE_REQUEST_IID)' != ''">pr$(CI_MERGE_REQUEST_IID)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(CI_EXTERNAL_PULL_REQUEST_IID)' != ''">pr$(CI_EXTERNAL_PULL_REQUEST_IID)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(CI_COMMIT_BRANCH)' != ''">$(CI_COMMIT_BRANCH)</GitBranch>
+    <!-- Buddy: https://buddy.works/docs/pipelines/environment-variables#default-environment-variables -->
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(BUDDY_EXECUTION_PULL_REQUEST_NO)' != ''">pr$(BUDDY_EXECUTION_PULL_REQUEST_NO)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(BUDDY_EXECUTION_TAG)' != ''">$(BUDDY_EXECUTION_TAG)</GitBranch>
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(BUDDY_EXECUTION_BRANCH)' != ''">$(BUDDY_EXECUTION_BRANCH)</GitBranch>
+    <!-- Jenkins: https://plugins.jenkins.io/git/#plugin-content-environment-variables -->
+    <GitBranch Condition="'$(GitBranch)' == '' and '$(GIT_LOCAL_BRANCH)' != ''">$(GIT_LOCAL_BRANCH)</GitBranch>
+  </PropertyGroup>
+
+</Project>
