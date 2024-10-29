@@ -95,6 +95,8 @@ Available MSBuild customizations:
     * You can get a list of your remotes by running `git remote -v` in your shell when inside your git repo.
     * Defaults to 'origin'.
   
+  $(GitBranchCI): 
+    * Determines whether the branch name should be populated from default environment variables used by the CI system. Default to 'true'.
 
   $(GitDefaultBranch):
     * Specifies the base branch which is compared to your current branch (at time of build) to determine how many commits ahead the current branch is compared to base.
