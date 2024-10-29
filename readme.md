@@ -205,6 +205,8 @@ to customize the behavior:
 
   $(GitRemote): name of remote to get repository url for. Defaults to 'origin'.
 
+  $(GitBranchCI): determines whether the branch name should be populated from default environment variables used by the CI system. Default to 'true'.
+
   $(GitDefaultBranch): determines the base branch used to calculate commits on top of current branch. Defaults to 'main'.
 
   $(GitVersionFile): determines the name of a file in the Git repository root used to provide the base version info. Defaults to 'GitInfo.txt'.

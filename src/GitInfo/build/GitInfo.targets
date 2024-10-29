@@ -23,6 +23,8 @@
 
   $(GitDefaultBranch): determines the base branch used to calculate commits on top of current branch. Defaults to 'main'.
 
+  $(GitBranchCI): determines whether the branch name should be populated from default environment variables used by the CI system. Default to 'true'.
+
   $(GitVersionFile): determines the name of a file in the Git repository root used to provide the base version info. Defaults to 'GitInfo.txt'.
 
   $(GitCommitsRelativeTo): optionally specifies an alternative directory for counting commits on top of the base version. Defaults to the $(GitVersionFile) directory.
@@ -116,7 +118,7 @@
                    '$(BUDDY)' == 'true'">true</CI>
   </PropertyGroup>
 
-  <Import Project="GitInfo.CI.targets" Condition="$(CI)" />
+  <Import Project="GitInfo.CI.targets" Condition="$(CI) and $(GitBranchCI) != 'false'" />
 
   <Target Name="GitInfoReport" DependsOnTargets="GitVersion">
     <Message Importance="$(GitInfoReportImportance)" Text="Git Info:

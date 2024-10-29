@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
+  <!--
+  Uses well-known documented CI systems branch names to determine the current Git branch.
+  Can be disabled by setting the GitBranchCI=false property, or setting GitBranch to a specific value.
+  -->
   <PropertyGroup Condition="'$(GitBranch)' == ''">
     <!-- GitHub Actions: https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables -->
     <GitBranch Condition="'$(GitBranch)' == '' and '$(GITHUB_REF)' != '' and $(GITHUB_REF.Contains('refs/pull/'))">pr$(GITHUB_REF.Replace('refs/pull/', '').Replace('/merge', ''))</GitBranch>
