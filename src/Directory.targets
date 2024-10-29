@@ -1,0 +1,33 @@
+<Project InitialTargets="SetLocalVersion">
+
+  <Target Name="SetLocalVersion" Condition="!$(CI)">
+    <GetVersion>
+      <Output TaskParameter="Version" PropertyName="Version" />
+    </GetVersion>
+  </Target>
+
+  <UsingTask TaskName="GetVersion" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Version Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="Microsoft.Build.Framework"/>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        var version = this.BuildEngine4.GetRegisteredTaskObject("Version", RegisteredTaskObjectLifetime.Build);
+        if (version == null)
+        {
+            var epoc = DateTime.Parse("2024-03-15");
+            var days = Math.Truncate(DateTime.UtcNow.Subtract(epoc).TotalDays);
+            var time = Math.Floor(DateTime.UtcNow.TimeOfDay.TotalMinutes);
+            version = "42." + days + "." + time;
+            this.BuildEngine4.RegisterTaskObject("Version", version, RegisteredTaskObjectLifetime.Build, false);
+        }
+        Version = (string)version;
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+</Project>

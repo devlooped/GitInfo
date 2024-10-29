@@ -27,6 +27,9 @@
       <Constant Include="IsDirtyString" Value="true" Root="Git" Condition="$(GitIsDirty) == '1'" />
       <Constant Include="IsDirtyString" Value="false" Root="Git" Condition="$(GitIsDirty) == '0'" />
 
+      <Constant Include="IsDirty" Value="true" Root="Git" Condition="$(GitIsDirty) == '1'" Type="bool" />
+      <Constant Include="IsDirty" Value="false" Root="Git" Condition="$(GitIsDirty) == '0'" Type="bool" />
+
       <Constant Include="RepositoryUrl" Value="$(GitRepositoryUrl)" Root="Git" />
 
       <Constant Include="Branch" Value="$(GitBranch)" Root="Git" />
