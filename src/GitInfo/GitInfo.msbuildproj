@@ -10,17 +10,14 @@
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NuGetizer" Version="1.0.4" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
-    <PackageReference Include="ThisAssembly.Constants" Version="1.4.1" Pack="true" TargetFramework="netstandard2.0" />
+    <PackageReference Include="NuGetizer" Version="1.2.3" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
+    <PackageReference Include="ThisAssembly.Constants" Version="2.0.5" Pack="true" TargetFramework="netstandard2.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="build/**/*.*" />
     <None Include="buildMultiTargeting/**/*.*" />
     <None Include="buildTransitive/**/*.*" />
     <None Include="..\..\readme.md" PackagePath="readme.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Analyzer\CodeAnalysis.csproj" />
   </ItemGroup>
 </Project>
