@@ -11,14 +11,16 @@ Git Info from MSBuild, C# and VB
 [![License](https://img.shields.io/:license-MIT-blue.svg)](https://opensource.org/licenses/mit-license.php)
 [![Build status](https://ci.appveyor.com/api/projects/status/p9e5xdd86vnfe0q8?svg=true)](https://ci.appveyor.com/project/MobileEssentials/gitinfo)
 
-## Usage
-
-After installing via [NuGet](https://www.nuget.org/packages/GitInfo):
+Install via [NuGet](https://www.nuget.org/packages/GitInfo):
 
 ```pwsh
 PM> Install-Package GitInfo
 ```
 
+<!-- include https://github.com/devlooped/.github/raw/main/sponsorlinkr.md -->
+
+## Usage
+<!-- #content -->
 By default, if the containing project is a C#, F# or VB project, a compile-time generated
 source file will contain all the git information and can be accessed from anywhere within
 the assembly, as constants in a `ThisAssembly` (partial) class and its nested `Git` static class:
@@ -105,8 +107,7 @@ VB:
 > the relevant properties to false: `GenerateAssemblyVersionAttribute`,
 > `GenerateAssemblyFileVersionAttribute` and `GenerateAssemblyInformationalVersionAttribute`.
 
-
-MSBuild:
+You can also just build your own versioning logic in a target that depends on GitInfo using plain MSBuild:
 
 ```xml
 <PropertyGroup>
@@ -255,7 +256,7 @@ to customize the behavior:
   included in the [NuGet package](https://www.nuget.org/packages/GitInfo)
 - 100% incremental build-friendly and high-performing (all proper Inputs/Outputs in place, smart caching of Git info, etc.)
 
-
+<!-- #content -->
 <!-- include https://github.com/devlooped/sponsors/raw/main/footer.md -->
 # Sponsors 
 
