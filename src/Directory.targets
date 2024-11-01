@@ -1,5 +1,14 @@
 <Project InitialTargets="SetLocalVersion">
 
+  <PropertyGroup>
+    <Description>
+      $(Description)
+
+      > This project uses SponsorLink to attribute sponsor status (direct, indirect or implicit). For IDE usage, sponsor status is required.
+      > IDE-only warnings will be emitted after a grace period otherwise. Learn more at https://github.com/devlooped#sponsorlink.
+    </Description>
+  </PropertyGroup>
+
   <Target Name="SetLocalVersion" Condition="!$(CI)">
     <GetVersion>
       <Output TaskParameter="Version" PropertyName="Version" />
