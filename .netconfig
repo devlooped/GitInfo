@@ -54,9 +54,9 @@
 
 [file ".gitignore"]
 	url = https://github.com/devlooped/oss/blob/main/.gitignore
-	etag = a9c37ae312afac14b78436a7d018af4483d88736b5f780576f2c5a0b3f14998c
+	etag = c449ec6f76803e1891357ca2b8b4fcb5b2e5deeff8311622fd92ca9fbf1e6575
 	weak
-	sha = 02811fa23b0a102b9b33048335d41e515bf75737
+	sha = e0be248fff1d39133345283b8227372b36574b75
 [file "Directory.Build.rsp"]
 	url = https://github.com/devlooped/oss/blob/main/Directory.Build.rsp
 	etag = 0ccae83fc51f400bfd7058170bfec7aba11455e24a46a0d7e6a358da6486e255
@@ -119,9 +119,9 @@
 	weak
 [file "docs/sponsors.md"]
 	url = https://github.com/devlooped/sponsors/blob/main/sponsors.md
-	sha = eda9f7591be6a51830a14e8946b230be61320b7a
+	sha = 0b855869eaab27b30c28df67ba3a2c1af187a16f
 
-	etag = f3c1b1f1143054fbbafbf96a8b4e30ec2bbd53e4684f86f6a1a227a30d6e00ae
+	etag = 85bf2eeff25d61ea681826319be9481f7fe0bbc6efc86bec94442354021b3492
 	weak
 [file ".github/workflows/combine-prs.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/combine-prs.yml
