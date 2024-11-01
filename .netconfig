@@ -17,10 +17,6 @@
 	url = https://github.com/devlooped/oss/blob/main/src/icon.png
 	skip
 
-[file "SponsorLink.sln"]
-	url = https://github.com/devlooped/oss/blob/main/SponsorLink.sln
-	skip
-
 # the configuration needs repo-specific links to Discussions
 [file ".github/ISSUE_TEMPLATE/config.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/ISSUE_TEMPLATE/config.yml
