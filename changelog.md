@@ -1,5 +1,33 @@
 # Changelog
 
+## [v3.5.0-beta](https://github.com/devlooped/GitInfo/tree/v3.5.0-beta) (2024-11-02)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.5...v3.5.0-beta)
+
+:sparkles: Implemented enhancements:
+
+- Question: Why we use git log with format to get the Current commit? [\#355](https://github.com/devlooped/GitInfo/issues/355)
+- Projects don't rebuild after committing [\#322](https://github.com/devlooped/GitInfo/issues/322)
+- Add vswhere fallback to locate git provided by VS [\#372](https://github.com/devlooped/GitInfo/pull/372) (@kzu)
+- Simplify IsDirty with newer typed constants in ThisAssembly [\#368](https://github.com/devlooped/GitInfo/pull/368) (@kzu)
+- Allow opting-out of GitBranch default in CI [\#366](https://github.com/devlooped/GitInfo/pull/366) (@kzu)
+- Set default GitBranch from CI env variables [\#365](https://github.com/devlooped/GitInfo/pull/365) (@kzu)
+- Using simpler git command to get current commit [\#356](https://github.com/devlooped/GitInfo/pull/356) (@kzu)
+
+:hammer: Other:
+
+- Using GitInfo with Ncrunch [\#345](https://github.com/devlooped/GitInfo/issues/345)
+
+:twisted_rightwards_arrows: Merged:
+
+- Adopt SL v2 via ThisAssembly.Constants and document in readme\(s\) [\#370](https://github.com/devlooped/GitInfo/pull/370) (@kzu)
+- +Mᐁ includes [\#367](https://github.com/devlooped/GitInfo/pull/367) (@devlooped-bot)
+- +Mᐁ includes [\#357](https://github.com/devlooped/GitInfo/pull/357) (@devlooped-bot)
+- Clean code [\#352](https://github.com/devlooped/GitInfo/pull/352) (@gitfool)
+- Remove redundant depends on targets [\#346](https://github.com/devlooped/GitInfo/pull/346) (@gitfool)
+- Fix fast up-to-date-check [\#343](https://github.com/devlooped/GitInfo/pull/343) (@gitfool)
+- Disable rogue command echo [\#342](https://github.com/devlooped/GitInfo/pull/342) (@gitfool)
+
 ## [v3.3.5](https://github.com/devlooped/GitInfo/tree/v3.3.5) (2024-05-13)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.4...v3.3.5)
@@ -37,6 +65,10 @@
 - parse\(''\)" cannot be evaluated. version string portion was too short or too long [\#300](https://github.com/devlooped/GitInfo/issues/300)
 - Shield from invalid git version [\#313](https://github.com/devlooped/GitInfo/pull/313) (@kzu)
 
+:twisted_rightwards_arrows: Merged:
+
+- +Mᐁ includes [\#315](https://github.com/devlooped/GitInfo/pull/315) (@devlooped-bot)
+
 ## [v3.3.2](https://github.com/devlooped/GitInfo/tree/v3.3.2) (2023-08-30)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.1...v3.3.2)
@@ -55,6 +87,7 @@
 :twisted_rightwards_arrows: Merged:
 
 - Bump to downstream ThisAssembly without SponsorLink [\#305](https://github.com/devlooped/GitInfo/pull/305) (@kzu)
+- +Mᐁ includes [\#303](https://github.com/devlooped/GitInfo/pull/303) (@devlooped-bot)
 
 ## [v3.3.0](https://github.com/devlooped/GitInfo/tree/v3.3.0) (2023-08-11)
 
@@ -260,7 +293,9 @@
 
 :twisted_rightwards_arrows: Merged:
 
+- +Mᐁ includes [\#207](https://github.com/devlooped/GitInfo/pull/207) (@devlooped-bot)
 - +M▼ includes [\#200](https://github.com/devlooped/GitInfo/pull/200) (@github-actions[bot])
+- Integrate .csproj section on code example on README.md [\#173](https://github.com/devlooped/GitInfo/pull/173) (@paonath)
 
 ## [v2.2.0](https://github.com/devlooped/GitInfo/tree/v2.2.0) (2021-08-25)
 
