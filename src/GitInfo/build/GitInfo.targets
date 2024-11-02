@@ -93,6 +93,8 @@
     <!-- Under Unix, we don't double %% the format. That only works on Windows. -->
     <GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' and '$(OS)' == 'Windows_NT'">%%cI</GitCommitDateFormat>
     <GitCommitDateFormat Condition="'$(GitCommitDateFormat)' == '' and '$(OS)' != 'Windows_NT'">%cI</GitCommitDateFormat>
+
+    <_VsWherePath>$(ProgramFiles(x86))\Microsoft Visual Studio\Installer\vswhere.exe</_VsWherePath>
   </PropertyGroup>
 
   <!-- Private properties -->
@@ -913,6 +915,26 @@
       <GitExe Condition="'$(GitExe)' == '' and Exists('C:\Program Files\Git\bin\git.exe')">"C:\Program Files\Git\bin\git.exe"</GitExe>
       <GitExe Condition="'$(GitExe)' == '' and Exists('C:\Program Files (x86)\Git\bin\git.exe')">"C:\Program Files (x86)\Git\bin\git.exe"</GitExe>
       <GitExe Condition="'$(GitExe)' == '' and Exists('C:\msysgit\bin\git.exe')">C:\msysgit\bin\git.exe</GitExe>
+    </PropertyGroup>
+
+    <!-- Fallback to VS-provided Git -->
+    <PropertyGroup Condition="'$(GitExe)' == ''">
+      <_VsWherePath>$(MSBuildProgramFiles32)\Microsoft Visual Studio\Installer\vswhere.exe</_VsWherePath>
+      <_VsWhere Condition="Exists('$(_VsWherePath)')">$(_VsWherePath)</_VsWhere>
+      <_VsGitPath>\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\Git\mingw64\bin\git.exe</_VsGitPath>
+    </PropertyGroup>
+
+    <!-- This command will return one _VsDir item for each InstallationPath for all installed VS instances -->
+    <Exec Command='"$(_VsWhere)" -prerelease -property installationPath'
+      Condition="'$(GitExe)' == '' and '$(_VsWhere)' != ''"
+      ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" ItemName="_VsDir"/>
+      <Output TaskParameter="ExitCode" PropertyName="MSBuildLastExitCode" />
+    </Exec>
+
+    <PropertyGroup Condition="'$(GitExe)' == '' and '$(MSBuildLastExitCode)' == '0'">
+      <!-- If we got a successful vswhere exec, and still got no GitExe, attempt to locate at each path -->
+      <GitExe Condition="Exists('%(_VsDir.Identity)$(_VsGitPath)')">"%(_VsDir.Identity)$(_VsGitPath)"</GitExe>
     </PropertyGroup>
 
     <!-- If we didn't find it in the PATH nor the above locations, check for git installed in WSL. -->
