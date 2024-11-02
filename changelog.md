@@ -1,13 +1,15 @@
 # Changelog
 
-## [v3.5.0-beta](https://github.com/devlooped/GitInfo/tree/v3.5.0-beta) (2024-11-02)
+## [v3.5.0](https://github.com/devlooped/GitInfo/tree/v3.5.0) (2024-11-02)
 
-[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.5...v3.5.0-beta)
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.5...v3.5.0)
 
 :sparkles: Implemented enhancements:
 
 - Question: Why we use git log with format to get the Current commit? [\#355](https://github.com/devlooped/GitInfo/issues/355)
+- SetGitExe doesn't recognize VS Git locations [\#324](https://github.com/devlooped/GitInfo/issues/324)
 - Projects don't rebuild after committing [\#322](https://github.com/devlooped/GitInfo/issues/322)
+- New tag without version drop semver to zeros [\#319](https://github.com/devlooped/GitInfo/issues/319)
 - Add vswhere fallback to locate git provided by VS [\#372](https://github.com/devlooped/GitInfo/pull/372) (@kzu)
 - Simplify IsDirty with newer typed constants in ThisAssembly [\#368](https://github.com/devlooped/GitInfo/pull/368) (@kzu)
 - Allow opting-out of GitBranch default in CI [\#366](https://github.com/devlooped/GitInfo/pull/366) (@kzu)
