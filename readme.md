@@ -9,7 +9,7 @@ Git Info from MSBuild, C# and VB
 [![Latest version](https://img.shields.io/nuget/v/GitInfo.svg)](https://www.nuget.org/packages/GitInfo)
 [![Downloads](https://img.shields.io/nuget/dt/GitInfo.svg)](https://www.nuget.org/packages/GitInfo)
 [![License](https://img.shields.io/:license-MIT-blue.svg)](https://opensource.org/licenses/mit-license.php)
-[![Build status](https://ci.appveyor.com/api/projects/status/p9e5xdd86vnfe0q8?svg=true)](https://ci.appveyor.com/project/MobileEssentials/gitinfo)
+[![Build](https://github.com/devlooped/GitInfo/actions/workflows/build.yml/badge.svg)](https://github.com/devlooped/GitInfo/actions/workflows/build.yml)
 
 Install via [NuGet](https://www.nuget.org/packages/GitInfo):
 
