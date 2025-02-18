@@ -32,11 +32,6 @@
 	weak
 	sha = 5f92a68e302bae675b394ef343114139c075993e
 
-[file ".github/FUNDING.yml"]
-	url = https://github.com/devlooped/.github/blob/main/.github/FUNDING.yml
-	etag = a944c728facd033bbdfb4ff8d0ef10d0b3a457c277dc499458df0ffc7e6409da
-	weak
-	sha = 39f4c591716ff50dd035d2fade35e5822489ab7f
 [file ".github/dependabot.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/dependabot.yml
 	etag = c147ea2f3431ca0338c315c4a45b56ee233c4d30f8d6ab698d0e1980a257fd6a
@@ -115,9 +110,7 @@
 	weak
 [file ".github/workflows/combine-prs.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/combine-prs.yml
-	sha = c1610886eba42cb250e3894aed40c0a258cd383d
-	etag = 598ee294649a44d4c5d5934416c01183597d08aa7db7938453fd2bbf52a4e64d
-	weak
+	skip
 [file ".github/release.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/release.yml
 	sha = 0c23e24704625cf75b2cb1fdc566cef7e20af313
@@ -146,6 +139,4 @@
 	weak
 [file ".github/workflows/dotnet-file-core.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/dotnet-file-core.yml
-	sha = 875284ba5d565f529aba2f5d24ab8ed27c1d1c79
-	etag = 8de1d974bf73b1945b5c8be684c3a0b7364114a0d795c9d68837aed9b3aff331
-	weak
+	skip
