@@ -28,9 +28,9 @@
 	sha = c779d3d4e468358106dea03e93ba2cd35bb01ecb
 [file ".gitattributes"]
 	url = https://github.com/devlooped/oss/blob/main/.gitattributes
-	etag = 338ba6d92c8d1774363396739c2be4257bfc58026f4b0fe92cb0ae4460e1eff7
+	etag = 09cad18280ed04b67f7f87591e5481510df04d44c3403231b8af885664d8fd58
 	weak
-	sha = 5f92a68e302bae675b394ef343114139c075993e
+	sha = 4a9aa321c4982b83c185cf8dffed181ff84667d5
 
 [file ".github/dependabot.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/dependabot.yml
