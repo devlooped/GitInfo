@@ -105,8 +105,8 @@
 	skip
 [file ".github/workflows/includes.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/includes.yml
-	sha = 6a6de0580b40e305f7a0f41b406d4aabaa0756fe
-	etag = 1a5cd7a883700c328105910cc212f5f8c9f3759fc1af023e048a9f486da794c1
+	sha = 26e8cb798ce72dec7072db826cc9694d456797bd
+	etag = df06492eeb2daaae4168d71bbb643f5da2693b67cdd58c42ffa44a191ee99b69
 	weak
 [file ".github/workflows/combine-prs.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/combine-prs.yml
