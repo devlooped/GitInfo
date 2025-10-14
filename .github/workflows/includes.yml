@@ -43,7 +43,7 @@ jobs:
 
           $product = dotnet msbuild $props -getproperty:Product
           if (-not $product) { 
-            write-error "To use OSMF EULA, ensure the $(Product) property is set in Directory.props"
+            write-error 'To use OSMF EULA, ensure the $(Product) property is set in Directory.props'
             exit 1
           }
           
