@@ -23,9 +23,9 @@
 	skip
 [file ".editorconfig"]
 	url = https://github.com/devlooped/oss/blob/main/.editorconfig
-	etag = 7298c6450967975a8782b5c74f3071e1910fc59686e48f9c9d5cd7c68213cf59
+	etag = b5e919b472a52d4b522f86494f0f2c0ba74a6d9601454e20e4cbaf744317ff62
 	weak
-	sha = c779d3d4e468358106dea03e93ba2cd35bb01ecb
+	sha = a62c45934ac2952f2f5d54d8aea4a7ebc1babaff
 [file ".gitattributes"]
 	url = https://github.com/devlooped/oss/blob/main/.gitattributes
 	etag = 09cad18280ed04b67f7f87591e5481510df04d44c3403231b8af885664d8fd58
@@ -105,8 +105,8 @@
 	skip
 [file ".github/workflows/includes.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/includes.yml
-	sha = 6a6de0580b40e305f7a0f41b406d4aabaa0756fe
-	etag = 1a5cd7a883700c328105910cc212f5f8c9f3759fc1af023e048a9f486da794c1
+	sha = 26e8cb798ce72dec7072db826cc9694d456797bd
+	etag = df06492eeb2daaae4168d71bbb643f5da2693b67cdd58c42ffa44a191ee99b69
 	weak
 [file ".github/workflows/combine-prs.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/combine-prs.yml
