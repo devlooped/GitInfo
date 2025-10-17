@@ -1,5 +1,9 @@
 # Changelog
 
+## [v3.6.0](https://github.com/devlooped/GitInfo/tree/v3.6.0) (2025-10-17)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.6.0-beta...v3.6.0)
+
 ## [v3.6.0-beta](https://github.com/devlooped/GitInfo/tree/v3.6.0-beta) (2025-10-17)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.5.0...v3.6.0-beta)
