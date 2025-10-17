@@ -3,13 +3,14 @@
 
 Git Info from MSBuild, C# and VB
 
+> [!NOTE]
 > A fresh and transparent approach to Git information retrieval from MSBuild and Code without
 > using any custom tasks or compiled code and tools, obscure settings, format strings, etc.
 
 [![Latest version](https://img.shields.io/nuget/v/GitInfo.svg)](https://www.nuget.org/packages/GitInfo)
 [![Downloads](https://img.shields.io/nuget/dt/GitInfo.svg)](https://www.nuget.org/packages/GitInfo)
-[![License](https://img.shields.io/:license-MIT-blue.svg)](https://opensource.org/licenses/mit-license.php)
-[![Build](https://github.com/devlooped/GitInfo/actions/workflows/build.yml/badge.svg)](https://github.com/devlooped/GitInfo/actions/workflows/build.yml)
+[![EULA](https://img.shields.io/badge/EULA-OSMF-blue?labelColor=black&color=C9FF30)](osmfeula.txt)
+[![OSS](https://img.shields.io/github/license/devlooped/oss.svg?color=blue)](license.txt) 
 
 Install via [NuGet](https://www.nuget.org/packages/GitInfo):
 
@@ -17,14 +18,10 @@ Install via [NuGet](https://www.nuget.org/packages/GitInfo):
 PM> Install-Package GitInfo
 ```
 
-<!-- include https://github.com/devlooped/.github/raw/main/sponsorlinkr.md -->
-*This project uses [SponsorLink](https://github.com/devlooped#sponsorlink) to attribute sponsor status (direct, indirect or implicit).*
-*For IDE usage (without warnings), sponsor status is required. IDE-only warnings will be issued after a grace period otherwise.*
+<!-- include https://github.com/devlooped/.github/raw/main/osmf.md -->
 
-<!-- https://github.com/devlooped/.github/raw/main/sponsorlinkr.md -->
-
-## Usage
 <!-- #content -->
+## Usage
 By default, if the containing project is a C#, F# or VB project, a compile-time generated
 source file will contain all the git information and can be accessed from anywhere within
 the assembly, as constants in a `ThisAssembly` (partial) class and its nested `Git` static class:
@@ -194,53 +191,6 @@ accessed from code:
   ThisAssembly.Git.IsDirty
 ```
 
-Available [MSBuild properties](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-properties)
-to customize the behavior:
-
-```
-  $(GitVersion): set to 'false' to avoid setting Version and PackageVersion to a default version with format:
-                 $(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)
-
-  $(GitThisAssembly): set to 'false' to prevent assembly metadata and constants generation.
-
-  $(GitThisAssemblyMetadata): set to 'false' to prevent assembly metadata generation only. Defaults to 'false'.
-                              If 'true', it will also provide assembly metadata attributes for each of the populated values.
-
-  $(ThisAssemblyNamespace): allows overriding the namespace for the ThisAssembly class. Defaults to the global namespace.
-
-  $(GitRemote): name of remote to get repository url for. Defaults to 'origin'.
-
-  $(GitBranchCI): determines whether the branch name should be populated from default environment variables used by the CI system. Default to 'true'.
-
-  $(GitDefaultBranch): determines the base branch used to calculate commits on top of current branch. Defaults to 'main'.
-
-  $(GitVersionFile): determines the name of a file in the Git repository root used to provide the base version info. Defaults to 'GitInfo.txt'.
-
-  $(GitCommitsRelativeTo): optionally specifies an alternative directory for counting commits on top of the base version. Defaults to the $(GitVersionFile) directory.
-
-  $(GitCommitsIgnoreMerges): set to 'true' to ignore merge commits when calculating the number of commits. Defaults to 'false'.
-
-  $(GitInfoReportImportance): allows rendering all the retrieved git information with the specified message importance ('high', 'normal' or 'low'). Defaults to 'low'.
-
-  $(GitIgnoreBranchVersion) and $(GitIgnoreTagVersion): determines whether the branch and tags (if any) will be used to find a base version. Defaults to empty value (no ignoring).
-
-  $(GitNameRevOptions): options passed to git name-rev when finding a branch name for a commit (Detached head). The default is '--refs=refs/heads/* --no-undefined --always'
-                        meaning branch names only, falling back to commit hash. For the legacy behavior where $(GitBranch) for detached head can also be a tag name, use '--refs=refs/*'.
-                        Refs can be included and excluded, see git name-rev docs.
-
-  $(GitSkipCache): whether to cache the Git information determined in a previous build in a GitInfo.cache for performance reasons. Defaults to empty value (no ignoring).
-
-  $(GitCachePath): where to cache the determined Git information. Gives the chance to use a shared location for different projects. This can improve the overall build time.
-                   Has to end with a path seperator Defaults to empty value ('$(IntermediateOutputPath)').
-
-  $(GitTagRegex): regular expression used with git describe to filter the tags to consider for base version lookup. Defaults to * (all).
-
-  $(GitBaseVersionRegex): regular expression used to match and validate valid base versions in branch, tag or file sources. By default, matches any string that *ends* in a valid SemVer2 string.
-                          Defaults to 'v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)(?:\-(?<LABEL>[\dA-Za-z\-\.]+))?$|^(?<LABEL>[\dA-Za-z\-\.]+)\-v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)$'
-
-  $(GitCommitDateFormat): value passed as the format option when trying to retrieve the git commit date. Defaults to %%cI (windows) or %cI (non windows).
-```
-
 ## Goals
 
 - No compiled code or tools -> 100% transparency
@@ -261,7 +211,58 @@ to customize the behavior:
 - 100% incremental build-friendly and high-performing (all proper Inputs/Outputs in place, smart caching of Git info, etc.)
 
 <!-- #content -->
+
+## Customization
+
+Available [MSBuild properties](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-properties)
+to customize the behavior:
+
+```
+$(GitVersion): set to 'false' to avoid setting Version and PackageVersion to a default version with format:
+               $(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(GitSemVerDashLabel)+$(GitBranch).$(GitCommit)
+
+$(GitThisAssembly): set to 'false' to prevent assembly metadata and constants generation.
+
+$(GitThisAssemblyMetadata): set to 'false' to prevent assembly metadata generation only. Defaults to 'false'.
+                            If 'true', it will also provide assembly metadata attributes for each of the populated values.
+
+$(ThisAssemblyNamespace): allows overriding the namespace for the ThisAssembly class. Defaults to the global namespace.
+
+$(GitRemote): name of remote to get repository url for. Defaults to 'origin'.
+
+$(GitBranchCI): determines whether the branch name should be populated from default environment variables used by the CI system. Default to 'true'.
+
+$(GitDefaultBranch): determines the base branch used to calculate commits on top of current branch. Defaults to 'main'.
+
+$(GitVersionFile): determines the name of a file in the Git repository root used to provide the base version info. Defaults to 'GitInfo.txt'.
+
+$(GitCommitsRelativeTo): optionally specifies an alternative directory for counting commits on top of the base version. Defaults to the $(GitVersionFile) directory.
+
+$(GitCommitsIgnoreMerges): set to 'true' to ignore merge commits when calculating the number of commits. Defaults to 'false'.
+
+$(GitInfoReportImportance): allows rendering all the retrieved git information with the specified message importance ('high', 'normal' or 'low'). Defaults to 'low'.
+
+$(GitIgnoreBranchVersion) and $(GitIgnoreTagVersion): determines whether the branch and tags (if any) will be used to find a base version. Defaults to empty value (no ignoring).
+
+$(GitNameRevOptions): options passed to git name-rev when finding a branch name for a commit (Detached head). The default is '--refs=refs/heads/* --no-undefined --always'
+                      meaning branch names only, falling back to commit hash. For the legacy behavior where $(GitBranch) for detached head can also be a tag name, use '--refs=refs/*'.
+                      Refs can be included and excluded, see git name-rev docs.
+
+$(GitSkipCache): whether to cache the Git information determined in a previous build in a GitInfo.cache for performance reasons. Defaults to empty value (no ignoring).
+
+$(GitCachePath): where to cache the determined Git information. Gives the chance to use a shared location for different projects. This can improve the overall build time.
+                 Has to end with a path seperator Defaults to empty value ('$(IntermediateOutputPath)').
+
+$(GitTagRegex): regular expression used with git describe to filter the tags to consider for base version lookup. Defaults to * (all).
+
+$(GitBaseVersionRegex): regular expression used to match and validate valid base versions in branch, tag or file sources. By default, matches any string that *ends* in a valid SemVer2 string.
+                        Defaults to 'v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)(?:\-(?<LABEL>[\dA-Za-z\-\.]+))?$|^(?<LABEL>[\dA-Za-z\-\.]+)\-v?(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<PATCH>\d+)$'
+
+$(GitCommitDateFormat): value passed as the format option when trying to retrieve the git commit date. Defaults to %%cI (windows) or %cI (non windows).
+```
+
 <!-- include https://github.com/devlooped/sponsors/raw/main/footer.md -->
+
 # Sponsors 
 
 <!-- sponsors.md -->

@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <PackageProjectUrl>https://clarius.org/GitInfo</PackageProjectUrl>
+    <Product>GitInfo</Product>
   </PropertyGroup>
 
 </Project>

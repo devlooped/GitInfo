@@ -8,15 +8,18 @@
     <PackNone>true</PackNone>
     <PackOnBuild>true</PackOnBuild>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>OSMFEULA.txt</PackageLicenseFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NuGetizer" Version="1.2.3" />
+    <PackageReference Include="NuGetizer" Version="1.4.5" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
-    <PackageReference Include="ThisAssembly.Constants" Version="2.0.6" Pack="true" TargetFramework="netstandard2.0" />
+    <PackageReference Include="ThisAssembly.Constants" Version="2.1.2" Pack="true" TargetFramework="netstandard2.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="build/**/*.*" />
     <None Include="buildMultiTargeting/**/*.*" />
     <None Include="buildTransitive/**/*.*" />
+    <None Include="..\..\osmfeula.txt" Link="osmfeula.txt" PackagePath="OSMFEULA.txt" />
   </ItemGroup>
 </Project>
