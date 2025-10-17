@@ -1,5 +1,19 @@
 # Changelog
 
+## [v3.6.0-beta](https://github.com/devlooped/GitInfo/tree/v3.6.0-beta) (2025-10-17)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.5.0...v3.6.0-beta)
+
+:hammer: Other:
+
+- Get error 'ThisAssembly' is inaccessible due to its protection level [\#377](https://github.com/devlooped/GitInfo/issues/377)
+- \[FEAT\] Add support for MSYS2 [\#374](https://github.com/devlooped/GitInfo/issues/374)
+- 💟 Adopting SponsorLink in v3.5 [\#369](https://github.com/devlooped/GitInfo/issues/369)
+
+:twisted_rightwards_arrows: Merged:
+
+- Adopt OSMF EULA [\#386](https://github.com/devlooped/GitInfo/pull/386) (@kzu)
+
 ## [v3.5.0](https://github.com/devlooped/GitInfo/tree/v3.5.0) (2024-11-02)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.3.5...v3.5.0)
