@@ -1,4 +1,4 @@
-<Project>
+<Project TreatAsLocalProperty="VersionPrefix">
   <!-- To extend/change the defaults, create a Directory.props alongside this file -->
 
   <PropertyGroup Label="CI" Condition="'$(CI)' == ''">
@@ -43,6 +43,10 @@
 
     <!-- Ensure MSBuild tooling can access package artifacts always via PKG_[PackageId] -->
     <GeneratePathProperty>true</GeneratePathProperty>
+    <!-- Avoid warnings for test projects when we run dotnet pack on the whole solution. -->
+    <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
+    <!-- See https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#prunepackagereference-specification -->
+    <RestoreEnablePackagePruning>true</RestoreEnablePackagePruning>
   </PropertyGroup>
 
   <PropertyGroup Label="Build">
@@ -134,6 +138,15 @@
     <VersionSuffix Condition="!$(VersionLabel.Contains('refs/tags/'))">$(_VersionLabel)</VersionSuffix>
     <!-- Special case for tags, the label is actually the version. Backs compat since passed-in value overrides MSBuild-set one -->
     <Version Condition="$(VersionLabel.Contains('refs/tags/'))">$(_VersionLabel)</Version>
+
+    <!-- In order for latest from main/master to always be greatest when using -prerelease switch on install/run, 
+         we change the scheme as follows:
+         - main/master remain as today: VersionPrefix: 42.42.${{ github.run_number }}  (from yaml)
+         - others: VersionPrefix: 42.42.0-[label].${{ github.run_number }}
+    -->
+    <IsMaster Condition="$(VersionLabel.Contains('refs/heads/main')) or $(VersionLabel.Contains('refs/heads/master'))">true</IsMaster>
+    <VersionPrefix Condition="'$(IsMaster)' != 'true'">42.42.0</VersionPrefix>
+    <VersionSuffix Condition="'$(IsMaster)' != 'true'">$(VersionSuffix).$(GITHUB_RUN_NUMBER)</VersionSuffix>
   </PropertyGroup>
 
   <ItemGroup Label="ThisAssembly.Project">
@@ -151,6 +164,10 @@
     <Using Include="System.ArgumentException" Static="true" />
     <Using Include="System.ArgumentOutOfRangeException" Static="true" />
     <Using Include="System.ArgumentNullException" Static="true" />
+  </ItemGroup>
+
+  <ItemGroup Label="OSMF" Condition="Exists('$(MSBuildThisFileDirectory)..\osmfeula.txt')">
+    <Content Include="$(MSBuildThisFileDirectory)..\osmfeula.txt" Link="osmfeula.txt" Pack="true" PackagePath="OSMFEULA.txt" />
   </ItemGroup>
 
   <Import Project="Directory.props" Condition="Exists('Directory.props')"/>

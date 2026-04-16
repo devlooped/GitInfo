@@ -39,15 +39,15 @@
 	sha = e733294084fb3e75d517a2e961e87df8faae7dc6
 [file ".github/workflows/build.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/build.yml
-	etag = bf99c19427f4372ecfe38ec56aa8c411058684fb717da5661f17ac00388b3602
+	etag = 851af098748f7cfa5bc3cfd4cc404a6de930532b59ceb2b3b535282c41226f3a
 	weak
-	sha = 56c2b8532c2f86235a0f5bd00ba6eba126f199cf
+	sha = 5da103cfbc1c4f9b5f59cfa698d2afbd744a7525
 
 [file ".gitignore"]
 	url = https://github.com/devlooped/oss/blob/main/.gitignore
-	etag = 11767f73556aa4c6c8bcc153b77ee8e8114f99fa3b885b0a7d66d082f91e77b3
+	etag = 20a8b49d57024abbd85aac5b0020c30e5eb68e0384b2761e93727c8780c4a991
 	weak
-	sha = 3776526342afb3f57da7e80f2095e5fdca3c31c9
+	sha = a225b7a9f609f26bcc24e0d84f663387be251a7d
 [file "Directory.Build.rsp"]
 	url = https://github.com/devlooped/oss/blob/main/Directory.Build.rsp
 	etag = 0ccae83fc51f400bfd7058170bfec7aba11455e24a46a0d7e6a358da6486e255
@@ -70,14 +70,14 @@
 	sha = 0683ee777d7d878d4bf013d7deea352685135a05
 [file "src/Directory.Build.props"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.props
-	etag = cbbdc1a4d3030f353f3e5306a6c380238dd4ed0945aad2d56ba87b49fcfcd66d
+	etag = bd05f9f240823c0ac79ddfefe654061550c36f82dd94fa513b82900e92686a5f
 	weak
-	sha = c509be4378ff6789df4f66338cb88119453c0975
+	sha = dd13ed3334135c30dcb1e3b2295dc7622de298d9
 [file "src/Directory.Build.targets"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.targets
-	etag = 8b4492765755c030c4c351e058a92f53ab493cab440c1c0ef431f6635c4dae0e
+	etag = 907682e5632a2ba430357e6e042a4ca33cb8c94a3a215d3091aa03f5958a4877
 	weak
-	sha = 4339749ef4b8f66def75931df09ef99c149f8421
+	sha = 083a37bd9307ec820bac6ee3c7384083151d36d8
 
 [file "src/kzu.snk"]
 	url = https://github.com/devlooped/oss/blob/main/src/kzu.snk
@@ -94,9 +94,9 @@
 	weak
 [file ".github/workflows/publish.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/publish.yml
-	sha = 56c2b8532c2f86235a0f5bd00ba6eba126f199cf
+	sha = 7f5f9ee9f362f7e8f951d618f8f799033550e687
 
-	etag = 2ef43521627aa3a91dd55bdc2856ec0c6a93b42485d4fe9d6b181f9ee42c8e18
+	etag = c60411d1aa4e98e7f69e2d34cbccb8eb7e387ec11f6f8e78ee8d8b92122d7025
 	weak
 [file ".github/workflows/release-artifacts.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/release-artifacts.yml
@@ -105,8 +105,8 @@
 	skip
 [file ".github/workflows/includes.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/includes.yml
-	sha = 26e8cb798ce72dec7072db826cc9694d456797bd
-	etag = df06492eeb2daaae4168d71bbb643f5da2693b67cdd58c42ffa44a191ee99b69
+	sha = 06628725a6303bb8c4cf3076a384fc982a91bc0b
+	etag = 478f91d4126230e57cc601382da1ba23f9daa054645b4af89800d8dd862e64fd
 	weak
 [file ".github/workflows/combine-prs.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/combine-prs.yml
@@ -134,8 +134,8 @@
 	weak
 [file ".github/workflows/triage.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/triage.yml
-	sha = 33000c0c4ab4eb4e0e142fa54515b811a189d55c
-	etag = 013a47739e348f06891f37c45164478cca149854e6cd5c5158e6f073f852b61a
+	sha = 61a602fc61eedbdae235f01e93657a6219ac2427
+	etag = 152cd3a559c08da14d1da12a5262ba1d2e0ed6bed6d2eabf5bd209b0c35d8a75
 	weak
 [file ".github/workflows/dotnet-file-core.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/dotnet-file-core.yml
@@ -154,4 +154,15 @@
 	url = https://github.com/devlooped/.github/blob/main/osmfeula.txt
 	sha = 666a2a7c315f72199c418f11482a950fc69a8901
 	etag = 91ea15c07bfd784036c6ca931f5b2df7e9767b8367146d96c79caef09d63899f
+	weak
+[file "readme.tmp.md"]
+	url = https://github.com/devlooped/oss/blob/main/readme.tmp.md
+	skip
+[file "oss.cs"]
+	url = https://github.com/devlooped/oss/blob/main/oss.cs
+	skip
+[file ".github/copilot-instructions.md"]
+	url = https://github.com/devlooped/oss/blob/main/.github/copilot-instructions.md
+	sha = e616d89d9537c4b8ccf1c20dd277ab82104167c4
+	etag = 6ee650d118a57494d3545d54718ccaa5257b09d54504e9c21514fe596edd9678
 	weak
