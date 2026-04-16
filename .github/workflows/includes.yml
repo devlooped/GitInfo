@@ -50,15 +50,15 @@ jobs:
           ((get-content -raw $file) -replace '\$product\$',$product).trim() | set-content $file
 
       - name: ✍ pull request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           add-paths: |
             **.md
-            osmfeula.txt
+            *.txt
           base: main
           branch: markdown-includes
           delete-branch: true
-          labels: docs
+          labels: dependencies
           author: ${{ env.BOT_AUTHOR }}
           committer: ${{ env.BOT_AUTHOR }}
           commit-message: +Mᐁ includes

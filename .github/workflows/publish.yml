@@ -34,9 +34,8 @@ jobs:
         run: dotnet build -m:1 -bl:build.binlog
 
       - name: 🧪 test
-        run: |
-          dotnet tool update -g dotnet-retest
-          dotnet retest -- --no-build
+        shell: pwsh
+        run: dnx --yes retest -- --no-build
 
       - name: 🐛 logs
         uses: actions/upload-artifact@v4
