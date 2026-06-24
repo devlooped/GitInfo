@@ -5,6 +5,7 @@
 :bug: Fixed bugs:
 
 - Assemblies of transitive nuget dependencies are placed into the build folder [\#389](https://github.com/devlooped/GitInfo/issues/389)
+- Build occasionally fails when using shared GitInfo.cache with parallel builds (msbuild /m) [\#390](https://github.com/devlooped/GitInfo/issues/390)
 
 ## [v3.6.0](https://github.com/devlooped/GitInfo/tree/v3.6.0) (2025-10-17)
 

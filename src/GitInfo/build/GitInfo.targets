@@ -337,12 +337,12 @@
       <Output ItemName="_GitInput" TaskParameter="Include" />
     </CreateItem>
 
-    <Delete Files="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)') and '$(SkipReadGitCache)' == 'true'" />
+    <Delete Files="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)') and '$(SkipReadGitCache)' == 'true'" ContinueOnError="true" />
   </Target>
 
   <!-- If the inputs/outputs are outdated, clear the cache. -->
   <Target Name="_GitClearCache" Inputs="@(_GitInput)" Outputs="$(_GitInfoFile)" Condition="Exists('$(_GitInfoFile)')">
-    <Delete Files="$(_GitInfoFile)" />
+    <Delete Files="$(_GitInfoFile)" ContinueOnError="true" />
   </Target>
 
   <Target Name="_GitReadCache" Condition="Exists('$(_GitInfoFile)') and '$(SkipReadGitCache)' != 'true'">
@@ -859,9 +859,9 @@
       <_GitInfoFileDir>$([System.IO.Path]::GetDirectoryName('$(_GitInfoFile)'))</_GitInfoFileDir>
     </PropertyGroup>
 
-    <MakeDir Directories="$(_GitInfoFileDir)" Condition="!Exists('$(_GitInfoFileDir)')" />
+    <MakeDir Directories="$(_GitInfoFileDir)" Condition="!Exists('$(_GitInfoFileDir)')" ContinueOnError="true" />
 
-    <WriteLinesToFile File="$(_GitInfoFile)" Lines="$(_GitInfoContent)" Overwrite="true" />
+    <WriteLinesToFile File="$(_GitInfoFile)" Lines="$(_GitInfoContent)" Overwrite="true" ContinueOnError="true" />
 
     <ItemGroup>
       <FileWrites Include="$(_GitInfoFile)" />
