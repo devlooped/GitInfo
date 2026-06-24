@@ -1,11 +1,18 @@
 # Changelog
 
-## Unreleased
+## [v3.6.1](https://github.com/devlooped/GitInfo/tree/v3.6.1) (2026-06-24)
+
+[Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.6.0...v3.6.1)
 
 :bug: Fixed bugs:
 
+- Build occasionally fails when using shared GitInfo.cache [\#390](https://github.com/devlooped/GitInfo/issues/390)
 - Assemblies of transitive nuget dependencies are placed into the build folder [\#389](https://github.com/devlooped/GitInfo/issues/389)
-- Build occasionally fails when using shared GitInfo.cache with parallel builds (msbuild /m) [\#390](https://github.com/devlooped/GitInfo/issues/390)
+
+:twisted_rightwards_arrows: Merged:
+
+- Fix occasional build failures with shared GitInfo.cache under parallel builds \(\#390\) [\#393](https://github.com/devlooped/GitInfo/pull/393) (@kzu)
+- fix: prevent transitive ThisAssembly.Constants deps from copying assemblies to output [\#392](https://github.com/devlooped/GitInfo/pull/392) (@kzu)
 
 ## [v3.6.0](https://github.com/devlooped/GitInfo/tree/v3.6.0) (2025-10-17)
 
