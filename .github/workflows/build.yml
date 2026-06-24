@@ -73,7 +73,7 @@ jobs:
 
       - name: 🧪 test
         shell: pwsh
-        run: dnx --yes retest -- --no-build
+        run: dotnet dnx --yes retest -- --no-build
 
       - name: 🐛 logs
         uses: actions/upload-artifact@v4
