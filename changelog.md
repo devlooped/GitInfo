@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+:bug: Fixed bugs:
+
+- Assemblies of transitive nuget dependencies are placed into the build folder [\#389](https://github.com/devlooped/GitInfo/issues/389)
+
 ## [v3.6.0](https://github.com/devlooped/GitInfo/tree/v3.6.0) (2025-10-17)
 
 [Full Changelog](https://github.com/devlooped/GitInfo/compare/v3.6.0-beta...v3.6.0)

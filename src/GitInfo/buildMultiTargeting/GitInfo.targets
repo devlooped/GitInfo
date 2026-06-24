@@ -4,6 +4,9 @@
     <!-- Make sure we're always private to the referencing project. Prevents analyzers from "flowing out" of the referencing project. -->
     <PackageReference Update="GitInfo" PrivateAssets="all" PackTransitive="false" />
 
+    <!-- Ensure ThisAssembly.Constants (a dependency) is only used for build/analyzers to avoid bringing its transitive runtime assemblies (e.g. System.Threading.Tasks.Extensions.dll, System.Runtime.CompilerServices.Unsafe.dll) into the build output. See https://github.com/devlooped/GitInfo/issues/389 -->
+    <PackageReference Update="ThisAssembly.Constants" PrivateAssets="all" IncludeAssets="build;analyzers" />
+
     <!-- This makes sure we don't enforce SponsorLink transitively, but only when consumers are directly referencing our package. -->
     <SponsorablePackageId Include="GitInfo" />
 
