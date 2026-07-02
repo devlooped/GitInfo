@@ -75,9 +75,9 @@
 	sha = 6e2438919e108aeb75106dc0737c45f5e55d5f42
 [file "src/Directory.Build.targets"]
 	url = https://github.com/devlooped/oss/blob/main/src/Directory.Build.targets
-	etag = cb83faed0cc8b930a7b6bdc61bea03a54059858cf04353e55fee94d9e3ae0fad
+	etag = 2cca66d8a1adbae24dc2efee53a55fa09949242eb35b86c5fd66425da18c6107
 	weak
-	sha = c67952501337303eda0fb8b340cb7606666abd8f
+	sha = dcd5f0a9a00a5b0c23d41a71dcc66ea41dc5f75d
 
 [file "src/kzu.snk"]
 	url = https://github.com/devlooped/oss/blob/main/src/kzu.snk
@@ -94,9 +94,9 @@
 	weak
 [file ".github/workflows/publish.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/publish.yml
-	sha = 7f5f9ee9f362f7e8f951d618f8f799033550e687
+	sha = b62978b0d1ebaf593ddc86cf590c732353e99929
 
-	etag = c60411d1aa4e98e7f69e2d34cbccb8eb7e387ec11f6f8e78ee8d8b92122d7025
+	etag = 32d3314290f3dae1cac7f601c8d91c5c8f50b2423f85bdc4e52d2bfa78253770
 	weak
 [file ".github/workflows/release-artifacts.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/release-artifacts.yml
